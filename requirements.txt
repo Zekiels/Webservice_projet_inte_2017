@@ -1,8 +1,8 @@
 Flask
 flask-cors
+gunicorn
+psycopg2
 
 dj-database-url==0.4.1
 Django==1.9.7
-gunicorn
-psycopg2
 whitenoise==2.0.6
