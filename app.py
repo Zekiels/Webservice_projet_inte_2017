@@ -8,12 +8,13 @@ app = Flask(__name__)
 app.debug = True
 CORS(app)
 
-identifiant=['adrien']
+identifiant=[]
 postSales=[]
 nombre = ['toto','tata','titi']
 
-weather = []
+weather 
 
+#----------------phase de test------------------------------
 @app.route("/retour", methods=["GET"])
 def gettest():
 	global identifiant
@@ -27,11 +28,18 @@ def get():
 	temp = random.choice(nombre)
 	return json.dumps(temp),200,{'Content-Type':'application/json'}
 
+	
+#@app.route("/idGet",methods=["GET"])
+#def idGet():
+#	return "test"
+
+#----------------------------------------------------------
+
 @app.route("/reset", methods=["GET"])
 def getReset():
-	global nombre
-	temp = random.choice(nombre)
-	return json.dumps(temp),200,{'Content-Type':'application/json'}
+	#todo
+
+	
 
 @app.route("/weather/get", methods=["GET"])
 def getWeather():
@@ -39,7 +47,7 @@ def getWeather():
 
 
 @app.route("/sales",methods=["POST"])
-def post():
+def postSales():
 	global  postSales
 	postSales = request.get_json()
 	print postSales
@@ -71,14 +79,11 @@ def postIdIsValide():
 def postWheather():
 	global weather
 	weather = request.get_data()
-	weather = json.loads(weather)
 	print weather
 	return json.dumps(weather),200,{'Content-Type':'application/json'}
+
 		
 
-#@app.route("/idGet",methods=["GET"])
-#def idGet():
-#	return "test"
 
 if __name__ == "__main__":
 	app.run() 
