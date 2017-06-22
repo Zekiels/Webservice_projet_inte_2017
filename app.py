@@ -33,6 +33,10 @@ def getReset():
 	temp = random.choice(nombre)
 	return json.dumps(temp),200,{'Content-Type':'application/json'}
 
+@app.route("/weather/get", methods=["GET"])
+def getWeather():
+	return json.dumps(weather),200,{'Content-Type':'application/json'}
+
 
 @app.route("/sales",methods=["POST"])
 def post():
@@ -63,7 +67,7 @@ def postIdIsValide():
 	
 	print identifiant
 
-@app.route("/weather", methods=["POST"])
+@app.route("/weather/post", methods=["POST"])
 def postWheather():
 	global weather
 	weather = request.get_data()
