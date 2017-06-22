@@ -12,7 +12,7 @@ identifiant=['adrien']
 postSales=[]
 nombre = ['toto','tata','titi']
 
-wheather = []
+weather = []
 
 @app.route("/retour", methods=["GET"])
 def gettest():
@@ -63,13 +63,13 @@ def postIdIsValide():
 	
 	print identifiant
 
-@app.route("/wheather", methods=["POST"])
+@app.route("/weather", methods=["POST"])
 def postWheather():
-	global wheather
-	wheather = request.get_data()
-	wheather = json.loads(wheather)
-	print wheather
-	return json.dumps(wheather),200,{'Content-Type':'application/json'}
+	global weather
+	weather = request.get_data()
+	weather = json.loads(weather)
+	print weather
+	return json.dumps(weather),200,{'Content-Type':'application/json'}
 		
 
 #@app.route("/idGet",methods=["GET"])
