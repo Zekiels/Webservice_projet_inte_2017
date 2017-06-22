@@ -57,7 +57,8 @@ def postIdIsValide():
 @app.route("/weather/post", methods=["POST"])
 def postWheather():
  	global weather
- 	weather = request.get_data()
+ 	tmp = request.get_data()
+ 	weather.append(tmp)
  	print weather
  	return json.dumps(weather),200,{'Content-Type':'application/json'}
  		
