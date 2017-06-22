@@ -11,16 +11,21 @@ identifiant=['adrien']
 postSales=[]
 nombre = ['toto','tata','titi']
 
+@app.route("/", methods=["GET"])
+def getDefault():
+	global identifiant
+	print identifiant
+	return json.dumps(identifiant),200,{'Content-Type':'application/json'}
 
 @app.route("/retour", methods=["GET"])
-def gettest():
+def getTest():
 	global identifiant
 	print identifiant
 	return json.dumps(identifiant),200,{'Content-Type':'application/json'}
 
 
 @app.route("/rdm", methods=["GET"])
-def get():
+def getRdm():
 	global nombre
 	temp = random.choice(nombre)
 	return json.dumps(temp),200,{'Content-Type':'application/json'}
@@ -33,7 +38,7 @@ def getReset():
 
 
 @app.route("/sales",methods=["POST"])
-def post():
+def postSales():
 	global  postSales
 	postSales = request.get_json()
 	print postSales
