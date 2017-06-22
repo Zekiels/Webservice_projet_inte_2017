@@ -1,0 +1,304 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: compose; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE compose (
+    quantity integer,
+    rec_id integer NOT NULL,
+    ing_id integer NOT NULL
+);
+
+
+ALTER TABLE compose OWNER TO postgres;
+
+--
+-- Name: ingredient; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE ingredient (
+    ing_id integer NOT NULL,
+    ing_name character varying(50),
+    ing_price double precision,
+    ing_has_alcohol boolean,
+    ing_is_cold boolean
+);
+
+
+ALTER TABLE ingredient OWNER TO postgres;
+
+--
+-- Name: map; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE map (
+    map_id integer NOT NULL,
+    map_date date,
+    map_time time with time zone,
+    map_longitude double precision,
+    map_lattitude double precision,
+    map_longitude_span double precision,
+    map_lattitude_span double precision
+);
+
+
+ALTER TABLE map OWNER TO postgres;
+
+--
+-- Name: map_item; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE map_item (
+    mit_id integer NOT NULL,
+    mit_type character varying(50),
+    mit_infuence double precision,
+    mit_longitude double precision,
+    mit_lattitude double precision,
+    pla_id integer,
+    map_id integer
+);
+
+
+ALTER TABLE map_item OWNER TO postgres;
+
+--
+-- Name: player; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE player (
+    pla_id integer NOT NULL,
+    pla_name character varying(50),
+    pla_password character varying(50),
+    pla_cash double precision,
+    pla_sales integer
+);
+
+
+ALTER TABLE player OWNER TO postgres;
+
+--
+-- Name: recipe; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE recipe (
+    rec_id integer NOT NULL,
+    rct_name character varying(50),
+    rct_is_cold boolean
+);
+
+
+ALTER TABLE recipe OWNER TO postgres;
+
+--
+-- Name: unlock; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE unlock (
+    rec_id integer NOT NULL,
+    pla_id integer NOT NULL
+);
+
+
+ALTER TABLE unlock OWNER TO postgres;
+
+--
+-- Data for Name: compose; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY compose (quantity, rec_id, ing_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ingredient; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY ingredient (ing_id, ing_name, ing_price, ing_has_alcohol, ing_is_cold) FROM stdin;
+\.
+
+
+--
+-- Data for Name: map; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY map (map_id, map_date, map_time, map_longitude, map_lattitude, map_longitude_span, map_lattitude_span) FROM stdin;
+\.
+
+
+--
+-- Data for Name: map_item; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY map_item (mit_id, mit_type, mit_infuence, mit_longitude, mit_lattitude, pla_id, map_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: player; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY player (pla_id, pla_name, pla_password, pla_cash, pla_sales) FROM stdin;
+0	Toto		15	2
+1	Albert		22	15
+\.
+
+
+--
+-- Data for Name: recipe; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY recipe (rec_id, rct_name, rct_is_cold) FROM stdin;
+\.
+
+
+--
+-- Data for Name: unlock; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY unlock (rec_id, pla_id) FROM stdin;
+\.
+
+
+--
+-- Name: player player_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY player
+    ADD CONSTRAINT player_pkey PRIMARY KEY (pla_id);
+
+
+--
+-- Name: compose prk_constraint_compose; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY compose
+    ADD CONSTRAINT prk_constraint_compose PRIMARY KEY (rec_id, ing_id);
+
+
+--
+-- Name: ingredient prk_constraint_ingredient; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY ingredient
+    ADD CONSTRAINT prk_constraint_ingredient PRIMARY KEY (ing_id);
+
+
+--
+-- Name: map prk_constraint_map; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY map
+    ADD CONSTRAINT prk_constraint_map PRIMARY KEY (map_id);
+
+
+--
+-- Name: map_item prk_constraint_map_item; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY map_item
+    ADD CONSTRAINT prk_constraint_map_item PRIMARY KEY (mit_id);
+
+
+--
+-- Name: recipe prk_constraint_recipe; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY recipe
+    ADD CONSTRAINT prk_constraint_recipe PRIMARY KEY (rec_id);
+
+
+--
+-- Name: unlock prk_constraint_unlock; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY unlock
+    ADD CONSTRAINT prk_constraint_unlock PRIMARY KEY (rec_id, pla_id);
+
+
+--
+-- Name: compose fk_compose_ing_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY compose
+    ADD CONSTRAINT fk_compose_ing_id FOREIGN KEY (ing_id) REFERENCES ingredient(ing_id);
+
+
+--
+-- Name: compose fk_compose_rec_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY compose
+    ADD CONSTRAINT fk_compose_rec_id FOREIGN KEY (rec_id) REFERENCES recipe(rec_id);
+
+
+--
+-- Name: map_item fk_map_item_map_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY map_item
+    ADD CONSTRAINT fk_map_item_map_id FOREIGN KEY (map_id) REFERENCES map(map_id);
+
+
+--
+-- Name: map_item fk_map_item_pla_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY map_item
+    ADD CONSTRAINT fk_map_item_pla_id FOREIGN KEY (pla_id) REFERENCES player(pla_id);
+
+
+--
+-- Name: unlock fk_unlock_pla_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY unlock
+    ADD CONSTRAINT fk_unlock_pla_id FOREIGN KEY (pla_id) REFERENCES player(pla_id);
+
+
+--
+-- Name: unlock fk_unlock_rec_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY unlock
+    ADD CONSTRAINT fk_unlock_rec_id FOREIGN KEY (rec_id) REFERENCES recipe(rec_id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
