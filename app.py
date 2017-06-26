@@ -78,7 +78,7 @@ def getMapPlayer():
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
 			AND sal_pla_name = '{0}'
-			""".format(i.get("pla_name"), day.get("map_day_nb"))))
+			""".format(i.get("pla_name"), day[0])))
 	db.close()
 
 
