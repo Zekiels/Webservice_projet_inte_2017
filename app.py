@@ -99,7 +99,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
 		#liste des types de boissons preparee
 		playerInfo.append(db.select("""
-			SELECT pro_recipe_name
+			SELECT pro_rcp_name
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			WHERE pro_day_nb = {1}
@@ -107,7 +107,7 @@ def getMapPlayer():
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
 
 	db.close()
-
+	print(playerInfo)
 	return json.dumps(playerInfo),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
