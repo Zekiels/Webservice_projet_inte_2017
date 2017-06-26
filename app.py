@@ -4,7 +4,6 @@ from pprint import pprint
 import random 
 import json
 import os
-import logging
 from db import Db
 
 
@@ -38,8 +37,6 @@ def getmap():
 
 @app.route("/", methods=["GET"])
 def getBD():
-	app.logger.addHandler(logging.StreamHandler(sys.stdout))
-	app.logger.setLevel(logging.ERROR)
 	db = Db()
 	tmp=db.execute("""SELECT * FROM player;""")
 	db.close()
