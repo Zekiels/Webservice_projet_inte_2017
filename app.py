@@ -65,7 +65,7 @@ def getMapPlayer():
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
 
-		for element in itemsByPlayer{
+		for element in itemsByPlayer:
 			JSONitemsByPlayer.append("""
 				{
 					"kind":{0},
@@ -85,7 +85,6 @@ def getMapPlayer():
 				element.get("mit_longitude"),
 				element.get("mit_influence")
 				)
-		}
 
 		#budget
 		playerInfo.append(db.select("""
