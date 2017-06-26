@@ -37,7 +37,7 @@ def getWeather():
 
 	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
 
-	return tmp,200,{'Content-Type':'application/json'}
+	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
 
 @app.route("/GET/map", methods=["GET"])
