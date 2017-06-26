@@ -38,7 +38,7 @@ def getmap():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	tmp=db.execute("""SELECT * FROM player;""")
+	tmp=db.execute("""SELECT * FROM player, ingredient, recipe;""")
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
  
