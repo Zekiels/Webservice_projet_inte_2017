@@ -236,6 +236,7 @@ def postAction(PlayerName):
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
 	if "actions" in actions.items():
+		print(actions["actions"])
 	#	if cle == 
 
 	#	db = Db()
