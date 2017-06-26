@@ -8,6 +8,7 @@ import os
 from db import Db
 
 os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
+
 app = Flask(__name__)
 app.debug = True
 CORS(app)
@@ -30,8 +31,7 @@ def getReset():
 @app.route("/metrology", methods=["GET"])
 def getWeather():
 	db = Db()
-	db.execute("""SELECT map_time FROM map;""")
-	tmp = db.cur.fetchall()
+	 tmp = db.select("""SELECT map_time FROM map;""")
 	db.close()
 	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
 
@@ -61,7 +61,7 @@ def getMapPlayer():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	tmp = db.select("""SELECT * FROM player;""")
+	db.execute("""INSERT INTO player VALUES ('Theo', '', 100, 0);""")
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
