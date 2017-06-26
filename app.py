@@ -62,7 +62,7 @@ def getMapPlayer():
 		itemsByPlayer.append(db.select("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
-			WHERE mit_pla_name = {0};
+			WHERE mit_pla_name = '{0}';
 			""".format(supertoto)))
 	
 	db.close()
