@@ -27,9 +27,6 @@ def getReset():
 	return json.dumps(temp),200,{'Content-Type':'application/json'}
 
 
-
-
-
 @app.route("/GET/metrology", methods=["GET"])
 def getWeather():
 	db = Db()
@@ -48,9 +45,6 @@ def getmap():
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
-	
-
-
 @app.route("/GET/ingredients", methods=["GET"])
 def getIngredienst():
 	# TODO
@@ -65,7 +59,7 @@ def getMapPlayer():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	db.execute("""SELECT * FROM ingredient;""")
+	db.execute("""SELECT * FROM player, ingredient, recipe;""")
 	tmp = db.cur.fetchall()
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
@@ -77,16 +71,30 @@ def getBD():
 @app.route("/POST/quitter", methods=["POST"])
 def postquitter():
 	# TODO
-
 	
 	return json.dumps(),200,{'Content-Type':'application/json'}
  
 
 @app.route("/POST/rejoindre", methods=["POST"])
 def postRejoindre():
-	# TODO
+	# Récupère le contenu de la requette
+	rejoindre = request.get_json()
 
+	#Vérifie si elle contient les infos nécésaire
+	if "name" not in rejoindre or len(rejoindre["name"]) == 0:
+    	return json_response({ "error" : "Missing name" }, 400)
 	
+	#Création d'un nouveau joueur
+	db = Db()
+	db.execute("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
+	budget = db.cur.fetchall()
+
+	db.execute("""
+	INSERT INTO player VALUES (@(name), "", """+budget+""", 0);
+	""", rejoindre)
+	db.close()
+	
+	#{"name": string, "location":[latitude:float, longitude:float] ,"info":[cash:float, sales:int, profit:float, drinkOffered:[name:string, price:float, hasAlcohol:bool, isCold:bool]]}
 	return json.dumps(),200,{'Content-Type':'application/json'}
  
  
