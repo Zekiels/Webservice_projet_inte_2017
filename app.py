@@ -49,7 +49,7 @@ def getIngredienst():
 	db = Db()
 	tmp = db.select("""SELECT * FROM ingredient;""")
 	db.close()
-	# {"ingredients":["name":string, "cost":float, "hasAlcohol":bool, "isCold":bool]}
+	# {"ingredients":["ing_name":string, "ing_cost":float, "ing_hasAlcohol":bool, "ing_isCold":bool]}
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
