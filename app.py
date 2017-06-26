@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.debug = True
 CORS(app)
 
+#variable de test
 identifiant=['adrien']
 postSales=[]
 nombre = ['toto','tata','titi']
@@ -64,7 +65,7 @@ def getMapPlayer():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	db.execute("""SELECT * FROM player, ingredient, recipe;""")
+	db.execute("""SELECT * FROM player;""")
 	tmp = db.cur.fetchall()
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
