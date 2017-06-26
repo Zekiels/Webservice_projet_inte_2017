@@ -233,9 +233,9 @@ def postAction(PlayerName):
 
  	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
 
-	if "actions" not in actions or len(actions["player"]) == 0:
+	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
-	#if "actions" in actions.items():
+	if "actions" in actions.items():
 	#	if cle == 
 
 	#	db = Db()
@@ -250,7 +250,7 @@ def postAction(PlayerName):
 	 #	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 #@app.route("/idGet",methods=["GET"])
 #def idGet():
