@@ -229,7 +229,7 @@ def postWheather():
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction(PlayerName):
 	actions = request.get_json()
- 	print(actions)
+ 	#print(actions)
 
  	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
 
