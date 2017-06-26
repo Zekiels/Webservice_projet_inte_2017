@@ -231,6 +231,7 @@ def postAction(PlayerName):
 	actions = request.get_json()
  	print(actions.items())
  	print(actions.values())
+ 	print(actions["actions"]["kind"])
 
  	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
 
