@@ -47,10 +47,13 @@ def getmap():
 
 @app.route("/GET/ingredients", methods=["GET"])
 def getIngredienst():
-	# TODO
+	db = Db()
+	db.execute("""SELECT * FROM ingredient;""")
+	tmp = db.cur.fetchall()
+	db.close()
+	# {"ingredients":["name":string, "cost":float, "hasAlcohol":bool, "isCold":bool]}
 
-
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
 @app.route("/GET/map/<PlayerName>", methods=["GET"])
 def getMapPlayer():
