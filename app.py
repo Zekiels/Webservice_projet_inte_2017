@@ -21,6 +21,9 @@ CurrentWeather = []
 PrevisoinWeather = []
 weather = []
 
+def json_response(data="OK", status=200):
+  return json.dumps(data), status, { "Content-Type": "application/json" }
+
 @app.route('/jeu.html')
 def jeu():
 	return render_template('jeu.html')
@@ -188,6 +191,8 @@ def postSales():
     INSERT INTO sale VALUES ("""+day+""", @(quantity), 0, @(player), @(item));
  	""", postSales)
  	db.close()
+
+ 	return
  
 
 @app.route("/idPost",methods=["POST"])
