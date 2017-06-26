@@ -33,7 +33,7 @@ def getWeather():
 	db.execute("""SELECT map_time FROM map;""")
 	tmp = db.cur.fetchall()
 	db.close()
-	json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
+	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
 
 	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
 
