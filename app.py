@@ -124,7 +124,8 @@ def postIdIsValide():
  	for x in identifiant:
  		if idvalide in identifiant:
  			return json.dumps(idvalide),200,{'Content-Type':'application/json'}
- 		else :continue
+ 		else :
+ 			continue
 
  	print(identifiant)
 
