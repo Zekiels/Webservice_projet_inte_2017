@@ -175,21 +175,21 @@ def postRejoindre():
 
 @app.route("/sales",methods=["POST"])
 def postSales():
- 	postSales = request.get_json()
- 	print(postSales)
+ 	sales = request.get_json()
+ 	print(sales)
 
-	if "player" not in postSales or len(postSales["player"]) == 0:
-		return json_response({ "error" : "Missing player" }, 400)
-	if "item" not in postSales or len(postSales["item"]) == 0:
-		return json_response({ "error" : "Missing item" }, 400)
-	if "quantity" not in postSales or len(postSales["quantity"]) == 0:
-		return json_response({ "error" : "Missing quantity" }, 400)
+	#if "player" not in sales or len(sales["player"]) == 0:
+	#	return json_response({ "error" : "Missing player" }, 400)
+	#if "item" not in sales or len(sales["item"]) == 0:
+	#	return json_response({ "error" : "Missing item" }, 400)
+	#if "quantity" not in sales or len(sales["quantity"]) == 0:
+	#	return json_response({ "error" : "Missing quantity" }, 400)
 
 	db = Db()
 	day = db.select("""SELECT map_day_nb from map;""")
  	db.execute("""
     INSERT INTO sale VALUES ("""+day+""", @(quantity), 0, @(player), @(item));
- 	""", postSales)
+ 	""", sales)
  	db.close()
 
  	return "ok",200,{'Content-Type':'application/json'}
