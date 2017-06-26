@@ -51,7 +51,7 @@ def getIngredienst():
 
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
-	itemsByPlayer[]
+	itemsByPlayer=[]
 	db = Db()
 	player = db.select("""SELECT pla_name from player;""")
 	for i in player:
