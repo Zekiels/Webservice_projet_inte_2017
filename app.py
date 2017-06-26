@@ -231,14 +231,18 @@ def postAction(PlayerName):
 	actions = request.get_json()
  	print(actions.items())
  	print(actions.values())
- 	print(actions["actions"]["kind"])
+ 	print(actions["actions"]["prepare"])
 
  	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
 
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
-	if "kind" in actions.values():
+	if actions["actions"]["kind"] == "drinks":
 		print("oui")
+	if actions["actions"]["kind"] == "recipe":
+		print("NON")
+	if actions["actions"]["kind"] == "ad":
+		print("NON")
 	#	if cle == 
 
 	#	db = Db()
