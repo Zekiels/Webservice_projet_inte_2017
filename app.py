@@ -89,6 +89,7 @@ def getMapPlayer():
 				WHERE sal_day_nb = {1}
 				AND sal_pla_name = '{0}'
 				)
+				-
 				(SELECT SUM (pro_qty * pro_cost_at_that_time)
 				FROM production
 				INNER JOIN player ON player.pla_name = production.pro_pla_name
@@ -106,8 +107,6 @@ def getMapPlayer():
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
 
 	db.close()
-
-
 
 	return json.dumps(playerInfo),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
