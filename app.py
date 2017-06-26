@@ -77,14 +77,14 @@ def postquitter():
 
 @app.route("/rejoindre", methods=["POST"])
 def postRejoindre():
-	# Récupère le contenu de la requette
+	# Recupere le contenu de la requette
 	rejoindre = request.get_json()
 
-	#Vérifie si elle contient les infos nécésaire
+	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre or len(rejoindre["name"]) == 0:
     	return json_response({ "error" : "Missing name" }, 400)
 	
-	#Création d'un nouveau joueur
+	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
 
