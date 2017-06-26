@@ -52,7 +52,6 @@ def getIngredienst():
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
 	itemsByPlayer=[]
-	supertoto = "toto"
 	db = Db()
 	player = db.select("""SELECT pla_name from player;""")
 	print(player)
@@ -63,7 +62,7 @@ def getMapPlayer():
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
-			""".format(supertoto)))
+			""".format(i.getString("pla_name"))))
 	
 	db.close()
 	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
