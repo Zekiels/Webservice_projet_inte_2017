@@ -65,7 +65,7 @@ def getMapPlayer():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	db.execute("""SELECT * FROM player;""")
+	db.execute("""SELECT * FROM ingredient;""")
 	tmp = db.cur.fetchall()
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
