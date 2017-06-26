@@ -57,14 +57,13 @@ def getMapPlayer():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day.pop()
 	print(day_tmp)
-	for i in player:
-
+	for i in player69
 		itemsByPlayer.append(db.select("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
-		print (itemsByPlayer)
+		print(itemsByPlayer)
 
 		for element in itemsByPlayer:
 			JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
@@ -167,7 +166,19 @@ def postSales():
  	postSales = request.get_json()
  	print(postSales)
 
+	if "player" not in elements or len(elements["name"]) == 0:
+		return json_response({ "error" : "Missing name" }, 400)
+	if "item" not in elements or len(elements["verb"]) == 0:
+		return json_response({ "error" : "Missing verb" }, 400)
+	if "quantity" not in elements or len(elements["adjective"]) == 0:
+		return json_response({ "error" : "Missing adjective" }, 400)
 
+	db = Db()
+	day = db.select("""SELECT map_day_nb from map;""")
+ 	db.execute("""
+    INSERT INTO sale VALUES ("""+day+""", @(quantity), 0, @(player), @(item));
+ 	""", postSales)
+ 	db.close()
  
 @app.route("/idPost",methods=["POST"])
 def postId():
