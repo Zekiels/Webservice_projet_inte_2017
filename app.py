@@ -21,6 +21,9 @@ CurrentWeather = []
 PrevisoinWeather = []
 weather = []
 
+def json_response(data="OK", status=200):
+  return json.dumps(data), status, { "Content-Type": "application/json" }
+
 @app.route('/jeu.html')
 def jeu():
 	return render_template('jeu.html')
@@ -37,6 +40,7 @@ def getWeather():
 	db = Db()
 	tmp = db.select("""SELECT map_time FROM map;""")
 	db.close()
+	weather = "{\"weather\":\"sunny\"}"
 	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
 
 	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
@@ -49,7 +53,7 @@ def getIngredienst():
 	db = Db()
 	tmp = db.select("""SELECT * FROM ingredient;""")
 	db.close()
-	# {"ingredients":["name":string, "cost":float, "hasAlcohol":bool, "isCold":bool]}
+	# {"ingredients":["ing_name":string, "ing_cost":float, "ing_hasAlcohol":bool, "ing_isCold":bool]}
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
@@ -63,17 +67,18 @@ def getMapPlayer():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day.pop()
 	print(day_tmp)
+
 	for i in player:
 
-		itemsByPlayer = (db.select("""
+		itemsByPlayer.append(db.select("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
-		print (itemsByPlayer)
+		print(itemsByPlayer)
 
-		#for element in itemsByPlayer:
-			#JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
+		for element in itemsByPlayer:
+			JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
 
 		#budget
 		playerInfo.append(db.select("""
@@ -170,10 +175,26 @@ def postRejoindre():
 
 @app.route("/sales",methods=["POST"])
 def postSales():
- 	postSales = request.get_json()
- 	print(postSales)
+ 	sales = request.get_json()
+ 	print(sales)
 
+	#if "player" not in sales or len(sales["player"]) == 0:
+	#	return json_response({ "error" : "Missing player" }, 400)
+	#if "item" not in sales or len(sales["item"]) == 0:
+	#	return json_response({ "error" : "Missing item" }, 400)
+	#if "quantity" not in sales or len(sales["quantity"]) == 0:
+	#	return json_response({ "error" : "Missing quantity" }, 400)
 
+	db = Db()
+	day = db.select("""SELECT map_day_nb from map;""")
+	day_tmp = day.pop()
+ 	db.execute("""
+    INSERT INTO sale VALUES ({0}, @(quantity), 0, @(player), @(item));
+ 	""".format(day_tmp.get("map_day_nb")), sales)
+ 	db.close()
+
+ 	return "ok",200,{'Content-Type':'application/json'}
+ 
 
 @app.route("/idPost",methods=["POST"])
 def postId():

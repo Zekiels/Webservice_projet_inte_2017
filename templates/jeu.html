@@ -250,6 +250,17 @@
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
 
+            $.ajax(server+'/ingredients',{
+              method:'GET',
+              contentType: "application/json",
+              success: function(ingredients){
+                console.log(ingredients);
+                for (ingredient of ingredients) {
+                  console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
+                }
+              }
+            })
+
             $.ajax(server+'/metrology',{
               method: 'GET',
               success: function(getWeather){
