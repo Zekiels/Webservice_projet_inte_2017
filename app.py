@@ -8,7 +8,7 @@ from db import Db
 
 #os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
 
-app = Flask(__name__, static_folder='HTML')
+app = Flask(__name__, static_folder='static')
 app.debug = True
 CORS(app)
 
