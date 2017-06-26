@@ -182,7 +182,7 @@ def postSales():
 		return json_response({ "error" : "Missing player" }, 400)
 	if "item" not in sales or len(sales["item"]) == 0:
 		return json_response({ "error" : "Missing item" }, 400)
-	if "quantity" not in sales or len(sales["quantity"]) == 0:
+	if "quantity" not in sales:
 		return json_response({ "error" : "Missing quantity" }, 400)
 
 	db = Db()
