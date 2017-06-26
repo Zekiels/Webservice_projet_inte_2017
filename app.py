@@ -54,10 +54,19 @@ def getIngredienst():
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
-@app.route("/map/<PlayerName>", methods=["GET"])
+@app.route("/map", methods=["GET"])
 def getMapPlayer():
-	# TODO
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	db = Db()
+	player = db.select("""SELECT pla_name from player;""")
+	for i in player:
+		itemsByPlayer.append(db.select("""
+			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
+			FROM map_item
+			WHERE mit_pla_name = %s;
+			""", i))
+	
+	db.close()
+	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
 
 @app.route("/", methods=["GET"])
 def getBD():
