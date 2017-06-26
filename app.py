@@ -22,7 +22,7 @@ PrevisoinWeather = []
 
 @app.route('/HTML/jeu.html')
 def jeu():
-	return render_template('/HTML/jeu.html')
+	return render_template('jeu.html')
 
 @app.route("/reset", methods=["GET"])
 def getReset():
