@@ -31,7 +31,7 @@ def getReset():
 @app.route("/metrology", methods=["GET"])
 def getWeather():
 	db = Db()
-	 tmp = db.select("""SELECT map_time FROM map;""")
+	tmp = db.select("""SELECT map_time FROM map;""")
 	db.close()
 	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
 
@@ -66,8 +66,6 @@ def getBD():
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
 #################################                   POST   						 #######################################################
- 
-	return json.dumps(),200,{'Content-Type':'application/json'}
 
 @app.route("/quitter", methods=["POST"])
 def postquitter():
