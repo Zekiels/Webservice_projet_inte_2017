@@ -68,8 +68,8 @@ def getMapPlayer():
 		for element in itemsByPlayer:
 			JSONitemsByPlayer.append("""
 				{
-					"kind":{0},
-					"owner":{1},
+					"kind":'{0}',
+					"owner":'{1}',
 					"location":{
 						"coordinates":{
 							"lattitude":{2},
