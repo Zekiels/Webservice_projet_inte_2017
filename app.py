@@ -7,7 +7,7 @@ import json
 import os
 from db import Db
 
-os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
+#os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
 
 app = Flask(__name__)
 app.debug = True
