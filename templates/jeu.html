@@ -254,7 +254,7 @@
               method:'GET',
               contentType: "application/json",
               success: function(ingredients){
-                for (ingredient of ingredients) {
+                for (ingredient of JSON.parse(ingredients)) {
                   console.log(ingredient.name+" "+ingredient.ing_cost);
                 }
               }
