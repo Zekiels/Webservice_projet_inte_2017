@@ -177,12 +177,12 @@ def postSales():
  	sales = request.get_json()
  	print(sales)
 
-	#if "player" not in sales or len(sales["player"]) == 0:
-	#	return json_response({ "error" : "Missing player" }, 400)
-	#if "item" not in sales or len(sales["item"]) == 0:
-	#	return json_response({ "error" : "Missing item" }, 400)
-	#if "quantity" not in sales or len(sales["quantity"]) == 0:
-	#	return json_response({ "error" : "Missing quantity" }, 400)
+	if "player" not in sales or len(sales["player"]) == 0:
+		return json_response({ "error" : "Missing player" }, 400)
+	if "item" not in sales or len(sales["item"]) == 0:
+		return json_response({ "error" : "Missing item" }, 400)
+	if "quantity" not in sales :
+		return json_response({ "error" : "Missing quantity" }, 400)
 
 	db = Db()
 	day = db.select("""SELECT map_day_nb from map;""")
@@ -192,7 +192,7 @@ def postSales():
  	""".format(day_tmp.get("map_day_nb")), sales)
  	db.close()
 
- 	return "ok",200,{'Content-Type':'application/json'}
+ 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
  
 
 @app.route("/idPost",methods=["POST"])
@@ -227,8 +227,26 @@ def postWheather():
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
-def postAction():
-	# TODO
+def postAction(PlayerName):
+	actions = request.get_json()
+ 	print(actions)
+
+ 	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
+
+	if "actions" not in actions or len(actions["player"]) == 0:
+		return json_response({ "error" : "Missing player" }, 400)
+	if actions.get("actions").get("kind") == "drinks"
+
+		db = Db()
+		day = db.select("""SELECT map_day_nb from map;""")
+		day_tmp = day.pop()
+		#(0,20,5.3,'Toto','limonade'),
+		db.execute("""
+	    INSERT INTO production VALUES ({0}, @(), 0, @(player), @(PlayerName));
+	 	""".format(day_tmp.get("map_day_nb")), sales)
+		db.close()
+
+	 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 
 	return json.dumps(),200,{'Content-Type':'application/json'}
