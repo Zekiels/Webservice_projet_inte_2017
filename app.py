@@ -61,8 +61,7 @@ def getMapPlayer():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	db.execute("""SELECT * FROM player, ingredient, recipe;""")
-	tmp = db.cur.fetchall()
+	tmp = db.select("""SELECT * FROM player;""")
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
@@ -88,8 +87,7 @@ def postRejoindre():
 	
 	#Création d'un nouveau joueur
 	db = Db()
-	db.execute("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
-	budget = db.cur.fetchall()
+	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
 
 	db.execute("""
 	INSERT INTO player VALUES (@(name), "", """+budget+""", 0);
