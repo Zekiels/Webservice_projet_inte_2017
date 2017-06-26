@@ -202,9 +202,9 @@ def postIdIsValide():
 def postWheather():
  	global weather
  	tmp = request.get_data()
- 	weather.append(tmp)
+ 	weather = tmp
  	print(weather)
- 	return json.dumps(weather),200,{'Content-Type':'application/json'}
+ 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction():
