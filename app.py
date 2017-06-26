@@ -56,7 +56,8 @@ def getMapPlayer():
 	db = Db()
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
-	print(player)
+	day_tmp = day.pop()
+	print(day_tmp)
 	for i in player:
 
 		itemsByPlayer.append(db.select("""
@@ -78,7 +79,7 @@ def getMapPlayer():
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
 			AND sal_pla_name = '{0}'
-			""".format(i.get("pla_name"), day[0].get("sal_day_nb"))))
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
 	db.close()
 
 
