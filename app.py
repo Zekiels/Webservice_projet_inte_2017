@@ -57,6 +57,7 @@ def getIngredienst():
 @app.route("/map/<PlayerName>", methods=["GET"])
 def getMapPlayer():
 	# TODO
+	return json.dumps(),200,{'Content-Type':'application/json'}
 
 @app.route("/", methods=["GET"])
 def getBD():
