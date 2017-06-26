@@ -62,7 +62,7 @@ def getMapPlayer():
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
-			""".format(i.getString("pla_name"))))
+			""".format(i.get("pla_name"))))
 	
 	db.close()
 	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
