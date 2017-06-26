@@ -252,6 +252,7 @@
 
             $.ajax(server+'/ingredients',{
               method:'GET',
+              contentType: "application/json",
               success: function(ingredients){
                 for (ingredient of ingredients) {
                   console.log(ingredient.name+" "+ingredient.ing_cost);
