@@ -52,6 +52,7 @@ def getIngredienst():
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
 	itemsByPlayer=[]
+	playerInfo=[]
 	db = Db()
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
@@ -79,7 +80,9 @@ def getMapPlayer():
 			AND sal_pla_name = '{0}'
 			""".format(i.get("pla_name"), day.get("map_day_nb"))))
 	db.close()
-	
+
+
+
 	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
