@@ -78,12 +78,7 @@ def getMapPlayer():
 					}
 					"influence":{4}
 				}
-				""".format(
-				element.get("mit_type"),
-				element.get("mit_pla_name"),
-				element.get("mit_lattitude"),
-				element.get("mit_longitude"),
-				element.get("mit_influence")
+				""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")
 				))
 
 		#budget
