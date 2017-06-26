@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="jeu.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <title>Lemonade-Face-Off</title>
+</head>
+<body>
+
+  <div class="row">
+    <div id="bienvenue" class="container col-md-6"><br><br><h2>Bienvenue "mon_identifiant" </h2></div>
+    <div id="argent" class="container col-md-4">
+      <table id="tableargent" class="table table-bordered">
+        <thead>
+          <tr>
+            <th><h3><b>Budget</b></h3></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><h3>+20.27€</h3></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button id="deconnexion" class="btn btn-warning col-md-1">Deconnexion</button>
+    <button id="reset" class="btn btn-danger col-md-1">Reset</button>
+  </div>
+
+  <div id="Tab" class="container col-md-6">
+    <ul  class="nav nav-pills">
+      <li class="active">
+        <a  href="#1b" data-toggle="tab"><h4>Production</h4></a>
+      </li>
+      <li><a href="#2b" data-toggle="tab"><h4>Vente détaillée</h4></a>
+      </li>
+      <li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
+      </li>
+    </ul>
+
+    <div class="tab-content clearfix">
+      <div class="tab-pane active" id="1b">
+        <div class="container">
+          <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th><h4><b>Produits</b></h4></th>
+                  <th><h4><b>Nombre</b></4></th>
+                    <th><h4><b>Prix de vente</b></h4></th>
+                    <th><h4><b>Prix de production</b></h4></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><h4>Limonade</h4></td>
+                    <td><span><input type="text" id="nombrelimonade" size="5" value=""/></span></td>
+                    <td><span><input type="text" id="prixventelimonade" size="5" value=""/></span> €</td>
+                    <td><span><p type="text" id="prixprodlimonade" value=""/></span> €</td>
+                  </tr>
+                  <tr>
+                    <td><h4>Mojito</h4></td>
+                    <td><span><input type="text" id="nombremojito" size="5" value=""/></span></td>
+                    <td><span><input type="text" id="prixventemojito" size="5" value=""/></span> €</td>
+                    <td><span><p type="text" id="priprodemojito" value=""/></span> €</td>
+                  </tr>
+                  <tr>
+                    <td><h4>Vin chaud</h4></td>
+                    <td><span><input type="text" id="nombrevinchaud" size="5" value=""/></span></td>
+                    <td><span><input type="text" id="prixventevinchaud" size="5" value=""/></span> €</td>
+                    <td><span><p type="text" id="prixprodvinchaud" value=""/></span> €</td>
+                  </tr>
+                  <tr>
+                    <td><h4>Café</h4></td>
+                    <td><span><input type="text" id="nombrecafe" size="5" value=""/></span></td>
+                    <td><span><input type="text" id="prixventecafe" size="5" value=""/></span> €</td>
+                    <td><span><p type="text" id="prixprodcafe" value=""/></span> €</td>
+                  </tr>
+                  <tr>
+                    <td><h4>Thé</h4></td>
+                    <td><span><input type="text" id="nombrethe" size="5" value=""/></span></td>
+                    <td><span><input type="text" id="prixventethe" size="5" value=""/></span> €</td>
+                    <td><span><p type="text" id="prixprodthe" value=""/></span> €</td>
+                  </tr>
+                  <tr>
+                    <td><h4>Coût total</h4></td>
+                    <td><span><p type="text" id="nombrecouttotal" value=""/></span></td>
+                    <td><span><p type="text" id="prixventecouttotal" value=""/></span> €</td>
+                    <td><span><p type="text" id="prixprodcouttotal" value=""/></span> €</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br></br>
+            <div>
+              <button type="submit" class="btn btn-primary btn-lg center-block">Produire!</button><br>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="2b">
+          <div class="container">
+            <table id="tablevente" class="table">
+              <thead>
+                <tr>
+                  <th id="largeur"><h4><b>Produits</b></th>
+                    <th id="boissonvendue"><h4><b>Nombre boissons vendues</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><h4>Limonade</h4></td>
+                      <td><p id="limonade"></p></td>
+                      <p></p>
+                    </tr>
+                    <tr>
+                      <td><h4>Mojito</h4></td>
+                      <td><p id="mojito"</p></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Vin chaud</h4></td>
+                        <td><p id="vinchaud"></p></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Café</h4></td>
+                        <td><p id="café"></p></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Thé</h4></td>
+                        <td><p id="thé"></p></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Total</h4></td>
+                        <td><p id="total"></p></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="tab-pane" id="3b">
+                <div class="container">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th><h4><b>Produits</b></h4></th>
+                        <th><h4><b>Ingrédients</b></h4></th>
+                        <th><h4><b>Prix</b></h4></th>
+                        <th><h4><b>Débloquer</b></h4></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><h4>Mojito</h4></td>
+                        <td>
+                          <li>1 Citron</li>
+                          <li>2 Sucre</li>
+                          <li>2 Glace</li>
+                          <li>1 Eau</li>
+                          <li>1 Rhum</li>
+                          <li>2 Menthe</li>
+                        </td>
+                        <td>500€</td>
+                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Vin chaud</h4></td>
+                        <td>
+                          <li>1 Epice</li>
+                          <li>1 Vin</li>
+                        </td>
+                        <td>400€</td>
+                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Café</h4></td>
+                        <td>
+                          <li>1 Café</li>
+                          <li>1 Sucre</li>
+                        </td>
+                        <td>300€</td>
+                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
+                      </tr>
+                      <tr>
+                        <td><h4>Thé</h4></td>
+                        <td>
+                          <li>1 Thé</li>
+                          <li>1 Sucre</li>
+                          <li>1 Menthe</li>
+                        </td>
+                        <td>200€</td>
+                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
+                      </tbody>
+                    </table>
+                  </div>
+                  <br></br>
+                </div>
+              </div>
+            </div><br>
+
+            <div id="informations"class="container col-md-6">
+              <h2>Informations</h2>
+              <table id="tableinfo"class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th><h3><b>Météo actuelle</b></h3></th>
+                    <th><h3><b>Prévision météo</b></h3></th>
+                    <th><h3><b>Localisation</b></h3></th>
+                    <th><h3><b>Heure</b></h3></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr >
+                    <td><h4 id="meteo">Canicule</h4></td>
+                    <td><h4 id="prevision">Pluie</h4></td>
+                    <td>
+                      <p><h4 id="ville">Ville: Perpignan</h4></p>
+                      <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
+                      <p><h4 id="longitude">Longitude: 2°53′43″</h4></p>
+                    </td>
+                    <td>
+                      <span><h4 id="jour">Jour 1</h4></span>
+                      <span><h4 id="heure">15:00</h4></span>
+                    </td>
+                  </tr>
+                  <tr id="visuel">
+                    <td><img id="sunny" src="C:\Users\utilisateur\Documents\IMERIR\Lemonade-Face-Off\HTML\sunny.png" alt="sunny"></td>
+                    <td><img id="rainy" src="C:\Users\utilisateur\Documents\IMERIR\Lemonade-Face-Off\HTML\rainy.png" alt="rainy"></td>
+                    <td>
+                    </td>
+                    <td><div class="clock"></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </body>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+          <script type="text/javascript" src="js/requete.js"></script>
+          </html>
+
+          <script src="js/bootstrap.min.js"></script>
+
+          <script>
+          $(function(){
+            var server="http://limonade-equipe7.herokuapp.com/"
+
+            $.ajax(server+'/metrology',{
+              method: 'GET',
+              success: function(getWeather){
+                console.log(getWeather.weather)
+                $("#meteo").text(getWeather.weather);
+              }
+            })
+
+            $.ajax(server+'/',{
+              method: 'GET',
+              success: function(getPrevision){
+                console.log(getPrevision.prevision)
+                $("#prevision").text(getPrevision.prevision);
+              }
+            })
+
+            $.ajax(server+'/',{
+              method: 'GET',
+              success: function(getVille){
+                console.log(getVille.ville)
+                $("#localisation").text(getVille.ville);
+              }
+            })
+
+            $.ajax(server+'/'{
+              method: 'GET',
+              success: function(getJour){
+                console.log(getJour.jour)
+                $("#jour").text(getJour.jour);
+              }
+            })
+
+            $.ajax(server+'/'{
+              method: 'GET',
+              success: function(getDate){
+                console.log(getDate.date)
+                $("#jour").text(getDate.date);
+              }
+            })
+          });
+
+          </script>
