@@ -62,7 +62,7 @@ def getMapPlayer():
 @app.route("/", methods=["GET"])
 def getBD():
 	db = Db()
-	db.execute("""INSERT INTO player VALUES ('Theo', '', 100, 0);""")
+	tmp = db.select("""SELECT * FROM player;""")
 	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
