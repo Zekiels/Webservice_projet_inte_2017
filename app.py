@@ -178,12 +178,12 @@ def postSales():
  	sales = request.get_json()
  	print(sales)
 
-	#if "player" not in sales or len(sales["player"]) == 0:
-	#	return json_response({ "error" : "Missing player" }, 400)
-	#if "item" not in sales or len(sales["item"]) == 0:
-	#	return json_response({ "error" : "Missing item" }, 400)
-	#if "quantity" not in sales or len(sales["quantity"]) == 0:
-	#	return json_response({ "error" : "Missing quantity" }, 400)
+	if "player" not in sales or len(sales["player"]) == 0:
+		return json_response({ "error" : "Missing player" }, 400)
+	if "item" not in sales or len(sales["item"]) == 0:
+		return json_response({ "error" : "Missing item" }, 400)
+	if "quantity" not in sales or len(sales["quantity"]) == 0:
+		return json_response({ "error" : "Missing quantity" }, 400)
 
 	db = Db()
 	day = db.select("""SELECT map_day_nb from map;""")
