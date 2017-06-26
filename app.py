@@ -54,12 +54,15 @@ def getMapPlayer():
 	itemsByPlayer=[]
 	db = Db()
 	player = db.select("""SELECT pla_name from player;""")
+	print(player)
 	for i in player:
+		print(i)
+		print(itemsByPlayer)
 		itemsByPlayer.append(db.select("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
 			WHERE mit_pla_name = %s;
-			""", i))
+			""", i[0]))
 	
 	db.close()
 	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
