@@ -48,8 +48,7 @@ def getmap():
 @app.route("/GET/ingredients", methods=["GET"])
 def getIngredienst():
 	db = Db()
-	db.execute("""SELECT * FROM ingredient;""")
-	tmp = db.cur.fetchall()
+	tmp = db.select("""SELECT * FROM ingredient;""")
 	db.close()
 	# {"ingredients":["name":string, "cost":float, "hasAlcohol":bool, "isCold":bool]}
 
