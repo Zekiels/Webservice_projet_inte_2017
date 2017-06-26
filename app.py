@@ -231,30 +231,29 @@ def postAction(PlayerName):
 	actions = request.get_json()
  	print(actions.items())
  	print(actions.values())
- 	print(actions["actions"]["prepare"])
+ 	print(actions["actions"]["prepare"][1])
 
  	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
 
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
 	if actions["actions"]["kind"] == "drinks":
-		print("oui")
+		db = Db()
+		day = db.select("""SELECT map_day_nb from map;""")
+		day_tmp = day.pop()
+		#(0,20,5.3,'Toto','limonade'),
+		db.execute("""
+	    INSERT INTO production VALUES ({0}, {1}, {2}, {3}, {4});
+	 	""".format(day_tmp.get("map_day_nb")), actions["actions"]["prepare"][1], actions["actions"]["price"][1], PlayerName, actions["actions"]["prepare"][0])
+		db.close()
+
+		return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	if actions["actions"]["kind"] == "recipe":
 		print("NON")
 	if actions["actions"]["kind"] == "ad":
 		print("NON")
-	#	if cle == 
 
-	#	db = Db()
-	#	day = db.select("""SELECT map_day_nb from map;""")
-	#	day_tmp = day.pop()
-	#	#(0,20,5.3,'Toto','limonade'),
-	#	db.execute("""
-	#   INSERT INTO production VALUES ({0}, @(), 0, @(player), @(PlayerName));
-	 #	""".format(day_tmp.get("map_day_nb")), sales)
-	#	db.close()
-
-	 #	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	
 
 
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
