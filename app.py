@@ -8,7 +8,7 @@ from db import Db
 
 #os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
 
-app = Flask(__name__, static_folder='../static')
+app = Flask(__name__, static_folder='static')
 app.debug = True
 CORS(app)
 
@@ -21,7 +21,7 @@ CurrentWeather = []
 PrevisoinWeather = []
 weather = []
 
-@app.route('/HTML/jeu.html')
+@app.route('/jeu.html')
 def jeu():
 	return render_template('jeu.html')
 
