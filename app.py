@@ -235,18 +235,19 @@ def postAction(PlayerName):
 
 	if "actions" not in actions or len(actions["player"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
-	if actions.get("actions").get("kind") == "drinks"
+	#if "actions" in actions.items():
+	#	if cle == 
 
-		db = Db()
-		day = db.select("""SELECT map_day_nb from map;""")
-		day_tmp = day.pop()
-		#(0,20,5.3,'Toto','limonade'),
-		db.execute("""
-	    INSERT INTO production VALUES ({0}, @(), 0, @(player), @(PlayerName));
-	 	""".format(day_tmp.get("map_day_nb")), sales)
-		db.close()
+	#	db = Db()
+	#	day = db.select("""SELECT map_day_nb from map;""")
+	#	day_tmp = day.pop()
+	#	#(0,20,5.3,'Toto','limonade'),
+	#	db.execute("""
+	#   INSERT INTO production VALUES ({0}, @(), 0, @(player), @(PlayerName));
+	 #	""".format(day_tmp.get("map_day_nb")), sales)
+	#	db.close()
 
-	 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	 #	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 
 	return json.dumps(),200,{'Content-Type':'application/json'}
