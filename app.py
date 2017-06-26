@@ -4,10 +4,15 @@ from pprint import pprint
 import random 
 import json
 import os
- 
+import logging
+from db import Db
+
+
 app = Flask(__name__)
 app.debug = True
 CORS(app)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 os.environ['DATABASE_URL'] = "postgres://tsnflmvlizgvjx:066dedf141326dcdc78db46c4d30036bb0405f74cd06d5880e8dfbf87add1176@ec2-107-22-250-33.compute-1.amazonaws.com:5432/dcj4s31ubdp85s"
 
