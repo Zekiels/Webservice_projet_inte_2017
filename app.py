@@ -187,9 +187,10 @@ def postSales():
 
 	db = Db()
 	day = db.select("""SELECT map_day_nb from map;""")
+	day_tmp = day.pop()
  	db.execute("""
-    INSERT INTO sale VALUES ("""+day+""", @(quantity), 0, @(player), @(item));
- 	""", sales)
+    INSERT INTO sale VALUES ({0}, @(quantity), 0, @(player), @(item));
+ 	""".format(day_tmp.get("map_day_nb")), sales)
  	db.close()
 
  	return "ok",200,{'Content-Type':'application/json'}
