@@ -1,0 +1,125 @@
+body {
+  padding : 10px ;
+  width: 100%;
+  height: 100%;
+}
+
+#bienvenue{
+  text-align: center;
+  vertical-align: middle !important;
+}
+
+#deconnexion{
+  width:10%;
+  margin-right: 10px;
+}
+
+#reset{
+  width:5%;
+  margin-right: 10px;
+}
+
+#Tab .nav-pills > li > a {
+  border-radius: 4px 4px 0 0 ;
+}
+
+#Tab .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px;
+  vertical-align: middle;
+  text-align: center;
+  min-height: 40em;
+}
+
+#Tab input[type="text"]{
+  color: black;
+}
+
+#Tab table tr th:first-child, #Tab table tr td:first-child{
+  text-align: left !important;
+}
+
+th{
+  text-align: center !important;
+}
+
+#largeur{
+  width: 20%;
+}
+
+#tablevente{
+  width: 40%;
+}
+
+p{
+  text-align: center;
+  width: 50%;
+}
+
+li{
+  list-style-type:none;
+}
+
+#tableinfo tr td, #tableinfo tr th{
+  width: 25%;
+  vertical-align: middle;
+  text-align: center !important;
+}
+
+table tr td{
+  vertical-align: middle !important;
+}
+
+#tableargent{
+  text-align: center !important;
+  margin-right: 5%;
+  width: 50%;
+  margin-top: 50px;
+}
+
+#tableargent tr td{
+  width: 50%;
+}
+
+/*.clock {
+  width: 200px;
+  height: 200px;
+  border: 8px solid #353535;
+  border-radius: 50%;
+  box-shadow:0 0 16px rgba(0,150,255,0.3) inset
+}
+
+.clock:before,
+.clock:after {
+  content: "";
+  position: absolute;
+  height: 128px;
+  width: 8px;
+  background: rgba(0,0,0,0.75);
+  border-radius: 4px;
+  bottom: 128px;
+  margin: 0 0 0 -4px;
+  transform-origin: bottom;
+  animation-name: Clock;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  box-shadow:0 16px 0px rgba(0,0,0,0.75)
+}
+
+.clock:before {
+  animation-duration: 720s;
+  height:50px;
+}
+.clock:after {
+  animation-duration: 60s;
+  height:85px;
+}
+@keyframes Clock {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}*/
