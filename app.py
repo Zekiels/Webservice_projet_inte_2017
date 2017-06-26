@@ -1,7 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from pprint import pprint
-from boto.s3.connection import S3Connection
 import random 
 import json
 import os
@@ -20,6 +19,7 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
+weather = []
 
 @app.route("/reset", methods=["GET"])
 def getReset():
@@ -180,7 +180,7 @@ def postIdIsValide():
 
  	print(identifiant)
 
-@app.route("/meterology", methods=["POST"])
+@app.route("/metrology", methods=["POST"])
 def postWheather():
  	global weather
  	tmp = request.get_data()
