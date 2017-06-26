@@ -255,8 +255,8 @@
               contentType: "application/json",
               success: function(ingredients){
                 console.log(ingredients);
-                for (ingredient of JSON.parse(ingredients)) {
-                  console.log(ingredient.name+" "+ingredient.ing_cost);
+                for (ingredient of ingredients) {
+                  console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
                 }
               }
             })
