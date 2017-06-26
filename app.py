@@ -38,12 +38,7 @@ def getWeather():
 	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
-
-
-@app.route("/map", methods=["GET"])
-def getmap():
-	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	
 
 @app.route("/ingredients", methods=["GET"])
 def getIngredienst():
@@ -67,6 +62,7 @@ def getMapPlayer():
 	
 	db.close()
 	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
+	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
 @app.route("/", methods=["GET"])
 def getBD():
