@@ -1,13 +1,13 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from pprint import pprint
+from boto.s3.connection import S3Connection
 import random 
 import json
 import os
 from db import Db
 
-os.environ['DATABASE_URL'] = "postgres://tsnflmvlizgvjx:066dedf141326dcdc78db46c4d30036bb0405f74cd06d5880e8dfbf87add1176@ec2-107-22-250-33.compute-1.amazonaws.com:5432/dcj4s31ubdp85s"
-
+os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
 app = Flask(__name__)
 app.debug = True
 CORS(app)
