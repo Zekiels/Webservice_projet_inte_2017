@@ -231,7 +231,7 @@ def postAction(PlayerName):
 	actions = request.get_json()
  	print(actions.items())
  	print(actions.values())
- 	print(actions["actions"]["prepare"][1])
+ 	print(actions["actions"]["prepare", 1])
 
  	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
 
@@ -244,7 +244,7 @@ def postAction(PlayerName):
 		#(0,20,5.3,'Toto','limonade'),
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, {3}, {4});
-	 	""".format(day_tmp.get("map_day_nb")), actions["actions"]["prepare"][1], actions["actions"]["price"][1], PlayerName, actions["actions"]["prepare"][0])
+	 	""".format(day_tmp.get("map_day_nb")), actions["actions"]["prepare", 1], actions["actions"]["price", 1], PlayerName, actions["actions"]["prepare", 0])
 		db.close()
 
 		return json.dumps("ok"),200,{'Content-Type':'application/json'}
