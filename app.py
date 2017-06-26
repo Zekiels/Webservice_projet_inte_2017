@@ -37,6 +37,7 @@ def getmap():
 def getBD():
 	db = Db()
 	tmp=db.execute("""SELECT * FROM player;""")
+	db.close()
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
  
  
