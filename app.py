@@ -1,13 +1,14 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
+from flask import render_template
 from pprint import pprint
-import random 
+import random
 import json
 from db import Db
 
 #os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='HTML')
 app.debug = True
 CORS(app)
 
@@ -18,6 +19,11 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
+
+@app.route('/HTML/jeu.html')
+def jeu():
+	return render_template('jeu.html')
+	#return render_template('HTML/jeu.html')
 
 @app.route("/reset", methods=["GET"])
 def getReset():
@@ -36,7 +42,7 @@ def getWeather():
 	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
-	
+
 
 @app.route("/ingredients", methods=["GET"])
 def getIngredienst():
@@ -60,7 +66,7 @@ def getMapPlayer():
 	for i in player:
 
 		itemsByPlayer = (db.select("""
-			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
+			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
@@ -77,7 +83,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name"))))
 		#qty vendu
 		playerInfo.append(db.select("""
-			SELECT SUM (sal_qty) 
+			SELECT SUM (sal_qty)
 			FROM sale
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
@@ -86,7 +92,7 @@ def getMapPlayer():
 		#profit
 		playerInfo.append(db.select("""
 			SELECT
-				(SELECT SUM (sal_qty * sal_price) 
+				(SELECT SUM (sal_qty * sal_price)
 				FROM sale
 				INNER JOIN player ON player.pla_name = sale.sal_pla_name
 				WHERE sal_day_nb = {1}
@@ -135,9 +141,9 @@ def getBD():
 @app.route("/quitter", methods=["POST"])
 def postquitter():
 	# TODO
-	
+
 	return json.dumps(),200,{'Content-Type':'application/json'}
- 
+
 
 @app.route("/rejoindre", methods=["POST"])
 def postRejoindre():
@@ -147,7 +153,7 @@ def postRejoindre():
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre or len(rejoindre["name"]) == 0:
 		return json_response({ "error" : "Missing name" }, 400)
-	
+
 	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
@@ -156,19 +162,19 @@ def postRejoindre():
 	INSERT INTO player VALUES (@(name), "", """+budget+""", 0);
 	""", rejoindre)
 	db.close()
-	
+
 	#{"name": string, "location":[latitude:float, longitude:float] ,"info":[cash:float, sales:int, profit:float, drinkOffered:[name:string, price:float, hasAlcohol:bool, isCold:bool]]}
 	return json.dumps(),200,{'Content-Type':'application/json'}
- 
- 
- 
+
+
+
 @app.route("/sales",methods=["POST"])
 def postSales():
  	postSales = request.get_json()
  	print(postSales)
 
 
- 
+
 @app.route("/idPost",methods=["POST"])
 def postId():
  	global  identifiant
@@ -178,7 +184,7 @@ def postId():
  	identifiant.append(tmp)
  	print(identifiant)
  	return json.dumps(identifiant),200,{'Content-Type':'application/json'}
- 
+
 @app.route("/idIsValide",methods=["POST"])
 def postIdIsValide():
  	global  identifiant
@@ -204,9 +210,9 @@ def postWheather():
 def postAction():
 	# TODO
 
-	
+
 	return json.dumps(),200,{'Content-Type':'application/json'}
- 		
+
 #@app.route("/idGet",methods=["GET"])
 #def idGet():
 #	return "test"
