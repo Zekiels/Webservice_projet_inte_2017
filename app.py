@@ -29,6 +29,12 @@ def getWeather():
 def getmap():
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
+
+@app.route("/", methods=["GET"])
+def getBD():
+	db = Db()
+	tmp=db.execute("""SELECT * FROM player;""")
+	return json.dumps(tmp),200,{'Content-Type':'application/json'}
  
  
 @app.route("/sales",methods=["POST"])
