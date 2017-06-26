@@ -1,10 +1,8 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from pprint import pprint
-from boto.s3.connection import S3Connection
 import random 
 import json
-import os
 from db import Db
 
 #os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
@@ -51,6 +49,7 @@ def getIngredienst():
 
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
+	JSONitemsByPlayer=[]
 	itemsByPlayer=[]
 	playerInfo=[]
 	db = Db()
@@ -60,11 +59,33 @@ def getMapPlayer():
 	print(day_tmp)
 	for i in player:
 
-		itemsByPlayer.append(db.select("""
+		itemsByPlayer = (db.select("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
+
+		for element in itemsByPlayer{
+			JSONitemsByPlayer.append("""
+				{
+					"kind":{0},
+					"owner":{1},
+					"location":{
+						"coordinates":{
+							"lattitude":{2},
+							"longitude":{3}
+						}
+					}
+					"influence":{4}
+				}
+				""").format(
+				element.get("mit_type"),
+				element.get("mit_pla_name"),
+				element.get("mit_lattitude"),
+				element.get("mit_longitude"),
+				element.get("mit_influence")
+				)
+		}
 
 		#budget
 		playerInfo.append(db.select("""
@@ -107,8 +128,17 @@ def getMapPlayer():
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
 
 	db.close()
+	json_retour = """
+	{
+		"region":{},
+		"ranking":[
+			{}
+		],
+		"itemsByPlayer":
+
+	}"""
 	print(playerInfo)
-	return json.dumps(playerInfo),200,{'Content-Type':'application/json'}
+	return json.dumps(JSONitemsByPlayer),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
 @app.route("/", methods=["GET"])
