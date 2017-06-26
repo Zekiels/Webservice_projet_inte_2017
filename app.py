@@ -62,7 +62,7 @@ def getMapPlayer():
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence 
 			FROM map_item
 			WHERE mit_pla_name = %s;
-			""", i[0]))
+			""", "toto"))
 	
 	db.close()
 	return json.dumps(itemsByPlayer),200,{'Content-Type':'application/json'}
