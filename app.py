@@ -16,8 +16,9 @@ identifiant=['adrien']
 postSales=[]
 nombre = ['toto','tata','titi']
 
-weather = []
- 
+CurrentWeather = []
+PrevisoinWeather = []
+
 @app.route("/GET/reset", methods=["GET"])
 def getReset():
 	global nombre
@@ -30,10 +31,15 @@ def getReset():
 
 @app.route("/GET/metrology", methods=["GET"])
 def getWeather():
-	tmp={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
-	return json.dumps(tmp),200,{'Content-Type':'application/json'}
+	db = Db()
+	db.execute("""SELECT map_time FROM map;""")
+	tmp = db.cur.fetchall()
+	db.close()
+	json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
 
+	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
 
+	return tmp,200,{'Content-Type':'application/json'}
 
 
 @app.route("/GET/map", methods=["GET"])
