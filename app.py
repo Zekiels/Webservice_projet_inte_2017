@@ -192,7 +192,7 @@ def postSales():
  	""", postSales)
  	db.close()
 
- 	return
+ 	return "ok",200,{'Content-Type':'application/json'}
  
 
 @app.route("/idPost",methods=["POST"])
