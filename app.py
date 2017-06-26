@@ -19,6 +19,7 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
+weather = []
 
 @app.route('/HTML/jeu.html')
 def jeu():
@@ -197,7 +198,7 @@ def postIdIsValide():
 
  	print(identifiant)
 
-@app.route("/meterology", methods=["POST"])
+@app.route("/metrology", methods=["POST"])
 def postWheather():
  	global weather
  	tmp = request.get_data()
