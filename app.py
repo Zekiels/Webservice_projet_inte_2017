@@ -142,7 +142,6 @@ def getMapPlayer():
 		playerProfit = playerProfit_tmp[0]
 
 		#drinksByPlayer
-<<<<<<< HEAD
 		playerDoableDrinks = db.select("""
 		SELECT rcp_name,
 		(SELECT  SUM (ing_current_cost * compose.com_quantity)
@@ -161,8 +160,6 @@ def getMapPlayer():
 		INNER JOIN player ON access.acc_pla_name = player.pla_name
 		WHERE player.pla_name ='{0}';
 			""".format(i.get("pla_name")))
-=======
->>>>>>> 70d2cd72705c26817f08767618805076602aa6b3
 		print(i.get("pla_name"))
 		playerDoableDrinks = db.select("""
 		SELECT rcp_name,
@@ -170,19 +167,19 @@ def getMapPlayer():
 			FROM ingredient
 			INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
 			WHERE compose.com_rcp_name = rcp_name) AS cost,
-			rcp_is_cold, 
-			(SELECT ingredient.ing_has_alcohol 
-			FROM ingredient 
-			INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
-			INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name 
-			WHERE ingredient.ing_has_alcohol = TRUE 
+			rcp_is_cold,
+			(SELECT ingredient.ing_has_alcohol
+			FROM ingredient
+			INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
+			INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name
+			WHERE ingredient.ing_has_alcohol = TRUE
 			AND recipe.rcp_name = rcp_name) AS hasAlcohol
 			FROM recipe
 			INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name
 			INNER JOIN player ON access.acc_pla_name = player.pla_name
-			WHERE player.pla_name = '{0}';
+			WHERE player.pla_name ='{0}';
 		""".format(i.get("pla_name")))
-		
+
 		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks}})
 
 		#Ajouter laliste des boissons vendue
