@@ -276,8 +276,7 @@
               success: function(meteo){
                     console.log(meteo.timestamp);
                     for (weather of meteo) {
-                      console.log(weather.dfn);
-                      console.log(weather.weather);
+                      console.log(weather.dfn+" "+weather.weather);
                       $("#meteo").text(meteo.weather);
                     }
                 }
