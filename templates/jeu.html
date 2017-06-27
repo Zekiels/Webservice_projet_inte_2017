@@ -330,6 +330,22 @@
               }
             })
 
+            $.ajax(server+'/sales',{
+              method:'POST',
+              data: JSON.stringify({
+                "quantity": /*$("#id")*/10,
+                "player": /*$("#id")*/"willo",
+                "item": /*$("#id")*/"limonade",
+              }),
+              contentType: "application/json",
+              success: function(data){
+                    console.log(data);
+                },
+              error: function(error){
+                console.log(error.error)
+              }
+            })
+
           });
 
           </script>
