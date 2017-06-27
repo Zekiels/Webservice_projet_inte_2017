@@ -37,6 +37,7 @@ def getReset():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
+	global weather
 	#db = Db()
 	#tmp = db.select("""SELECT map_time FROM map;""")
 	#db.close()
