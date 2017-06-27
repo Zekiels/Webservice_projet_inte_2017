@@ -195,7 +195,6 @@ def postRejoindre():
 	# Recupere le contenu de la requette
 	rejoindre = request.get_json()
 
-
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
