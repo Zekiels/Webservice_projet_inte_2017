@@ -160,7 +160,7 @@ def getMapPlayer():
 		INNER JOIN player ON access.acc_pla_name = player.pla_name
 		WHERE player.pla_name ='{0}';
 			""".format(i.get("pla_name")))
-		
+		print(i.get("pla_name"))
 		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks}})
 
 		#Ajouter laliste des boissons vendue
