@@ -36,6 +36,9 @@ $(function(){
         document.location='http://limonade-equipe7.herokuapp.com/jeu.html';
       },
       error: function(error){
+        console.log(JSON.stringify({
+          "name": $("#name").val(),
+        }))
         console.log(error.error);
       }
     })
