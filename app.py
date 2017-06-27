@@ -157,7 +157,7 @@ def getMapPlayer():
 			WHERE pro_day_nb = {1}
 			AND pro_pla_name = '{0}';
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
-	Map.update({"drinksByPlayer":player_Drinks})
+	Map.update({"drinksByPlayer":playerDrinks})
 	
 	print(Map)
 	db.close()
