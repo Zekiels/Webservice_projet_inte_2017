@@ -296,7 +296,7 @@ def postAction(PlayerName):
 			From ingredient I, compose c
 			WHERE I.ing_name = c.com_ing_name
 			AND c.com_rcp_name = %s;
-			""", (actions["actions"]["prepare"].items()))
+			""", (actions["actions"]["prepare"].items()[0]))
 		print(rqt)
 		db.close()
 		return json.dumps("ok"),200,{'Content-Type':'application/json'}
