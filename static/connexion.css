@@ -30,7 +30,7 @@ body {
 .login h1 { color: black; letter-spacing:1px; text-align:center; }
 
 img{
-	display: block;
+	text-align: center;
 	width: 100%;
 	height: 100%;
 
