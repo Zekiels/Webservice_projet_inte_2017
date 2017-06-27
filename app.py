@@ -268,7 +268,7 @@ def postAction(PlayerName):
 
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', {4});
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0]))
+	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
 		db.close()
 
 		#{ "sufficientFunds":bool, "totalCost":float }
