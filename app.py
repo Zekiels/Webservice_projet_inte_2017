@@ -251,10 +251,6 @@ def postIdIsValide():
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
-	#global weather
-  	#tmp = request.get_data()
-  	#weather = tmp
-	#print(weather)
 	weather = request.get_json()
 	print(weather)
 
