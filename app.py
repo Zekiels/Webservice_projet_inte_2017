@@ -144,8 +144,8 @@ def getMapPlayer():
 		#drinksByPlayer
 		
 		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+		#Ajouter laliste des boissons vendue
 	Map.update({"playerInfo":playerInfo})
-	print(Map)
 
 	#drinksByPlayer
 	for i in player:
@@ -160,18 +160,12 @@ def getMapPlayer():
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		print(playerDrinks)
 
+	Map.update({"drinksByPlayer":playerDrinks})
+	
+	print(Map)
 	db.close()
-	json_retour = """
-	{
-		"region":{},
-		"ranking":[
-			{}
-		],
-		"itemsByPlayer":
 
-	}"""
-	print(playerInfo)
-	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	return json.dumps(Map),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
 @app.route("/", methods=["GET"])
@@ -279,8 +273,17 @@ def postAction(PlayerName):
 	 	""".format(day_tmp.get("map_day_nb")), actions["actions"]["prepare"].values(), actions["actions"]["price"].values(), PlayerName, actions["actions"]["prepare"].items())
 		db.close()
 
+		#{ "sufficientFunds":bool, "totalCost":float }
+		rqt = db.select(""" 
+			SELECT I.ing_current_cost, c.com_quantity
+			From ingredient I, compose c
+			WHERE I.ing_name = c.com_ing_name
+			AND c.com_rcp_name = %s;
+			""", (actions["actions"]["prepare"].items()))
+		print(rqt)
 		return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	if actions["actions"]["kind"] == "recipe":
+
 		print("NON")
 	if actions["actions"]["kind"] == "ad":
 		print("NON")
