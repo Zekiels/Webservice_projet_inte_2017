@@ -60,6 +60,7 @@ def getIngredienst():
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
 	Map = {}
+	Ranking = []
 	JSONitemsByPlayer=[]
 	itemsByPlayer={}
 	playerInfo=[]
@@ -71,15 +72,17 @@ def getMapPlayer():
 	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 	print(Map)
 
-	playerCash_tmp = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
-	playerCash = playerCash_tmp[0]
+	playerCash = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
 	print(playerCash)
 	Map.update({"ranking":{}})
-	rank = 0
+	#rank = 0
 	for element in playerCash:
-		rank++
-		Map["ranking"] = {element.get("pla_name"):rank}
+		print(element)
+		#rank = rank+1
+		Ranking.append(element.get("pla_name"))
+	Map.update({"ranking":Ranking})
 	print(Map)
+	#######################################################
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
