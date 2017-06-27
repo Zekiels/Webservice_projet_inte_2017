@@ -60,7 +60,7 @@ def getIngredienst():
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
 	Map = {}
-	Ranking = {}
+	Ranking = []
 	JSONitemsByPlayer=[]
 	itemsByPlayer={}
 	playerInfo=[]
@@ -79,7 +79,7 @@ def getMapPlayer():
 	for element in playerCash:
 		print(element)
 		#rank = rank+1
-		Ranking.update(element.get("pla_name"))
+		Ranking.append(element.get("pla_name"))
 	Map.update({"ranking":Ranking})
 	print(Map)
 	#######################################################
