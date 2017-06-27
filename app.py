@@ -64,6 +64,7 @@ def getMapPlayer():
 	
 	db = Db()
 	region = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
+	print(region)
 	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 
 	player = db.select("""SELECT pla_name from player;""")
@@ -182,9 +183,9 @@ def postSales():
 
 	if "quantity" not in sales :
 		return json_response({ "error" : "Missing quantity" }, 400)
-	if "player" not in sales or len(sales["player"]) == 0:
+	if "player" not in sales :
 		return json_response({ "error" : "Missing player" }, 400)
-	if "item" not in sales or len(sales["item"]) == 0:
+	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
 
 
