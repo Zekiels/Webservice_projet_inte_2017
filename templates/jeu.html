@@ -278,8 +278,10 @@
                     for (weather of meteo.weather) {
                       console.log(weather.dfn);
                       console.log(weather.weather);
-                      $("#meteo").text(weather[0].weather);
-                      $("#prevision").text(weather[1].weather);
+                      if (weather.dfn==0)
+                      $("#meteo").text(weather.weather);
+                      else
+                      $("#prevision").text(weather.weather);
                     }
                 }
             })
