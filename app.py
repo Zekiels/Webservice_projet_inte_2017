@@ -105,21 +105,23 @@ def getMapPlayer():
 	#playerInfo
 	for i in player:
 		#budget
-		playerInfo.update({"cash":db.select("""
+		playerCash_tmp = db.select("""
 			SELECT pla_cash
 			FROM player
 			WHERE pla_name = '{0}';
-			""".format(i.get("pla_name")))})
+			""".format(i.get("pla_name")))
+		region = playerCash_tmp[0]
 		#qty vendu
-		playerInfo.update({"sales":db.select("""
+		playerSales_tmp = db.select("""
 			SELECT SUM (sal_qty) AS vendu
 			FROM sale
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
 			AND sal_pla_name = '{0}';
-			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
+		playerSales = playerSales_tmp[0]
 		#profit
-		playerInfo.update({"profit":db.select("""
+		playerProfit_tmp = db.select("""
 			SELECT
 				(SELECT SUM (sal_qty * sal_price)
 				FROM sale
@@ -134,7 +136,11 @@ def getMapPlayer():
 				WHERE pro_day_nb = {1}
 				AND pro_pla_name = '{0}'
 				) AS profit;
-			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
+		playerProfit = playerProfit_tmp[0]
+
+		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+
 		#liste des types de boissons preparee
 		playerInfo.update({"drinksOffered":db.select("""
 			SELECT pro_rcp_name
@@ -144,10 +150,7 @@ def getMapPlayer():
 			AND pro_pla_name = '{0}';
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
 	print(playerInfo)
-	for element in itemsByPlayer:
-			print(element)
-			#JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element["mit_type"],element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
-
+	
 	db.close()
 	json_retour = """
 	{
@@ -186,7 +189,7 @@ def postRejoindre():
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
-	print(rejoindre[0]["name"])
+	print(rejoindre["name"])
 
 	#Creation d'un nouveau joueur
 	db = Db()
