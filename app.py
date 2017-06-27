@@ -199,15 +199,15 @@ def postRejoindre():
 	# Recupere le contenu de la requette
 	rejoindre = request.get_json()
 
-	db = Db()
-	nom_joueur = db.select("""SELECT pla_name FROM Player""")
-	print(nom_joueur)
+	
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
 
 	#Creation d'un nouveau joueur
-	
+	db = Db()
+	nom_joueur = db.select("""SELECT pla_name FROM Player""")
+	print(nom_joueur)
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = \'budget\';""")
 	
 	db.execute("""
