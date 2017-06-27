@@ -122,6 +122,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerSales = playerSales_tmp[0]
 		#profit
+		#du jour meme ? ou du jour precedent ?
 		playerProfit_tmp = db.select("""
 			SELECT
 				(SELECT SUM (sal_qty * sal_price)
@@ -139,10 +140,28 @@ def getMapPlayer():
 				) AS profit;
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]
-		print(playerProfit)
-		#drinksByPlayer
+
+		#drinksByPlayer	
+		playerDoableDrinks = db.select("""
+		SELECT rcp_name, 
+		(SELECT  SUM (ing_current_cost * compose.com_quantity)
+		FROM ingredient
+		INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
+		WHERE compose.com_rcp_name = rcp_name) AS cost,
+		rcp_is_cold, 
+		(SELECT ingredient.ing_has_alcohol 
+		FROM ingredient 
+		INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
+		INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name 
+		WHERE ingredient.ing_has_alcohol = TRUE 
+		AND recipe.rcp_name = rcp_name) AS hasAlcohol
+		FROM recipe
+		INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name
+		INNER JOIN player ON access.acc_pla_name = player.pla_name
+		WHERE player.pla_name ='{0}';
+			""".format(i.get("pla_name")))
 		
-		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks}})
 
 		#Ajouter laliste des boissons vendue
 	Map.update({"playerInfo":playerInfo})
@@ -151,7 +170,7 @@ def getMapPlayer():
 	for i in player:
 		#liste des types de boissons preparee
 		playerDrinks = db.select("""
-			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (SELECT ingredient.ing_has_alcohol FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE ingredient.ing_has_alcohol = TRUE AND recipe.rcp_name = pro_rcp_name) AS hasAlcohol
+			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS cost, recipe.rcp_is_cold, (SELECT ingredient.ing_has_alcohol FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE ingredient.ing_has_alcohol = TRUE AND recipe.rcp_name = pro_rcp_name) AS hasAlcohol
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name
