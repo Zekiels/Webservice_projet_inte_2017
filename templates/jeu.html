@@ -12,7 +12,7 @@
 <body>
 
   <div class="row">
-    <div id="bienvenue" class="container col-md-6"><br><br><h2>Bienvenue "mon_identifiant" </h2></div>
+    <div class="container col-md-6"><br><br><h2>Bienvenue <span id="bienvenue">"mon_identifiant"</span></h2></div>
     <div id="argent" class="container col-md-4">
       <table id="tableargent" class="table table-bordered">
         <thead>
@@ -249,6 +249,18 @@
           <script>
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
+
+            function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+
+            $("#bienvenue").html(getParameterByName(name))
 
           /*  $.ajax(server+'/map',{
               method:'GET',
