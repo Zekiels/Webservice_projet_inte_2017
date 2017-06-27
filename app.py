@@ -46,7 +46,7 @@ def getWeather():
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
 	print(tmp)
-	print(tmp["map_time"])
+	print(tmp["map_time"][0])
 	
 	return json.dumps('ok'),200,{'Content-Type':'application/json'}
 
