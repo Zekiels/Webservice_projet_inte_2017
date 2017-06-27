@@ -32,7 +32,7 @@ $(function(){
     $.ajax(server+'/player',{
       method:'POST',
       data: JSON.stringify({
-        "name": /*$("#name")*/"willo"
+        "name": $("#name");
       }),
       contentType: "application/json",
       success: function(name){
