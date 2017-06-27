@@ -91,6 +91,8 @@ def getMapPlayer():
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
+			print(i.get("pla_name"))
+			print(player)
 		for y in itemsByPlayer:
 			items.update({"kind":i.get("mit_type"), "owner":i.get("mit_pla_name"), "location":{"lattitude":i.get("mit_latttitude"), "longitude":i.get("mit_longitude")},"influence":i.get("mit_influence")})
 		listItems.append(items)
