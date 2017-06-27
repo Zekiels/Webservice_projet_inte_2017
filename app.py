@@ -141,6 +141,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]
 
+		#drinksByPlayer	
 		playerDoableDrinks = db.select("""
 		SELECT rcp_name, 
 		(SELECT  SUM (ing_current_cost * compose.com_quantity)
@@ -160,8 +161,8 @@ def getMapPlayer():
 		WHERE player.pla_name ='{0}';
 			""".format(i.get("pla_name")))
 		
+		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks}})
 
-		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks"}})
 		#Ajouter laliste des boissons vendue
 	Map.update({"playerInfo":playerInfo})
 
@@ -176,6 +177,8 @@ def getMapPlayer():
 			WHERE pro_day_nb = {1}
 			AND pro_pla_name = '{0}';
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
+		print(playerDrinks)
+
 	Map.update({"drinksByPlayer":playerDrinks})
 	
 	print(Map)
@@ -202,20 +205,22 @@ def postquitter():
 
 @app.route("/player", methods=["POST"])
 def postRejoindre():
-    # Recupere le contenu de la requette
     rejoindre = request.get_json()
-    #Verifie si elle contient les infos necesaire
-    if "name" not in rejoindre :
+    print(rejoindre)
+
+    if rejoindre == 0 :
         return json_response({ "error" : "Missing name" }, 400)
 	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 	print(budget)
+	print(rejoindre)
 	db.execute("""
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
 	db.close()
-	
+
+
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/sales",methods=["POST"])
@@ -272,9 +277,6 @@ def postWheather():
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction(PlayerName):
 	actions = request.get_json()
- 	print(actions.items())
- 	print(actions.values())
- 	print(actions["actions"]["prepare"].values())
 
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
@@ -284,12 +286,21 @@ def postAction(PlayerName):
 		day_tmp = day.pop()
 
 		db.execute("""
-	    INSERT INTO production VALUES ({0}, {1}, {2}, {3}, {4});
-	 	""".format(day_tmp.get("map_day_nb")), actions["actions"]["prepare"].values(), actions["actions"]["price"].values(), PlayerName, actions["actions"]["prepare"].items())
+	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
+	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
 		db.close()
 
+		#{ "sufficientFunds":bool, "totalCost":float }
+		rqt = db.select(""" 
+			SELECT I.ing_current_cost, c.com_quantity
+			From ingredient I, compose c
+			WHERE I.ing_name = c.com_ing_name
+			AND c.com_rcp_name = %s;
+			""", (actions["actions"]["prepare"].items()))
+		print(rqt)
 		return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	if actions["actions"]["kind"] == "recipe":
+
 		print("NON")
 	if actions["actions"]["kind"] == "ad":
 		print("NON")
