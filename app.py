@@ -121,7 +121,6 @@ def getMapPlayer():
 			AND sal_pla_name = '{0}';
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerSales = playerSales_tmp[0]
-		print(playerSales)
 		#profit
 		playerProfit_tmp = db.select("""
 			SELECT
@@ -144,6 +143,7 @@ def getMapPlayer():
 		#drinksByPlayer
 		
 		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+
 		#Ajouter laliste des boissons vendue
 	Map.update({"playerInfo":playerInfo})
 
@@ -186,10 +186,10 @@ def postquitter():
 
 @app.route("/player", methods=["POST"])
 def postRejoindre():
-    # Recupere le contenu de la requette
     rejoindre = request.get_json()
-    #Verifie si elle contient les infos necesaire
-    if "name" not in rejoindre :
+    print(rejoindre)
+
+    if rejoindre == 0 :
         return json_response({ "error" : "Missing name" }, 400)
 	#Creation d'un nouveau joueur
 	db = Db()
@@ -200,6 +200,7 @@ def postRejoindre():
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
 	db.close()
+
 
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
