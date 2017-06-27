@@ -62,7 +62,9 @@ def getMapPlayer():
 	Map = {}
 	Ranking = []
 	itemsByPlayer=[]
-	playerInfo=[]
+	playerInfo={}
+	listItems = []
+	realItemsByPlayer = {}
 
 	db = Db()
 	region_tmp = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
@@ -81,12 +83,10 @@ def getMapPlayer():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
 
-	listItems = []
-	realItemsByPlayer = {}
-
+	
+	#itemsByPlayer
 	for i in player:
 		row = None
-		#del listItems[:]
 		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
@@ -95,52 +95,55 @@ def getMapPlayer():
 
 		row = db.fetchone()
 		
-		print(row)
+
 		listItems = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
 
 		realItemsByPlayer.update({i.get("pla_name"):listItems})
-		print(realItemsByPlayer)
-	
-	#budget
-	playerInfo.append(db.select("""
-		SELECT pla_cash
-		FROM player
-		WHERE pla_name = '{0}';
-		""".format(i.get("pla_name"))))
-	#qty vendu
-	playerInfo.append(db.select("""
-		SELECT SUM (sal_qty)
-		FROM sale
-		INNER JOIN player ON player.pla_name = sale.sal_pla_name
-		WHERE sal_day_nb = {1}
-		AND sal_pla_name = '{0}';
-		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
-	#profit
-	playerInfo.append(db.select("""
-		SELECT
-			(SELECT SUM (sal_qty * sal_price)
+
+	Map.update({"itemsByPlayer":realItemsByPlayer})
+	print(Map)
+	#playerInfo
+	for i in player:
+		#budget
+		playerInfo.update({"cash":db.select("""
+			SELECT pla_cash
+			FROM player
+			WHERE pla_name = '{0}';
+			""".format(i.get("pla_name")))})
+		#qty vendu
+		playerInfo.update({"sales":db.select("""
+			SELECT SUM (sal_qty) AS vendu
 			FROM sale
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
-			AND sal_pla_name = '{0}'
-			)
-			-
-			(SELECT SUM (pro_qty * pro_cost_at_that_time)
+			AND sal_pla_name = '{0}';
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
+		#profit
+		playerInfo.update({"profit":db.select("""
+			SELECT
+				(SELECT SUM (sal_qty * sal_price)
+				FROM sale
+				INNER JOIN player ON player.pla_name = sale.sal_pla_name
+				WHERE sal_day_nb = {1}
+				AND sal_pla_name = '{0}'
+				)
+				-
+				(SELECT SUM (pro_qty * pro_cost_at_that_time)
+				FROM production
+				INNER JOIN player ON player.pla_name = production.pro_pla_name
+				WHERE pro_day_nb = {1}
+				AND pro_pla_name = '{0}'
+				) AS profit;
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
+		#liste des types de boissons preparee
+		playerInfo.update({"drinksOffered":db.select("""
+			SELECT pro_rcp_name
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			WHERE pro_day_nb = {1}
-			AND pro_pla_name = '{0}'
-			);
-		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
-	#liste des types de boissons preparee
-	playerInfo.append(db.select("""
-		SELECT pro_rcp_name
-		FROM production
-		INNER JOIN player ON player.pla_name = production.pro_pla_name
-		WHERE pro_day_nb = {1}
-		AND pro_pla_name = '{0}';
-	""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
-
+			AND pro_pla_name = '{0}';
+		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
+	print(playerInfo)
 	for element in itemsByPlayer:
 			print(element)
 			#JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element["mit_type"],element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
@@ -175,7 +178,7 @@ def postquitter():
 	return json.dumps(),200,{'Content-Type':'application/json'}
 
 
-@app.route("/rejoindre", methods=["POST"])
+@app.route("/player", methods=["POST"])
 def postRejoindre():
 	# Recupere le contenu de la requette
 	rejoindre = request.get_json()
@@ -186,7 +189,7 @@ def postRejoindre():
 
 	#Creation d'un nouveau joueur
 	db = Db()
-	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
+	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = \'budget\';""")
 	print(budget)
 
 	#db.execute("""
@@ -222,29 +225,6 @@ def postSales():
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
-
-@app.route("/idPost",methods=["POST"])
-def postId():
- 	global  identifiant
- 	#tmp = request.get_json()
- 	tmp = request.get_data()
- 	tmp = json.loads(tmp)
- 	identifiant.append(tmp)
- 	print(identifiant)
- 	return json.dumps(identifiant),200,{'Content-Type':'application/json'}
-
-@app.route("/idIsValide",methods=["POST"])
-def postIdIsValide():
- 	global  identifiant
- 	idvalide= request.get_data()
- 	idvalide = json.loads(tmp)
- 	for x in identifiant:
- 		if idvalide in identifiant:
- 			return json.dumps(idvalide),200,{'Content-Type':'application/json'}
- 		else :
- 			continue
-
- 	print(identifiant)
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
