@@ -85,8 +85,9 @@ def getMapPlayer():
 	listItems = []
 	realItemsByPlayer = {}
 
-	dbTemp = Db()
+	
 	for i in player:
+		dbTemp = Db()
 		row = None
 		items = None
 		dbTemp.execute("""
