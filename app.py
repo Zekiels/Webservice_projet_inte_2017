@@ -254,10 +254,6 @@ def postIdIsValide():
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
-	#global weather
-  	#tmp = request.get_data()
-  	#weather = tmp
-	#print(weather)
 	weather = request.get_json()
 	print(weather)
 
@@ -267,6 +263,8 @@ def postWheather():
 		return json_response({ "error" : "Missing dfn"}, 400)
 	if "weather" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing weather"}, 400)
+	if  weather["timestamp"] != 0 :
+		timestamp = weather["timestamp"]
 	if weather["weather"][0]["dfn"] == 0:
 		currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
@@ -275,9 +273,9 @@ def postWheather():
 	db = Db()
 	db.execute("""
 		UPDATE map
-		SET map_time = @(timestamp), map_prevision_weather = '{0}', map_current_weather =  '{1}'
+		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
 		WHERE map_id = 0;
-	""".format(previsionWeather, currentWeather))
+	""".format(timestamp ,previsionWeather, currentWeather))
 	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
