@@ -39,13 +39,12 @@ $("#connect").on('click'function(){
     success: function(name){
         $('#name').val()
           document.location='http://limonade-equipe7.herokuapp.com/jeu.html';
-        },
           console.log(name.name);
       },
     error: function(error){
       console.log(error.error)
     }
-  )
+  })
 })
 
 
