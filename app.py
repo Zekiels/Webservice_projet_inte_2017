@@ -45,10 +45,10 @@ def getWeather():
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
-	print(tmp)
-	print(tmp[0]["map_time"])
 	
-	return json.dumps('ok'),200,{'Content-Type':'application/json'}
+	weather = {"timestamp":tmp[0]["map_time"],"weather":[{"dfn":0,"weather":tmp[0]["map_current_weather"]},{"dfn":1,"weather":tmp[0]["map_prevision_weather"]}]}
+
+	return json.dumps(weather),200,{'Content-Type':'application/json'}
 
 
 @app.route("/ingredients", methods=["GET"])
