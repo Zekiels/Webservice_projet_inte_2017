@@ -284,38 +284,6 @@
                 }
             })
 
-          /*  $.ajax(server+'/',{
-              method: 'GET',
-              success: function(getPrevision){
-                console.log(getPrevision.prevision)
-                $("#prevision").text(getPrevision.prevision);
-              }
-            })
-
-            $.ajax(server+'/',{
-              method: 'GET',
-              success: function(getVille){
-                console.log(getVille.ville)
-                $("#localisation").text(getVille.ville);
-              }
-            })
-
-            $.ajax(server+'/',{
-              method: 'GET',
-              success: function(getJour){
-                console.log(getJour.jour)
-                $("#jour").text(getJour.jour);
-              }
-            })
-
-            $.ajax(server+'/',{
-              method: 'GET',
-              success: function(getDate){
-                console.log(getDate.date)
-                $("#jour").text(getDate.date);
-              }
-            })*/
-
             $.ajax(server+'/rejoindre',{
               method:'POST',
               data: JSON.stringify({
@@ -334,7 +302,7 @@
               method:'POST',
               data: JSON.stringify({
                 "quantity": /*$("#id")*/10,
-                "player": /*$("#id")*/"willo",
+                "player": /*$("#id")*/"Toto",
                 "item": /*$("#id")*/"limonade",
               }),
               contentType: "application/json",
@@ -349,7 +317,9 @@
             $.ajax(server+'/actions/<PlayerName>',{
               method:'POST',
               data: JSON.stringify({
-                "actions": /*$("#id")*/10,
+                "location": /*$("#id")*/"random",
+                "radius": 10,
+                "prepare":
               }),
               contentType: "application/json",
               success: function(data){
@@ -359,6 +329,7 @@
                 console.log(error.error)
               }
             })
+
 
           });
 
