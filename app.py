@@ -148,6 +148,7 @@ def getMapPlayer():
 			(SELECT  SUM (ing_current_cost * compose.com_quantity)
 			FROM ingredient
 			INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
+			INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name
 			WHERE compose.com_rcp_name = rcp_name) AS cost,
 			rcp_is_cold, 
 			(SELECT ingredient.ing_has_alcohol 
