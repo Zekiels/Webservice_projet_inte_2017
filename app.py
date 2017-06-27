@@ -83,7 +83,7 @@ def getMapPlayer():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
 
-	
+
 	#itemsByPlayer
 	for i in player:
 		row = None
@@ -94,7 +94,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name")))
 
 		row = db.fetchone()
-		
+
 
 		listItems = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
 
@@ -153,13 +153,13 @@ def getMapPlayer():
 			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (SELECT CHECKSUM(ingredient.ing_has_alcohol) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name = pro_rcp_name) AS hasAlcohol
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
-			INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name 
-			WHERE pro_day_nb = {1} 
+			INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name
+			WHERE pro_day_nb = {1}
 			AND pro_pla_name = '{0}';
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		print(playerDrinks)
-	
-	
+
+
 	db.close()
 	json_retour = """
 	{
@@ -193,14 +193,17 @@ def postquitter():
 @app.route("/player", methods=["POST"])
 def postRejoindre():
 	# Recupere le contenu de la requette
-	rejoindre = request.get_json()	
+	rejoindre = request.get_json()
+
+
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
 	print(rejoindre)
 	#Creation d'un nouveau joueur
 	db = Db()
-	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = \'budget\';""")
+	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
+
 	db.execute("""
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 	""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
