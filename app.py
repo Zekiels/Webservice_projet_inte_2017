@@ -77,7 +77,7 @@ def getMapPlayer():
 	#rank = 0
 	for element in playerCash:
 		#rank = rank+1
-		Map["ranking"].append({element.get("pla_name")})
+		Map["ranking"] = element.get("pla_name")
 	print(Map)
 	#######################################################
 	player = db.select("""SELECT pla_name from player;""")
