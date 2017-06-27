@@ -13,7 +13,7 @@
 	<h1>Identifiant</h1>
 
     	<input type="text" name="u" placeholder="Mon identifiant" required="required" id="name"/>
-        <button type="submit" class="btn btn-primary btn-block btn-large" id="connec">Connexion</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large" id="connect">Connexion</button>
         <button type="submit" class="btn btn-primary btn-block btn-large" id="creat">Create</button>
 
 </div>
@@ -23,4 +23,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script type="text/javascript" src="static/js/requete.js"></script>
+
+  <script>
+  $(function(){
+
+  var server="http://limonade-equipe7.herokuapp.com"
+
+    $("#connect").on('click'function(){
+      success: function(redirection){
+        document.location='http://limonade-equipe7.herokuapp.com/jeu.html';
+      }
+    })
+
+  });
+  </script>
+
 </html>
