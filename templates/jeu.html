@@ -275,11 +275,11 @@
               contentType: "application/json",
               success: function(meteo){
                     console.log(meteo.timestamp);
-                    for (weather of meteo) {
-                      for (dfn of weather){
-                      console.log(meteo.dfn);
+                    for (weather of meteo.weather) {
+                      console.log(weather.dfn);
+                      console.log(weather.weather);
                       /*$("#meteo").text(meteo.weather);*/
-                    }
+
                     }
                 }
             })
