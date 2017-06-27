@@ -86,7 +86,7 @@ def getMapPlayer():
 
 	for i in player:
 		row = None
-		listItems[:] = []
+		del listItems[:]
 		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
