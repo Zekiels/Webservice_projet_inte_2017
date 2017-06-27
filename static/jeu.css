@@ -82,6 +82,14 @@ table tr td{
   width: 50%;
 }
 
+#meteo{
+  text-transform: uppercase;
+}
+
+#prevision{
+  text-transform: uppercase;
+}
+
 /*.clock {
   width: 200px;
   height: 200px;
