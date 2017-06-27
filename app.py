@@ -87,14 +87,13 @@ def getMapPlayer():
 	#itemsByPlayer
 	for i in player:
 		row = None
-		db.execute("""
+		row = db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name")))
 
 		row = db.fetchone()
-
 
 		listItems = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
 
