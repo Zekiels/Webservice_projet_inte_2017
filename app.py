@@ -255,9 +255,10 @@ def postWheather():
 		return json_response({ "error" : "Missing timestamp" }, 400)
 	if "dfn" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing dfn"}, 400)
-	#if weather["weather"]["weather"] not in weather:
-		#return json_response({ "error" : "Missing weather"}, 400)
-	#if weather["weather"]["dfn"] == 0:
+	if "weather" not in weather["weather"][0]:
+		return json_response({ "error" : "Missing weather"}, 400)
+	if weather["weather"][0]["dfn"] == 0:
+		print("ok")
 		#currentWeather = weather["weather"]["weather"]
 	#if weather["weather"]["dfn"] == 1:
 		#previsionWeather = weather["weather"]["weather"]
