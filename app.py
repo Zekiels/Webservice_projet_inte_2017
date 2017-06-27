@@ -181,10 +181,9 @@ def postquitter():
 
 @app.route("/player", methods=["POST"])
 def postRejoindre():
-    # Recupere le contenu de la requette
     rejoindre = request.get_json()
-    #Verifie si elle contient les infos necesaire
     print(rejoindre)
+    
     #if "name" not in rejoindre :
         #return json_response({ "error" : "Missing name" }, 400)
 	#Creation d'un nouveau joueur
