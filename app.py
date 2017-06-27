@@ -250,7 +250,7 @@ def postWheather():
 
 	if "timestamp" not in weather:
 		return json_response({ "error" : "Missing timestamp" }, 400)
-	if weather["weather"]["dfn"] not in weather:
+	if weather["weather"]"dfn" not in weather:
 		return json_response({ "error" : "Missing dfn"}, 400)
 	if weather["weather"]["weather"] not in weather:
 		return json_response({ "error" : "Missing weather"}, 400)
