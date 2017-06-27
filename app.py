@@ -97,7 +97,7 @@ def getMapPlayer():
 		row = db.fetchone()
 		print(row)
 		while row is not None:
-			items.append({"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")})
+			items = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
 			row = db.fetchone()
 					
 		listItems.append(items)
