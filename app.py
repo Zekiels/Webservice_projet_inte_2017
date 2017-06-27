@@ -95,12 +95,12 @@ def getMapPlayer():
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name")))
 
-		row = db.fetchone()
+		row = dbTemp.fetchone()
 		
 		print(row)
 		while row is not None:
 			items = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
-			row = db.fetchone()
+			row = dbTemp.fetchone()
 		dbTemp.close()	
 		listItems.append(items)
 
