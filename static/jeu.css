@@ -83,7 +83,11 @@ table tr td{
 }
 
 #meteo{
-  text-transform: uppercase; 
+  text-transform: uppercase;
+}
+
+#prevision{
+  text-transform: uppercase;
 }
 
 /*.clock {
