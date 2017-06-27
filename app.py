@@ -65,12 +65,20 @@ def getMapPlayer():
 	db = Db()
 	region_tmp = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
 	region = region_tmp[0]
-	print(region)
-	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 
+	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
+	print(Map)
+
+	playerCash_tmp = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
+	playerCash = playerCash_tmp[0]
+	print(playerCash)
+	Map.update({"ranking":{}})
+	for element in playerCash
+		Map["ranking"] = {element.get("pla_name"):playerCash.index(element)}
+	print(Map)
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
-	day_tmp = day.pop()
+	day_tmp = day[0]
 
 	for i in player:
 
