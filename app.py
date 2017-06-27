@@ -60,6 +60,7 @@ def getIngredienst():
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
 	Map = {}
+	Ranking = {}
 	JSONitemsByPlayer=[]
 	itemsByPlayer={}
 	playerInfo=[]
@@ -76,8 +77,10 @@ def getMapPlayer():
 	Map.update({"ranking":{}})
 	#rank = 0
 	for element in playerCash:
+		print(element)
 		#rank = rank+1
-		Map["ranking"] = element.get("pla_name")
+		Ranking.update(element.get("pla_name"))
+	Map.update({"ranking":Ranking})
 	print(Map)
 	#######################################################
 	player = db.select("""SELECT pla_name from player;""")
