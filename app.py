@@ -88,7 +88,7 @@ def getMapPlayer():
 	
 	for i in player:
 		row = None
-		items = None
+		listItems = None
 		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
@@ -98,8 +98,7 @@ def getMapPlayer():
 		row = db.fetchone()
 		
 		print(row)
-		items = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
-		listItems.append(items)
+		listItems.append({"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")})
 
 		realItemsByPlayer.update({i.get("pla_name"):listItems})
 		print(realItemsByPlayer)
