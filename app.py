@@ -257,6 +257,7 @@ def postWheather():
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction(PlayerName):
+	actions = request.get_json()
 
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
