@@ -254,7 +254,8 @@
               method:'GET',
               contentType: "application/json",
               success: function(idplayer){
-              console.log(idplayer.owner);
+                for (itemsByPlayer of idplayer)
+              console.log(itemsByPlayer.owner);
             }
             })
 
@@ -262,7 +263,6 @@
               method:'GET',
               contentType: "application/json",
               success: function(ingredients){
-                console.log(ingredients);
                 for (ingredient of ingredients) {
                   console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
                 }
