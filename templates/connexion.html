@@ -28,7 +28,7 @@ $(function(){
     $.ajax(server+'/player',{
       method:'POST',
       data:JSON.stringify({
-        "name": $("#name"),
+        "name": $("#name").val(),
       }),
       contentType: "application/json",
       success: function(name){
