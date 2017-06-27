@@ -268,6 +268,7 @@ def postWheather():
 	if weather["weather"][1]["dfn"] == 1:
 		previsionWeather = weather["weather"][1]["weather"]
 
+	print(timestamp)
 	db = Db()
 	db.execute("""
 		UPDATE map
