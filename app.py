@@ -66,12 +66,20 @@ def getMapPlayer():
 	db = Db()
 	region_tmp = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
 	region = region_tmp[0]
-	print(region)
-	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 
+	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
+	print(Map)
+
+	playerCash_tmp = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
+	playerCash = playerCash_tmp[0]
+	print(playerCash)
+	Map.update({"ranking":{}})
+	for element in playerCash
+		Map["ranking"] = {element.get("pla_name"):playerCash.index(element)}
+	print(Map)
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
-	day_tmp = day.pop()
+	day_tmp = day[0]
 
 	for i in player:
 
@@ -136,7 +144,7 @@ def getMapPlayer():
 
 	}"""
 	print(playerInfo)
-	return JSONitemsByPlayer,200,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
 @app.route("/", methods=["GET"])
