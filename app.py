@@ -143,16 +143,26 @@ def getMapPlayer():
 		print(playerProfit)
 
 		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+	Map.update({"playerInfo":playerInfo})
+	print(Map)
 
+	#drinksByPlayer
+	for i in player:
 		#liste des types de boissons preparee
-		playerInfo.update({"drinksOffered":db.select("""
-			SELECT pro_rcp_name
+		playerDrinks = db.select("""
+			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (CHECKSUM(ingredient.ing_has_alcohol)
+				FROM ingredient
+				INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
+				INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name
+				WHERE recipe.rcp_name = pro_rcp_name) AS hasAlcohol
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
-			WHERE pro_day_nb = {1}
+			INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name 
+			WHERE pro_day_nb = {1} 
 			AND pro_pla_name = '{0}';
-		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
-	print(playerInfo)
+		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
+		print(playerDrinks)
+	
 	
 	db.close()
 	json_retour = """
