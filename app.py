@@ -197,7 +197,6 @@ def postRejoindre():
     #Verifie si elle contient les infos necesaire
     if "name" not in rejoindre :
         return json_response({ "error" : "Missing name" }, 400)
-    print(rejoindre)
 	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
