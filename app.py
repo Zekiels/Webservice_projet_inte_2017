@@ -263,10 +263,12 @@ def postWheather():
 		return json_response({ "error" : "Missing weather"}, 400)
 	if weather["weather"][0]["dfn"] == 0:
 		currentWeather = weather["weather"][0]["weather"]
-		print(currentWeather)
+	if weather["weather"][1]["dfn"] == 1:
+		previsionWeather = weather["weather"][1]["weather"]
 	#if weather["weather"]["dfn"] == 1:
 		#previsionWeather = weather["weather"]["weather"]
-
+	print(currentWeather)
+	print(previsionWeather)
 	#db = Db()
 	#db.execute("""
 		#UPDATE map
