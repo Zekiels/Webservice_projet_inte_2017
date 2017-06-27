@@ -74,7 +74,7 @@ def getMapPlayer():
 	playerCash = playerCash_tmp[0]
 	print(playerCash)
 	Map.update({"ranking":{}})
-	for element in playerCash
+	for element in playerCash:
 		Map["ranking"] = {element.get("pla_name"):playerCash.index(element)}
 	print(Map)
 	player = db.select("""SELECT pla_name from player;""")
