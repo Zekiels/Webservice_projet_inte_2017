@@ -203,7 +203,6 @@ def postRejoindre():
 	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-
 	db.execute("""
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 	""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)

@@ -30,7 +30,7 @@ $(function(){
   $("#connect").on('click',function(){
     $.ajax(server+'/player',{
       method:'POST',
-      data: JSON.stringify({
+      data:({
         "name": $("#name"),
       }),
       contentType: "application/json",
