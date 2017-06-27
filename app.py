@@ -97,7 +97,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name"))))
 		print(itemsByPlayer)
 		for y in itemsByPlayer:
-			items.update({"kind":y[0]["mit_type"], "owner":y[0]["mit_pla_name"], "location":{"lattitude":y[0]["mit_latttitude"], "longitude":y[0]["mit_longitude"]},"influence":y[0]["mit_influence"]})
+			items.update({"kind":y[0]["mit_type"], "owner":y[0]["mit_pla_name"], "location":{"lattitude":y[0]["mit_lattitude"], "longitude":y[0]["mit_longitude"]},"influence":y[0]["mit_influence"]})
 		listItems.append(items)
 		realItemsByPlayer.update({i.get("pla_name"):listItems})
 		print(realItemsByPlayer)
