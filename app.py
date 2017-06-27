@@ -64,7 +64,7 @@ def getMapPlayer():
 	
 	db = Db()
 	region_tmp = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
-	region = region_tmp.pop()
+	region = region_tmp[0]
 	print(region)
 	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 
