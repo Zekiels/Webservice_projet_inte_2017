@@ -87,7 +87,7 @@ def getMapPlayer():
 	#itemsByPlayer
 	for i in player:
 		row = None
-		row = db.seletc("""
+		row = db.select("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
