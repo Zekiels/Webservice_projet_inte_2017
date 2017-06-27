@@ -141,26 +141,26 @@ def getMapPlayer():
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]
 
-		#drinksByPlayer	
+		#drinksByPlayer
 		playerDoableDrinks = db.select("""
-		SELECT rcp_name, 
+		SELECT rcp_name,
 		(SELECT  SUM (ing_current_cost * compose.com_quantity)
 		FROM ingredient
 		INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
 		WHERE compose.com_rcp_name = rcp_name) AS cost,
-		rcp_is_cold, 
-		(SELECT ingredient.ing_has_alcohol 
-		FROM ingredient 
-		INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
-		INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name 
-		WHERE ingredient.ing_has_alcohol = TRUE 
+		rcp_is_cold,
+		(SELECT ingredient.ing_has_alcohol
+		FROM ingredient
+		INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
+		INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name
+		WHERE ingredient.ing_has_alcohol = TRUE
 		AND recipe.rcp_name = rcp_name) AS hasAlcohol
 		FROM recipe
 		INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name
 		INNER JOIN player ON access.acc_pla_name = player.pla_name
 		WHERE player.pla_name ='{0}';
 			""".format(i.get("pla_name")))
-		
+
 		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks}})
 
 		#Ajouter laliste des boissons vendue
@@ -180,7 +180,7 @@ def getMapPlayer():
 		print(playerDrinks)
 
 	Map.update({"drinksByPlayer":playerDrinks})
-	
+
 	print(Map)
 	db.close()
 
@@ -217,7 +217,7 @@ def postRejoindre():
 	print(rejoindre)
 	db.execute("""
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
-		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
+		""".format(rejoindre["name"],budget[0]["pre_value"]))
 	db.close()
 
 
@@ -288,10 +288,10 @@ def postAction(PlayerName):
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
 	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
-		
+
 
 		#{ "sufficientFunds":bool, "totalCost":float }
-		rqt = db.select(""" 
+		rqt = db.select("""
 			SELECT I.ing_current_cost, c.com_quantity
 			From ingredient I, compose c
 			WHERE I.ing_name = c.com_ing_name
