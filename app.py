@@ -150,11 +150,7 @@ def getMapPlayer():
 	for i in player:
 		#liste des types de boissons preparee
 		playerDrinks = db.select("""
-			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (SELECT CHECKSUM(ingredient.ing_has_alcohol)
-				FROM ingredient
-				INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
-				INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name
-				WHERE recipe.rcp_name = pro_rcp_name) AS hasAlcohol
+			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (SELECT CHECKSUM(ingredient.ing_has_alcohol) FROM ingredientINNER JOIN compose ON compose.com_ing_name = ingredient.ing_nameINNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name = pro_rcp_name) AS hasAlcohol
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name
@@ -203,13 +199,13 @@ def postRejoindre():
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
-
+	print(rejoindre)
 	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 
 	db.execute("""
-		INSERT INTO player VALUES ('{0}', "", {1}, 0);
+		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 	""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
 	db.close()
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
