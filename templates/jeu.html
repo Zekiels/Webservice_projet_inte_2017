@@ -278,8 +278,8 @@
                     for (weather of meteo.weather) {
                       console.log(weather.dfn);
                       console.log(weather.weather);
-                      /*$("#meteo").text(meteo.weather);*/
-
+                      $("#meteo").text(weather.weather);
+                      $("#prevision").text(weather.weather);
                     }
                 }
             })
