@@ -19,7 +19,6 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
-weather = "{\"weather\":\"sunny\"}"
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -175,7 +174,7 @@ def postRejoindre():
 
 @app.route("/sales",methods=["POST"])
 def postSales():
- 	sales = request.get_json()
+ 	sales = request.get_data()
  	print(sales)
 
 	if "quantity" not in sales :
