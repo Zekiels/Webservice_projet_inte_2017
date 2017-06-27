@@ -262,9 +262,9 @@ def postWheather():
 	if "weather" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing weather"}, 400)
 	if weather["weather"][0]["dfn"] == 0:
-		currentWeather = weather["weather"][0]["weather"]
+		str currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
-		previsionWeather = weather["weather"][1]["weather"]
+		str previsionWeather = weather["weather"][1]["weather"]
 	#if weather["weather"]["dfn"] == 1:
 		#previsionWeather = weather["weather"]["weather"]
 	print(currentWeather)
