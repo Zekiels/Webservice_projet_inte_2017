@@ -19,7 +19,6 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
-weather = {"timestamp":20,"weather":[{"dfn":0,"weather":"cloudy"},{"dfn":1,"weather":"sunny"}]}
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -41,13 +40,10 @@ def getReset():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
-	global weather
-	#db = Db()
-	#tmp = db.select("""SELECT map_time FROM map;""")
-	#db.close()
-	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
-
-	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
+	db = Db()
+	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
+	db.close()
+	weather = {"timestamp":tmp[0]["map_time"],"weather":[{"dfn":0,"weather":tmp[0]["map_current_weather"]},{"dfn":1,"weather":tmp[0]["map_prevision_weather"]}]}
 
 	return json.dumps(weather),200,{'Content-Type':'application/json'}
 
@@ -90,6 +86,7 @@ def getMapPlayer():
 	realItemsByPlayer = {}
 	for i in player:
 		row = None
+		items = None
 		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
@@ -99,7 +96,7 @@ def getMapPlayer():
 		row = db.fetchone()
 		print(row)
 		while row is not None:
-			items.update({"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")})
+			items = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
 			row = db.fetchone()
 					
 		listItems.append(items)
