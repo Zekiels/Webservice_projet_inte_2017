@@ -269,9 +269,7 @@ def postWheather():
 	db = Db()
 	db.execute("""
 		UPDATE map
-		SET map_time = @(timestamp)
-		SET map_prevision_weather = '{0}'
-		SET map_current_weather =  '{1}'
+		SET map_time = @(timestamp), map_prevision_weather = '{0}', map_current_weather =  '{1}'
 		WHERE map_id = 0;
 	""".format(previsionWeather, currentWeather))
 	db.close()
