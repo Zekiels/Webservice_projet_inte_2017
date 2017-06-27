@@ -81,14 +81,12 @@ def getMapPlayer():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
 
-	items = {}
 	listItems = []
 	realItemsByPlayer = {}
 
-	
 	for i in player:
 		row = None
-		listItems = None
+		listItems[:] = []
 		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
@@ -103,7 +101,6 @@ def getMapPlayer():
 		realItemsByPlayer.update({i.get("pla_name"):listItems})
 		print(realItemsByPlayer)
 	
-
 	#budget
 	playerInfo.append(db.select("""
 		SELECT pla_cash
