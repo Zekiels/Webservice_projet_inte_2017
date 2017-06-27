@@ -77,7 +77,8 @@ def getMapPlayer():
 		print(itemsByPlayer)
 
 		for element in itemsByPlayer:
-			JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
+			print(element)
+			#JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
 
 		#budget
 		playerInfo.append(db.select("""
@@ -233,15 +234,13 @@ def postAction(PlayerName):
  	print(actions.values())
  	print(actions["actions"]["prepare"].values())
 
- 	#{"actions":{"kind":"drinks", "prepare":{"":""}, "price":{"":""}}, "simulated":""}
-
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
 	if actions["actions"]["kind"] == "drinks":
 		db = Db()
 		day = db.select("""SELECT map_day_nb from map;""")
 		day_tmp = day.pop()
-		#(0,20,5.3,'Toto','limonade'),
+
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, {3}, {4});
 	 	""".format(day_tmp.get("map_day_nb")), actions["actions"]["prepare"].values(), actions["actions"]["price"].values(), PlayerName, actions["actions"]["prepare"].items())
