@@ -183,9 +183,9 @@ def postquitter():
 def postRejoindre():
     rejoindre = request.get_json()
     print(rejoindre)
-    
-    #if "name" not in rejoindre :
-        #return json_response({ "error" : "Missing name" }, 400)
+
+    if rejoindre == 0 :
+        return json_response({ "error" : "Missing name" }, 400)
 	#Creation d'un nouveau joueur
 	#db = Db()
 	#budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
