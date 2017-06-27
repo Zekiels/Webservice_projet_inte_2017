@@ -206,8 +206,6 @@ def postRejoindre():
 
 	#Creation d'un nouveau joueur
 	db = Db()
-	nom_joueur = db.select("""SELECT pla_name FROM Player""")
-	print(nom_joueur)
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = \'budget\';""")
 	
 	db.execute("""
