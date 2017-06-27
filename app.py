@@ -28,6 +28,10 @@ def json_response(data="OK", status=200):
 def jeu():
 	return render_template('jeu.html')
 
+@app.route('/connexion.html')
+def jeu():
+	return render_template('connexion.html')
+
 @app.route("/reset", methods=["GET"])
 def getReset():
 	global nombre
@@ -63,7 +67,7 @@ def getMapPlayer():
 	Ranking = []
 	itemsByPlayer=[]
 	playerInfo=[]
-	
+
 	db = Db()
 	region_tmp = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
 	region = region_tmp[0]
@@ -83,7 +87,7 @@ def getMapPlayer():
 
 	items = {}
 	listItems = []
-	realItemsByPlayer = {}	
+	realItemsByPlayer = {}
 	for i in player:
 
 		itemsByPlayer.append(db.select("""
@@ -191,7 +195,7 @@ def postRejoindre():
 	db.close()
 
 	#{"name": string, "location":[latitude:float, longitude:float] ,"info":[cash:float, sales:int, profit:float, drinkOffered:[name:string, price:float, hasAlcohol:bool, isCold:bool]]}
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	return json.dumps({"name" : rejoindre["name"]}),200,{'Content-Type':'application/json'}
 
 
 
