@@ -46,6 +46,7 @@ def getWeather():
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
 	print(tmp)
+	print(tmp["map_time"][0])
 	
 	return json.dumps('ok'),200,{'Content-Type':'application/json'}
 
@@ -268,7 +269,6 @@ def postWheather():
 	if weather["weather"][1]["dfn"] == 1:
 		previsionWeather = weather["weather"][1]["weather"]
 
-	print(timestamp)
 	db = Db()
 	db.execute("""
 		UPDATE map
