@@ -346,12 +346,10 @@
               }
             })
 
-            $.ajax(server+'/metrology',{
+            $.ajax(server+'/actions/<PlayerName>',{
               method:'POST',
               data: JSON.stringify({
-                "timestamp": /*$("#id")*/10,
-                "dfn": /*$("#id")*/0,
-                "weather": /*$("#id")*/"rainy",
+                "actions": /*$("#id")*/10,
               }),
               contentType: "application/json",
               success: function(data){
