@@ -89,18 +89,24 @@ def getMapPlayer():
 	listItems = []
 	realItemsByPlayer = {}
 	for i in player:
-
-		itemsByPlayer.append(db.select("""
+		row = None
+		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
-			""".format(i.get("pla_name"))))
-		print(itemsByPlayer)
-		for y in itemsByPlayer:
-			items.update({"kind":y["mit_type"], "owner":y["mit_pla_name"], "location":{"lattitude":y["mit_latttitude"], "longitude":y["mit_longitude"]},"influence":y["mit_influence"]})
+			""".format(i.get("pla_name")))
+
+		row = db.fetchone()
+		print(row)
+		while row is not None:
+			items.update({"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")})
+			row = db.fetchone()
+					
 		listItems.append(items)
+
 		realItemsByPlayer.update({i.get("pla_name"):listItems})
 		print(realItemsByPlayer)
+	
 
 	#budget
 	playerInfo.append(db.select("""
@@ -248,10 +254,6 @@ def postIdIsValide():
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
-	#global weather
-  	#tmp = request.get_data()
-  	#weather = tmp
-	#print(weather)
 	weather = request.get_json()
 	print(weather)
 
@@ -261,21 +263,20 @@ def postWheather():
 		return json_response({ "error" : "Missing dfn"}, 400)
 	if "weather" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing weather"}, 400)
+	if  weather["timestamp"] != 0 :
+		timestamp = weather["timestamp"]
+	if weather["weather"][0]["dfn"] == 0:
+		currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
-		print("ok")
-		#currentWeather = weather["weather"]["weather"]
-	#if weather["weather"]["dfn"] == 1:
-		#previsionWeather = weather["weather"]["weather"]
+		previsionWeather = weather["weather"][1]["weather"]
 
-	#db = Db()
-	#db.execute("""
-		#UPDATE map
-		#SET map_time = @(timestamp)
-		#SET map_prevision_weather = previsionWeather
-		#SET map_current_weather = currentWeather
-		#WHERE map_id = 0;
-#""")
-	#db.close()
+	db = Db()
+	db.execute("""
+		UPDATE map
+		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
+		WHERE map_id = 0;
+	""".format(timestamp ,previsionWeather, currentWeather))
+	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
