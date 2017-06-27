@@ -19,7 +19,6 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
-weather = "{\"weather\":\"sunny\"}"
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -52,7 +51,7 @@ def getIngredienst():
 	db = Db()
 	tmp = db.select("""SELECT * FROM ingredient;""")
 	db.close()
-	# {"ingredients":["ing_name":string, "ing_cost":float, "ing_hasAlcohol":bool, "ing_isCold":bool]}
+	# {"ingredients":["ing_name":string, "ing_current_cost":float, "ing_hasAlcohol":bool, "ing_isCold":bool]}
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
@@ -178,15 +177,16 @@ def postRejoindre():
 
 @app.route("/sales",methods=["POST"])
 def postSales():
- 	sales = request.get_json()
+ 	sales = request.get_data()
  	print(sales)
 
+	if "quantity" not in sales :
+		return json_response({ "error" : "Missing quantity" }, 400)
 	if "player" not in sales or len(sales["player"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
 	if "item" not in sales or len(sales["item"]) == 0:
 		return json_response({ "error" : "Missing item" }, 400)
-	if "quantity" not in sales :
-		return json_response({ "error" : "Missing quantity" }, 400)
+
 
 	db = Db()
 	day = db.select("""SELECT map_day_nb from map;""")
@@ -197,7 +197,7 @@ def postSales():
  	db.close()
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
- 
+
 
 @app.route("/idPost",methods=["POST"])
 def postId():
@@ -255,7 +255,7 @@ def postAction(PlayerName):
 	if actions["actions"]["kind"] == "ad":
 		print("NON")
 
-	
+
 
 
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
