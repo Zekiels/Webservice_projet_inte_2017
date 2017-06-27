@@ -150,11 +150,7 @@ def getMapPlayer():
 	for i in player:
 		#liste des types de boissons preparee
 		playerDrinks = db.select("""
-			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (SELECT CHECKSUM(ingredient.ing_has_alcohol)
-				FROM ingredient
-				INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
-				INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name
-				WHERE recipe.rcp_name = pro_rcp_name) AS hasAlcohol
+			SELECT pro_rcp_name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold, (SELECT CHECKSUM(ingredient.ing_has_alcohol) FROM ingredientINNER JOIN compose ON compose.com_ing_name = ingredient.ing_nameINNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name = pro_rcp_name) AS hasAlcohol
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name 
