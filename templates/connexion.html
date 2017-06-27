@@ -13,7 +13,7 @@
 <p><img src="static/citron.png" class="img-fluid" alt="logo"></p>
   <div class="login">
     <h1>Identifiant</h1>
-    <input type="text" name="u" placeholder="Mon identifiant" required="required" id="name"/>
+    <input type="text" name="" placeholder="Mon identifiant" required="required" id="name"/>
     <button type="submit" class="btn btn-primary btn-block btn-large" id="connect">Connexion</button>
   </div>
 </div>
@@ -33,7 +33,7 @@ $(function(){
       data:({
         "name": $("#name"),
       }),
-      contentType: "application/json",
+      type:text,
       success: function(name){
         $('#name').val();
         document.location='http://limonade-equipe7.herokuapp.com/jeu.html';
