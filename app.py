@@ -269,7 +269,7 @@ def postAction(PlayerName):
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
 	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
-		db.close()
+		
 
 		#{ "sufficientFunds":bool, "totalCost":float }
 		rqt = db.select(""" 
@@ -279,6 +279,7 @@ def postAction(PlayerName):
 			AND c.com_rcp_name = %s;
 			""", (actions["actions"]["prepare"].items()))
 		print(rqt)
+		db.close()
 		return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	if actions["actions"]["kind"] == "recipe":
 
