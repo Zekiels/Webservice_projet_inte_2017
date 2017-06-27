@@ -121,7 +121,6 @@ def getMapPlayer():
 			AND sal_pla_name = '{0}';
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerSales = playerSales_tmp[0]
-		print(playerSales)
 		#profit
 		playerProfit_tmp = db.select("""
 			SELECT
@@ -140,9 +139,8 @@ def getMapPlayer():
 				) AS profit;
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]
-		print(playerProfit)
 
-		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")}})
 		#Ajouter laliste des boissons vendue
 	Map.update({"playerInfo":playerInfo})
 
