@@ -81,35 +81,26 @@ def getMapPlayer():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
 
-	items = {}
 	listItems = []
 	realItemsByPlayer = {}
 
-	
 	for i in player:
-		dbTemp = Db()
 		row = None
-		items = None
-		dbTemp.execute("""
+		#del listItems[:]
+		db.execute("""
 			SELECT mit_type, mit_pla_name, mit_longitude, mit_lattitude, mit_influence
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name")))
 
-		row = dbTemp.fetchone()
+		row = db.fetchone()
 		
 		print(row)
-		while row is not None:
-			items = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
-			row = None
-			row = dbTemp.fetchone()
-		dbTemp.close()	
-		listItems.append(items)
+		listItems = {"kind":row.get("mit_type"), "owner":row.get("mit_pla_name"), "location":{"lattitude":row.get("mit_lattitude"), "longitude":row.get("mit_longitude")},"influence":row.get("mit_influence")}
 
 		realItemsByPlayer.update({i.get("pla_name"):listItems})
 		print(realItemsByPlayer)
 	
-
 	#budget
 	playerInfo.append(db.select("""
 		SELECT pla_cash

@@ -284,20 +284,6 @@
                 }
             })
 
-            $.ajax(server+'/rejoindre',{
-              method:'POST',
-              data: JSON.stringify({
-                "name": /*$("#id")*/"willo"
-              }),
-              contentType: "application/json",
-              success: function(name){
-                    console.log(name.name);
-                },
-              error: function(error){
-                console.log(error.error)
-              }
-            })
-
             $.ajax(server+'/sales',{
               method:'POST',
               data: JSON.stringify({
