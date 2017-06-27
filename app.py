@@ -74,11 +74,12 @@ def getMapPlayer():
 	playerCash = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
 	print(playerCash)
 	Map.update({"ranking":{}})
-	rank = 0
+	#rank = 0
 	for element in playerCash:
-		rank = rank+1
-		Map["ranking"] = {element.get("pla_name"):rank}
+		#rank = rank+1
+		Map["ranking"].append({element.get("pla_name")})
 	print(Map)
+	#######################################################
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
