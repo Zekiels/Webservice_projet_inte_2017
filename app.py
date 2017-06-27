@@ -237,13 +237,8 @@ def postSales():
 	day_tmp = day.pop()
  	db.execute("""
  		INSERT INTO sale VALUES ({0}, {1}, {2}, {3});
-<<<<<<< HEAD
  	""".format(day_tmp['map_day_nb'],sales['quantity'],sales['player'],sales['item']))
-    db.close()
-=======
- 	""".format(day_tmp,sales['quantity'],sales['player'],sales['item']))
         db.close()
->>>>>>> 85c986f7f7f93045cc9e44dbd06a7aee3d5f6ac9
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
