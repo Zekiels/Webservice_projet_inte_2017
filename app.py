@@ -265,22 +265,19 @@ def postWheather():
 	if "weather" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing weather"}, 400)
 	if weather["weather"][0]["dfn"] == 0:
-		str currentWeather = weather["weather"][0]["weather"]
+		currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
-		str previsionWeather = weather["weather"][1]["weather"]
-	#if weather["weather"]["dfn"] == 1:
-		#previsionWeather = weather["weather"]["weather"]
-	print(currentWeather)
-	print(previsionWeather)
-	#db = Db()
-	#db.execute("""
-		#UPDATE map
-		#SET map_time = @(timestamp)
-		#SET map_prevision_weather = previsionWeather
-		#SET map_current_weather = currentWeather
-		#WHERE map_id = 0;
-#""")
-	#db.close()
+		previsionWeather = weather["weather"][1]["weather"]
+
+	db = Db()
+	db.execute("""
+		UPDATE map
+		SET map_time = @(timestamp)
+		SET map_prevision_weather = '{0}'
+		SET map_current_weather =  '{1}'
+		WHERE map_id = 0;
+	""".format(previsionWeather, currentWeather))
+	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
