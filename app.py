@@ -63,7 +63,8 @@ def getMapPlayer():
 	playerInfo=[]
 	
 	db = Db()
-	region = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
+	region_tmp = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
+	region = region_tmp[0]
 	print(region)
 	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 
@@ -178,7 +179,7 @@ def postRejoindre():
 
 @app.route("/sales",methods=["POST"])
 def postSales():
- 	sales = request.get_data()
+ 	sales = request.get_json()
  	print(sales)
 
 	if "quantity" not in sales :
@@ -193,7 +194,7 @@ def postSales():
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day.pop()
  	db.execute("""
-    INSERT INTO sale VALUES ({0}, @(quantity), 0, @(player), @(item));
+ 		INSERT INTO sale VALUES ({0}, @(quantity), 0, @(player), @(item));
  	""".format(day_tmp.get("map_day_nb")), sales)
  	db.close()
 
@@ -225,10 +226,30 @@ def postIdIsValide():
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
- 	global weather
- 	tmp = request.get_data()
- 	weather = tmp
- 	print(weather)
+	weather = request.get_json()
+	print(weather)
+
+	if "timestamp" not in weather or len(weather["timestamp"]) == 0:
+		return json_response({ "error" : "Missing timestamp" }, 400)
+	if weather["weather"]["dfn"] not in weather:
+		return json_response({ "error" : "Missing dfn"}, 400)
+	if weather["weather"]["weather"] not in weather:
+		return json_response({ "error" : "Missing weather"}, 400)
+
+	if weather["weather"]["dfn"] == 0:
+		currentWeather = weather["weather"]["weather"]
+	if weather["weather"]["dfn"] == 1:
+		previsionWeather = weather["weather"]["weather"]
+
+	db = Db()
+	db.execute("""
+		UPDATE map
+		SET map_time = @(timestamp)
+		SET map_prevision_weather = previsionWeather
+		SET map_current_weather = currentWeather
+		WHERE map_id = 0;
+""")
+	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
