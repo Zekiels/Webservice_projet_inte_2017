@@ -178,7 +178,7 @@ def postquitter():
 	return json.dumps(),200,{'Content-Type':'application/json'}
 
 
-@app.route("/rejoindre", methods=["POST"])
+@app.route("/player", methods=["POST"])
 def postRejoindre():
 	# Recupere le contenu de la requette
 	rejoindre = request.get_json()
@@ -189,7 +189,7 @@ def postRejoindre():
 
 	#Creation d'un nouveau joueur
 	db = Db()
-	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
+	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = \'budget\';""")
 	print(budget)
 
 	#db.execute("""
@@ -225,29 +225,6 @@ def postSales():
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
-
-@app.route("/idPost",methods=["POST"])
-def postId():
- 	global  identifiant
- 	#tmp = request.get_json()
- 	tmp = request.get_data()
- 	tmp = json.loads(tmp)
- 	identifiant.append(tmp)
- 	print(identifiant)
- 	return json.dumps(identifiant),200,{'Content-Type':'application/json'}
-
-@app.route("/idIsValide",methods=["POST"])
-def postIdIsValide():
- 	global  identifiant
- 	idvalide= request.get_data()
- 	idvalide = json.loads(tmp)
- 	for x in identifiant:
- 		if idvalide in identifiant:
- 			return json.dumps(idvalide),200,{'Content-Type':'application/json'}
- 		else :
- 			continue
-
- 	print(identifiant)
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
