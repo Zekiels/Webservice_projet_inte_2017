@@ -275,11 +275,11 @@
               contentType: "application/json",
               success: function(meteo){
                     console.log(meteo.timestamp);
-                    for (weather of meteo) {
-                      for (dfn of weather){
-                      console.log(meteo.dfn);
+                    for (weather of meteo.weather) {
+                      console.log(weather.dfn);
+                      console.log(weather.weather);
                       /*$("#meteo").text(meteo.weather);*/
-                    }
+
                     }
                 }
             })
@@ -315,6 +315,53 @@
                 $("#jour").text(getDate.date);
               }
             })*/
+
+            $.ajax(server+'/rejoindre',{
+              method:'POST',
+              data: JSON.stringify({
+                "name": /*$("#id")*/"willo"
+              }),
+              contentType: "application/json",
+              success: function(name){
+                    console.log(name.name);
+                },
+              error: function(error){
+                console.log(error.error)
+              }
+            })
+
+            $.ajax(server+'/sales',{
+              method:'POST',
+              data: JSON.stringify({
+                "quantity": /*$("#id")*/10,
+                "player": /*$("#id")*/"willo",
+                "item": /*$("#id")*/"limonade",
+              }),
+              contentType: "application/json",
+              success: function(data){
+                    console.log(data);
+                },
+              error: function(error){
+                console.log(error.error)
+              }
+            })
+
+            $.ajax(server+'/metrology',{
+              method:'POST',
+              data: JSON.stringify({
+                "timestamp": /*$("#id")*/10,
+                "dfn": /*$("#id")*/0,
+                "weather": /*$("#id")*/"rainy",
+              }),
+              contentType: "application/json",
+              success: function(data){
+                    console.log(data);
+                },
+              error: function(error){
+                console.log(error.error)
+              }
+            })
+
           });
 
           </script>
