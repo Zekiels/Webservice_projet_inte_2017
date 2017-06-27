@@ -274,9 +274,9 @@ def postWheather():
 	db = Db()
 	db.execute("""
 		UPDATE map
-		SET map_time = {3}, map_prevision_weather = '{0}', map_current_weather =  '{1}'
+		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
 		WHERE map_id = 0;
-	""".format(previsionWeather, currentWeather, timestamp))
+	""".format(timestamp ,previsionWeather, currentWeather))
 	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
