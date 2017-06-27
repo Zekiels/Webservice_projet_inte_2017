@@ -139,7 +139,7 @@ def getMapPlayer():
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]
 
-		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+		playerInfo.update({"cash":playerCash[0]["pla_cash"],"sales":playerSales[0]["vendu"],"profit":playerProfit[0]["profit"]})
 
 		#liste des types de boissons preparee
 		playerInfo.update({"drinksOffered":db.select("""
