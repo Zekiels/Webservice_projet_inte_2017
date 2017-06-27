@@ -57,14 +57,18 @@ def getIngredienst():
 
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
+	Map = {}
 	JSONitemsByPlayer=[]
-	itemsByPlayer=[]
+	itemsByPlayer={}
 	playerInfo=[]
+	
 	db = Db()
+	region = db.select("""SELECT map_longitude, map_lattitude, map_longitude_span, map_lattitude_span from map where map_id = 0;""")
+	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
+
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day.pop()
-	print(day_tmp)
 
 	for i in player:
 
@@ -73,11 +77,6 @@ def getMapPlayer():
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
-		print(itemsByPlayer)
-
-		for element in itemsByPlayer:
-			print(element)
-			#JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element.get("mit_type"),element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
 
 		#budget
 		playerInfo.append(db.select("""
@@ -93,7 +92,7 @@ def getMapPlayer():
 			WHERE sal_day_nb = {1}
 			AND sal_pla_name = '{0}';
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
-		#profit
+		profit
 		playerInfo.append(db.select("""
 			SELECT
 				(SELECT SUM (sal_qty * sal_price)
@@ -118,6 +117,10 @@ def getMapPlayer():
 			WHERE pro_day_nb = {1}
 			AND pro_pla_name = '{0}';
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
+
+	for element in itemsByPlayer:
+			print(element)
+			#JSONitemsByPlayer.append("""{{"kind":{0},"owner":{1},"location":{{"coordinates":{{"lattitude":{2},"longitude":{3}}}}}"influence":{4}}}""".format(element["mit_type"],element.get("mit_pla_name"),element.get("mit_lattitude"),element.get("mit_longitude"),element.get("mit_influence")))
 
 	db.close()
 	json_retour = """
