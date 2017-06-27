@@ -183,9 +183,9 @@ def postSales():
 
 	if "quantity" not in sales :
 		return json_response({ "error" : "Missing quantity" }, 400)
-	if "player" not in sales or len(sales["player"]) == 0:
+	if "player" not in sales :
 		return json_response({ "error" : "Missing player" }, 400)
-	if "item" not in sales or len(sales["item"]) == 0:
+	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
 
 
