@@ -201,14 +201,11 @@ def postRejoindre():
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 	print(budget)
-	try:
-		db.execute("""
+	db.execute("""
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
-		db.close()
-	except:
-		print("error")
-		return json.dumps("error"),400,{'Content-Type':'application/json'}
+	db.close()
+	
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/sales",methods=["POST"])
