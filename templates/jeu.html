@@ -250,6 +250,14 @@
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
 
+            $.ajax(server+'/map',{
+              method:'GET',
+              contentType: "application/json",
+              success: function(idplayer){
+              console.log(idplayer.owner);
+            }
+            })
+
             $.ajax(server+'/ingredients',{
               method:'GET',
               contentType: "application/json",
