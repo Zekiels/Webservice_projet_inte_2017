@@ -29,7 +29,7 @@ def jeu():
 	return render_template('jeu.html')
 
 @app.route('/connexion.html')
-def jeu():
+def connect():
 	return render_template('connexion.html')
 
 @app.route("/reset", methods=["GET"])
