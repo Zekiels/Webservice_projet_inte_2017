@@ -259,7 +259,7 @@
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
             }
-            var joueur = getParameterByName(name);
+            var joueur = getParameterByName('name');
             console.log(joueur);
             $("#bienvenue").html(joueur);
 
