@@ -105,21 +105,21 @@ def getMapPlayer():
 	#playerInfo
 	for i in player:
 		#budget
-		playerInfo.update(db.select("""
+		playerInfo.update({"cash":db.select("""
 			SELECT pla_cash
 			FROM player
 			WHERE pla_name = '{0}';
-			""".format(i.get("pla_name"))))
+			""".format(i.get("pla_name")))})
 		#qty vendu
-		playerInfo.update(db.select("""
-			SELECT SUM (sal_qty)
+		playerInfo.update({"sales":db.select("""
+			SELECT SUM (sal_qty) AS vendu
 			FROM sale
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
 			AND sal_pla_name = '{0}';
-			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
 		#profit
-		playerInfo.update(db.select("""
+		playerInfo.update({"profit":db.select("""
 			SELECT
 				(SELECT SUM (sal_qty * sal_price)
 				FROM sale
@@ -133,16 +133,16 @@ def getMapPlayer():
 				INNER JOIN player ON player.pla_name = production.pro_pla_name
 				WHERE pro_day_nb = {1}
 				AND pro_pla_name = '{0}'
-				);
-			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
+				) AS profit;
+			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
 		#liste des types de boissons preparee
-		playerInfo.update(db.select("""
+		playerInfo.update({"drinksOffered":db.select("""
 			SELECT pro_rcp_name
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			WHERE pro_day_nb = {1}
 			AND pro_pla_name = '{0}';
-		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
+		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))})
 	print(playerInfo)
 	for element in itemsByPlayer:
 			print(element)
