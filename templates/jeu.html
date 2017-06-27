@@ -259,8 +259,9 @@
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
             }
-
-            $("#bienvenue").html(getParameterByName(name))
+            var joueur = getParameterByName(name);
+            console.log(joueur);
+            $("#bienvenue").html(joueur);
 
           /*  $.ajax(server+'/map',{
               method:'GET',
