@@ -196,7 +196,7 @@ def postRejoindre():
 		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
 		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
 	db.close()
-	
+	print "ok"
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/sales",methods=["POST"])
