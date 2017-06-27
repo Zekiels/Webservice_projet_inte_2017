@@ -209,6 +209,7 @@ def postRejoindre():
             db.close()
         except:
             print("error")
+			return json.dumps("error"),400,{'Content-Type':'application/json'}
         return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/sales",methods=["POST"])
