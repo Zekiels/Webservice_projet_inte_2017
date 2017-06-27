@@ -27,14 +27,13 @@ $(function(){
   $("#connect").on('click',function(){
     $.ajax(server+'/player',{
       method:'POST',
-      data:({
+      data:JSON.stringify({
         "name": $("#name"),
       }),
       contentType: "application/json",
       success: function(name){
         $('#name').val();
         document.location='http://limonade-equipe7.herokuapp.com/jeu.html';
-        console.log(name.name);
       },
       error: function(error){
         console.log(error.error);
