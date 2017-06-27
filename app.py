@@ -71,8 +71,7 @@ def getMapPlayer():
 	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
 	print(Map)
 
-	playerCash_tmp = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
-	playerCash = playerCash_tmp[0]
+	playerCash = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
 	print(playerCash)
 	Map.update({"ranking":{}})
 	rank = 0
