@@ -185,20 +185,21 @@ def postRejoindre():
 	rejoindre = request.get_json()
 
 	#Verifie si elle contient les infos necesaire
-	if "name" not in rejoindre or len(rejoindre["name"]) == 0:
+	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
 
 	#Creation d'un nouveau joueur
 	db = Db()
 	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = "budget";""")
+	print(budget)
 
-	db.execute("""
-	INSERT INTO player VALUES (@(name), "", """+budget+""", 0);
-	""", rejoindre)
-	db.close()
+	#db.execute("""
+	#INSERT INTO player VALUES (@(name), "", """+budget+""", 0);
+	#""", rejoindre)
+	#db.close()
 
 	#{"name": string, "location":[latitude:float, longitude:float] ,"info":[cash:float, sales:int, profit:float, drinkOffered:[name:string, price:float, hasAlcohol:bool, isCold:bool]]}
-	return json.dumps({"name" : rejoindre["name"]}),200,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 
 
