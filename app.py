@@ -19,6 +19,7 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
+weather = "{\"timestamp\":20,\"weather\":[{\"dfn\":0,\"weather\":\"cloudy\"},{\"dfn\":1,\"weather\":\"sunny\"}]}"
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -234,30 +235,34 @@ def postIdIsValide():
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
-	weather = request.get_json()
+	global weather
+  	tmp = request.get_data()
+  	weather = tmp
 	print(weather)
+	#weather = request.get_json()
+	#print(weather)
 
-	if "timestamp" not in weather or len(weather["timestamp"]) == 0:
-		return json_response({ "error" : "Missing timestamp" }, 400)
-	if weather["weather"]["dfn"] not in weather:
-		return json_response({ "error" : "Missing dfn"}, 400)
-	if weather["weather"]["weather"] not in weather:
-		return json_response({ "error" : "Missing weather"}, 400)
+	#if "timestamp" not in weather or len(weather["timestamp"]) == 0:
+		#return json_response({ "error" : "Missing timestamp" }, 400)
+	#if weather["weather"]["dfn"] not in weather:
+		#return json_response({ "error" : "Missing dfn"}, 400)
+	#if weather["weather"]["weather"] not in weather:
+		#return json_response({ "error" : "Missing weather"}, 400)
 
-	if weather["weather"]["dfn"] == 0:
-		currentWeather = weather["weather"]["weather"]
-	if weather["weather"]["dfn"] == 1:
-		previsionWeather = weather["weather"]["weather"]
+	#if weather["weather"]["dfn"] == 0:
+		#currentWeather = weather["weather"]["weather"]
+	#if weather["weather"]["dfn"] == 1:
+		#previsionWeather = weather["weather"]["weather"]
 
-	db = Db()
-	db.execute("""
-		UPDATE map
-		SET map_time = @(timestamp)
-		SET map_prevision_weather = previsionWeather
-		SET map_current_weather = currentWeather
-		WHERE map_id = 0;
-""")
-	db.close()
+	#db = Db()
+	#db.execute("""
+		#UPDATE map
+		##SET map_time = @(timestamp)
+		#SET map_prevision_weather = previsionWeather
+		#SET map_current_weather = currentWeather
+		#WHERE map_id = 0;
+#""")
+	#db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/actions/<PlayerName>", methods=["POST"])
