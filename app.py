@@ -41,15 +41,13 @@ def getReset():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
-	global weather
-	#db = Db()
-	#tmp = db.select("""SELECT map_time FROM map;""")
-	#db.close()
-	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
-
-	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
-
-	return json.dumps(weather),200,{'Content-Type':'application/json'}
+	weather
+	db = Db()
+	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
+	db.close()
+	print(tmp)
+	
+	return json.dumps('ok'),200,{'Content-Type':'application/json'}
 
 
 @app.route("/ingredients", methods=["GET"])
