@@ -197,20 +197,20 @@ def postRejoindre():
     #Verifie si elle contient les infos necesaire
     if "name" not in rejoindre :
         return json_response({ "error" : "Missing name" }, 400)
-        print(rejoindre)
-        #Creation d'un nouveau joueur
-        db = Db()
-        budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-        print(budget)
-        try:
-            db.execute("""
-            INSERT INTO Player VALUES ('{0}', "", {1}, 0);
-            """.format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
-            db.close()
-        except:
-            print("error")
-			return json.dumps("error"),400,{'Content-Type':'application/json'}
-        return json.dumps("ok"),200,{'Content-Type':'application/json'}
+    print(rejoindre)
+	#Creation d'un nouveau joueur
+	db = Db()
+	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
+	print(budget)
+	try:
+		db.execute("""
+		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
+		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
+		db.close()
+	except:
+		print("error")
+		return json.dumps("error"),400,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 @app.route("/sales",methods=["POST"])
 def postSales():
