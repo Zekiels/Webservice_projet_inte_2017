@@ -61,8 +61,7 @@ def getIngredienst():
 def getMapPlayer():
 	Map = {}
 	Ranking = []
-	JSONitemsByPlayer=[]
-	itemsByPlayer={}
+	itemsByPlayer=[]
 	playerInfo=[]
 	
 	db = Db()
@@ -70,23 +69,21 @@ def getMapPlayer():
 	region = region_tmp[0]
 
 	Map.update({"region":{"center":{"latitude":region.get("map_lattitude"), "longitude":region.get("map_longitude")}, "span":{"latitudeSpan":region.get("map_lattitude_span"), "longitudeSpan":region.get("map_longitude_span")}}})
-	print(Map)
 
 	playerCash = db.select("""SELECT pla_name, pla_cash from player order by pla_cash DESC;""")
-	print(playerCash)
+
 	Map.update({"ranking":{}})
-	#rank = 0
 	for element in playerCash:
-		print(element)
-		#rank = rank+1
 		Ranking.append(element.get("pla_name"))
 	Map.update({"ranking":Ranking})
-	print(Map)
-	#######################################################
+
 	player = db.select("""SELECT pla_name from player;""")
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day[0]
 
+	items = {}
+	listItems = []
+	realItemsByPlayer = {}	
 	for i in player:
 
 		itemsByPlayer.append(db.select("""
@@ -94,46 +91,51 @@ def getMapPlayer():
 			FROM map_item
 			WHERE mit_pla_name = '{0}';
 			""".format(i.get("pla_name"))))
+		for y in itemsByPlayer:
+			items.update({"kind":i.get("mit_type"), "owner":i.get("mit_pla_name"), "location":{"lattitude":i.get("mit_latttitude"), "longitude":i.get("mit_longitude")},"influence":i.get("mit_influence")})
+		listItems.append(items)
+		realItemsByPlayer.update({i.get("pla_name"):listItems})
+		print(realItemsByPlayer)
 
-		#budget
-		playerInfo.append(db.select("""
-			SELECT pla_cash
-			FROM player
-			WHERE pla_name = '{0}';
-			""".format(i.get("pla_name"))))
-		#qty vendu
-		playerInfo.append(db.select("""
-			SELECT SUM (sal_qty)
+	#budget
+	playerInfo.append(db.select("""
+		SELECT pla_cash
+		FROM player
+		WHERE pla_name = '{0}';
+		""".format(i.get("pla_name"))))
+	#qty vendu
+	playerInfo.append(db.select("""
+		SELECT SUM (sal_qty)
+		FROM sale
+		INNER JOIN player ON player.pla_name = sale.sal_pla_name
+		WHERE sal_day_nb = {1}
+		AND sal_pla_name = '{0}';
+		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
+	profit
+	playerInfo.append(db.select("""
+		SELECT
+			(SELECT SUM (sal_qty * sal_price)
 			FROM sale
 			INNER JOIN player ON player.pla_name = sale.sal_pla_name
 			WHERE sal_day_nb = {1}
-			AND sal_pla_name = '{0}';
-			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
-		profit
-		playerInfo.append(db.select("""
-			SELECT
-				(SELECT SUM (sal_qty * sal_price)
-				FROM sale
-				INNER JOIN player ON player.pla_name = sale.sal_pla_name
-				WHERE sal_day_nb = {1}
-				AND sal_pla_name = '{0}'
-				)
-				-
-				(SELECT SUM (pro_qty * pro_cost_at_that_time)
-				FROM production
-				INNER JOIN player ON player.pla_name = production.pro_pla_name
-				WHERE pro_day_nb = {1}
-				AND pro_pla_name = '{0}'
-				);
-			""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
-		#liste des types de boissons preparee
-		playerInfo.append(db.select("""
-			SELECT pro_rcp_name
+			AND sal_pla_name = '{0}'
+			)
+			-
+			(SELECT SUM (pro_qty * pro_cost_at_that_time)
 			FROM production
 			INNER JOIN player ON player.pla_name = production.pro_pla_name
 			WHERE pro_day_nb = {1}
-			AND pro_pla_name = '{0}';
+			AND pro_pla_name = '{0}'
+			);
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
+	#liste des types de boissons preparee
+	playerInfo.append(db.select("""
+		SELECT pro_rcp_name
+		FROM production
+		INNER JOIN player ON player.pla_name = production.pro_pla_name
+		WHERE pro_day_nb = {1}
+		AND pro_pla_name = '{0}';
+	""".format(i.get("pla_name"), day_tmp.get("map_day_nb"))))
 
 	for element in itemsByPlayer:
 			print(element)
@@ -250,7 +252,7 @@ def postWheather():
 
 	if "timestamp" not in weather:
 		return json_response({ "error" : "Missing timestamp" }, 400)
-	if weather["weather"]["dfn"] not in weather:
+	if weather["weather"]"dfn" not in weather:
 		return json_response({ "error" : "Missing dfn"}, 400)
 	if weather["weather"]["weather"] not in weather:
 		return json_response({ "error" : "Missing weather"}, 400)
