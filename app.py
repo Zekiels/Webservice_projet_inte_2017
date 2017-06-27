@@ -180,7 +180,7 @@ def getMapPlayer():
 			FROM recipe
 			INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name
 			INNER JOIN player ON access.acc_pla_name = player.pla_name
-			WHERE player.pla_name ='{0}';
+			WHERE player.pla_name = '{0}';
 		""".format(i.get("pla_name")))
 		
 		playerInfo.update({i.get("pla_name"):{"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit"),"drinksOffered":playerDoableDrinks}})
