@@ -248,7 +248,7 @@ def postWheather():
 	weather = request.get_json()
 	print(weather)
 
-	if "timestamp" not in weather or len(weather["timestamp"]) == 0:
+	if "timestamp" not in weather:
 		return json_response({ "error" : "Missing timestamp" }, 400)
 	if weather["weather"]["dfn"] not in weather:
 		return json_response({ "error" : "Missing dfn"}, 400)
