@@ -51,7 +51,7 @@ def getIngredienst():
 	db = Db()
 	tmp = db.select("""SELECT * FROM ingredient;""")
 	db.close()
-	# {"ingredients":["ing_name":string, "ing_cost":float, "ing_hasAlcohol":bool, "ing_isCold":bool]}
+	# {"ingredients":["ing_name":string, "ing_current_cost":float, "ing_hasAlcohol":bool, "ing_isCold":bool]}
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
@@ -194,7 +194,7 @@ def postSales():
  	db.close()
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
- 
+
 
 @app.route("/idPost",methods=["POST"])
 def postId():
@@ -252,7 +252,7 @@ def postAction(PlayerName):
 	if actions["actions"]["kind"] == "ad":
 		print("NON")
 
-	
+
 
 
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
