@@ -142,7 +142,7 @@ def getMapPlayer():
 		playerProfit = playerProfit_tmp[0]
 		print(playerProfit)
 
-		playerInfo.update({"cash":playerCash[0],"sales":playerSales[0],"profit":playerProfit[0]})
+		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
 
 		#liste des types de boissons preparee
 		playerInfo.update({"drinksOffered":db.select("""
