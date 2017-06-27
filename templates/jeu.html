@@ -262,10 +262,11 @@
             })
 
             $.ajax(server+'/metrology',{
-              method: 'GET',
-              success: function(getWeather){
-                console.log(getWeather.weather)
-                $("#meteo").text(getWeather.weather);
+              method:'GET',
+              contentType: "application/json",
+              success: function(meteo){
+                console.log(meteo.weather)
+                $("#meteo").text(meteo.weather);
               }
             })
 
