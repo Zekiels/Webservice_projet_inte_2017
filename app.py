@@ -264,6 +264,8 @@ def postWheather():
 		return json_response({ "error" : "Missing dfn"}, 400)
 	if "weather" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing weather"}, 400)
+	if  weather["timestamp"] != 0 :
+		timestamp = weather["timestamp"]
 	if weather["weather"][0]["dfn"] == 0:
 		currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
@@ -272,9 +274,9 @@ def postWheather():
 	db = Db()
 	db.execute("""
 		UPDATE map
-		SET map_time = @(timestamp), map_prevision_weather = '{0}', map_current_weather =  '{1}'
+		SET map_time = {3}, map_prevision_weather = '{0}', map_current_weather =  '{1}'
 		WHERE map_id = 0;
-	""".format(previsionWeather, currentWeather))
+	""".format(previsionWeather, currentWeather, timestamp))
 	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
