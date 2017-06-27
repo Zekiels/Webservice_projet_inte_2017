@@ -189,7 +189,7 @@ def postRejoindre():
 	#Verifie si elle contient les infos necesaire
 	if "name" not in rejoindre :
 		return json_response({ "error" : "Missing name" }, 400)
-	print(rejoindre[0]["name"])
+	print(rejoindre["name"])
 
 	#Creation d'un nouveau joueur
 	db = Db()
