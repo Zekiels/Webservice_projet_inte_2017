@@ -19,7 +19,7 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
-weather = "{\"timestamp\":20,\"weather\":[{\"dfn\":0,\"weather\":\"cloudy\"},{\"dfn\":1,\"weather\":\"sunny\"}]}"
+weather = {"timestamp":20,"weather":[{"dfn":0,"weather":"cloudy"},{"dfn":1,"weather":"sunny"}]}
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -37,9 +37,9 @@ def getReset():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
-	db = Db()
-	tmp = db.select("""SELECT map_time FROM map;""")
-	db.close()
+	#db = Db()
+	#tmp = db.select("""SELECT map_time FROM map;""")
+	#db.close()
 	#json={"timestamp":1,"weather":"sunny", "test":{"key1":0.5,"key2":"[tao,toa,tia]"}}
 
 	#Temps{ "timestamp":int, "weather":["dfn":int, "weather":"sunny"] }
