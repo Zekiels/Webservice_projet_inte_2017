@@ -19,6 +19,7 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
+weather = "{\"timestamp\":20,\"weather\":[{\"dfn\":0,\"weather\":\"cloudy\"},{\"dfn\":1,\"weather\":\"sunny\"}]}"
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
