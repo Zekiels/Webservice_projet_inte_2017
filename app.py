@@ -143,8 +143,8 @@ def getMapPlayer():
 		print(playerProfit)
 
 		playerInfo.update({"cash":playerCash.get("pla_cash"),"sales":playerSales.get("vendu"),"profit":playerProfit.get("profit")})
+		#Ajouter laliste des boissons vendue
 	Map.update({"playerInfo":playerInfo})
-	print(Map)
 
 	#drinksByPlayer
 	for i in player:
@@ -157,21 +157,12 @@ def getMapPlayer():
 			WHERE pro_day_nb = {1}
 			AND pro_pla_name = '{0}';
 		""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
-		print(playerDrinks)
-
-
+	Map.update({"drinksByPlayer":player_Drinks})
+	
+	print(Map)
 	db.close()
-	json_retour = """
-	{
-		"region":{},
-		"ranking":[
-			{}
-		],
-		"itemsByPlayer":
 
-	}"""
-	print(playerInfo)
-	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	return json.dumps(Map),200,{'Content-Type':'application/json'}
 	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
 
 @app.route("/", methods=["GET"])
