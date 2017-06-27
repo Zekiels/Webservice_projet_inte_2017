@@ -29,7 +29,7 @@ $(function(){
 
   var server='http://limonade-equipe7.herokuapp.com';
 
-  $("#connect").on('click'function(){
+  $("#connect").on('click',function(){
     $.ajax(server+'/player',{
       method:'POST',
       data: JSON.stringify({
