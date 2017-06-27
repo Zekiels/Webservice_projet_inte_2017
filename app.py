@@ -19,7 +19,6 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
-weather = {"timestamp":20,"weather":[{"dfn":0,"weather":"cloudy"},{"dfn":1,"weather":"sunny"}]}
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -41,7 +40,6 @@ def getReset():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
-	weather
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
