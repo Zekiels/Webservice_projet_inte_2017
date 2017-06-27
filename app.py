@@ -110,7 +110,8 @@ def getMapPlayer():
 			FROM player
 			WHERE pla_name = '{0}';
 			""".format(i.get("pla_name")))
-		region = playerCash_tmp[0]
+		playerCash = playerCash_tmp[0]
+		print(playerCash)
 		#qty vendu
 		playerSales_tmp = db.select("""
 			SELECT SUM (sal_qty) AS vendu
@@ -120,6 +121,7 @@ def getMapPlayer():
 			AND sal_pla_name = '{0}';
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerSales = playerSales_tmp[0]
+		print(playerSales)
 		#profit
 		playerProfit_tmp = db.select("""
 			SELECT
@@ -138,8 +140,9 @@ def getMapPlayer():
 				) AS profit;
 			""".format(i.get("pla_name"), day_tmp.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]
+		print(playerProfit)
 
-		playerInfo.update({"cash":playerCash[0]["pla_cash"],"sales":playerSales[0]["vendu"],"profit":playerProfit[0]["profit"]})
+		playerInfo.update({"cash":playerCash[0],"sales":playerSales[0],"profit":playerProfit[0]})
 
 		#liste des types de boissons preparee
 		playerInfo.update({"drinksOffered":db.select("""
