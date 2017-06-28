@@ -416,7 +416,6 @@ def postAction(PlayerName):
 	print(actions)
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing actions" }, 400)
-	print(actions["actions"][0]["kind"])
 
 	for action in actions["actions"]:
 		if action["kind"] == "drinks":
@@ -430,11 +429,19 @@ def postAction(PlayerName):
 												FROM ingredient 
 												INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
 												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
-			print(price)
 			#create production
 			db.execute("""
 		    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
 		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price["sum"], PlayerName, action["prepare"].items()[0][0]))
+
+			#mise a jour budget joueur
+			cash = db.select("""SELECT pla_cash from player;""")
+			print(cash)
+			budget = cash["pla_cash"] - (actions["actions"][0]["prepare"].values()[0]*price["sum"])
+			print(budget)
+			db.execute("""
+		 		UPDATE player SET pla_cash = {0} WHERE  play_name = '{1}';
+		 	""".format(budget, PlayerName))
 
 			#create sale
 			db.execute("""
@@ -452,8 +459,8 @@ def postAction(PlayerName):
 			db.close()
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 		if action["kind"] == "recipe":
-
 			print("NON")
+			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
 		if action["kind"] == "ad":
 			print("NON")
 
