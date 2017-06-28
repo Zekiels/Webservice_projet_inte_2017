@@ -209,7 +209,7 @@ def postRejoindre():
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_lattitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
-		sql = sqlMap_Item + sqlVente + sqlProd
+		sql = sqlMapItem + sqlVente + sqlProd
 
 		sqlDrinksINfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 		drinksInfo = db.execute(sqlDrinksINfo);
