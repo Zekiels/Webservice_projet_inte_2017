@@ -149,9 +149,8 @@ def getMap():
 		playerInfo[i['name']] = info
 
 		db = Db()
-		#itemsByPlayer
-		print(rank)
-		oneItem = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + rank.get("name")+ "\';")
+		#itemsByPlayer)
+		oneItem = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}
 		itemsByPlayer[i['name']] = listItems
 		db.close()
