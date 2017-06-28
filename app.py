@@ -231,14 +231,13 @@ def postSales():
 	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
 
-
 	db = Db()
 	day = db.select("""SELECT map_day_nb from map;""")
 	day_tmp = day.pop()
  	db.execute("""
- 		INSERT INTO sale VALUES ({0}, {1}, {2}, {3});
- 	""".format(day_tmp,sales['quantity'],sales['player'],sales['item']))
-    db.close()
+ 		INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
+ 	""".format(day_tmp['map_day_nb'],sales['quantity'],sales['price'],sales['player'],sales['item']))
+        db.close()
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
