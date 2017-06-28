@@ -303,9 +303,7 @@
         method:'GET',
         contentType: "application/json",
         success: function(budget){
-          for (budget of playerInfo) {
-            console.log(playerInfo.cash);
-          }
+        console.log(budget.playerInfo.cash);
         }
       })
 
