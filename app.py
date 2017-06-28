@@ -168,7 +168,7 @@ def getMap():
 
 		#profit
 		playerProfit_tmp = db.select("""
-			SELECT COALESCE(
+			SELECT
 				(SELECT COALESCE(0,SUM (sal_qty * sal_price)) 
 				FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name 
 				WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') 
