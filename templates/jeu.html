@@ -299,13 +299,13 @@
                 }
             })
             $("#boutonprod").on('click',function(){
-            $.ajax(server+'/actions/'+$("#name").val(),{
+            $.ajax(server+'/actions/'+joueur,{
               method:'POST',
               data: JSON.stringify({
                 "actions":[{
                   "kind":"drinks",
                   "prepare":{"Limonade": $("#nombrelimonade").val()},
-                  "price":{"Limonade":$("#prixventelimonade").val(),}},
+                  "price":{"Limonade":$("#prixventelimonade").val(),}
                   /*{"kind":"ad",
                   "location": {"latitude": 100, "longitude": 100},
                   "radius": 10,
