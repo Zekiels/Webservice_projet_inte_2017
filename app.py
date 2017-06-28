@@ -118,7 +118,6 @@ def getMap():
 
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
 	rank = db.select("SELECT pla_name AS name, pla_cash AS cash from player order by pla_cash DESC;")
-	rankNoCash = db.select("SELECT pla_name AS name from player order by pla_cash DESC;")
 
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
