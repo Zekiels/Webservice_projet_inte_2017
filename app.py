@@ -197,7 +197,6 @@ def postRejoindre():
 	db = Db()
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
 	joueur = db.select(sql)
-	print (joueur)
 	db.close()
 	if joueur == []:
 		longitude = random.randrange(0,600)
@@ -211,8 +210,8 @@ def postRejoindre():
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		sql = sqlMapItem + sqlVente + sqlProd
 
-		sqlDrinksINfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
-		drinksInfo = db.execute(sqlDrinksINfo);
+		sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
+		drinksInfo = db.execute(sqlDrinksInfo);
 		print(drinksInfo)
 		db.close()
 
