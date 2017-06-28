@@ -211,13 +211,17 @@ def postRejoindre():
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		sql = sqlMapItem + sqlVente + sqlProd
 
-		sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
-		drinksInfo = db.execute(sqlDrinksInfo);
-		print(drinksInfo)
 		db.close()
 
+	sqlCoord = (""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '"+ name +"' """)
+	coord = db.select(sqlCoord)[0]
+	print(coord)
+	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
+	#drinksInfo = db.execute(sqlDrinksInfo);
 	#prixVente = (""" SELECT sal_price FROM Sale WHERE pla_name ='"+ name + "' rcp_name = 'limonade' sal_day_nb = '"+ day +"';""")
 	#prixProd = (""" SELECT pro_cost_at_that_time FROM production WHERE pla_name ='"+ name + "' rcp_name = 'limonade' pro_day_nb = '"+ day +"';""")
+	
+	#reponse = {"name": name,
 	return json_response()
 
 @app.route("/sales",methods=["POST"])
