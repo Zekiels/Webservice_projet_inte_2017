@@ -351,8 +351,6 @@ def postSales():
 		return json_response({ "error" : "Missing player" }, 400)
 	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
-	if "item" not in sales :
-		return json_response({ "error" : "Missing item" }, 400)
 
 	db = Db()
 	#get day
@@ -368,8 +366,8 @@ def postSales():
 	if sales["item"] == prod["pro_rcp_name"]:
 		if sales["quantity"] <= prod["pro_qty"]:
 		 	db.execute("""
-		 		INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
-		 	""".format(day, sales['quantity'],sales['price'],sales['player'],sales['item']))
+		 		UPDATE SET sal_qty = {0} FROM sale  WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3});
+		 	""".format(sales['quantity'], sales['item'],sales['player'], day))
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 		else:
 			return json.dumps("quantity error"),400,{'Content-Type':'application/json'}
