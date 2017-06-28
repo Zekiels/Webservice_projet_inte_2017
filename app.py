@@ -361,7 +361,7 @@ def postSales():
 						FROM production 
 						WHERE pro_pla_name = '{0}' 
 						AND pro_day_nb = {1};
-					""".format(sales["player"], day))
+					""".format(sales["player"], day))[0]
 	print(sales["item"])
 	print(prod["pro_rcp_name"])
 	print(sales["quantity"])
