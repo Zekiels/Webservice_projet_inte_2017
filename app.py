@@ -362,7 +362,8 @@ def postSales():
 						WHERE pro_pla_name = '{0}' 
 						AND pro_day_nb = {1};
 					""".format(sales["player"], day))
-
+	print("item" in sales)
+	print("pro_rcp_name" in prod)
 	if "item" in sales == "pro_rcp_name" in prod:
 		if "quantity" in sales <= "pro_qty" in prod:			
 		 	db.execute("""
