@@ -305,8 +305,9 @@
         success: function(data){
         console.log(data.playerInfo.cash);
         $("#budget").text(data.playerInfo.cash+"€");
-        console.log(data.map.region);
-        $("#ville").text("Region: "+data.map.region);
+        console.log(data.map.region.center.latitude);
+        console.log(data.map.region.center.longitude);
+        $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);
         /*console.log(ville.map.region);
         $("#longitude").text("Region: "+ville.map.region);*/
         }
