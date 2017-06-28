@@ -115,16 +115,12 @@ def getMap():
 	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_lattitude_span AS lattitude_span from map;")
 	coordinate_span = coordinate_span_tmp[0]
 
-	print (coordinate)
-	print (coordinate_tmp)
-
-	regionCoord = {"region": {"center": coordinate, "span" : coordinate_span}}
+	regionCoord = {"center": coordinate, "span" : coordinate_span}
 	rank = db.select("SELECT pla_name AS name, pla_cash AS cash from player order by pla_cash DESC;")
+	rankNoCash = db.select("SELECT pla_name AS name from player order by pla_cash DESC;")
 
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
-	print(day_tmp)
-	print(day)
 	db.close()
 
 	
@@ -153,8 +149,14 @@ def getMap():
 
 		db = Db()
 		#itemsByPlayer)
-		oneItem = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
-		listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}
+		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
+		if len(oneItem_temp) > 0 :
+			oneItem = oneItem_temp[0]
+			listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}	
+		else:
+			oneItem = oneItem_temp
+			listItems = oneItem
+			
 		itemsByPlayer[i['name']] = listItems
 		db.close()
 		
@@ -165,7 +167,7 @@ def getMap():
 		drinksByPlayer[i['name']] = listDrinks
 		db.close()
 
-	Map = {"region":regionCoord, "ranking":rank, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}
+	Map = {"region":regionCoord, "ranking":rankNoCash, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}
 	print(Map)
 	db.close()
 
@@ -230,6 +232,7 @@ def postSales():
   	item = sales['item']
   	quantity = sales['quantity']
  	print(sales)
+ 	print(dicoAction)
  	for i in dicoAction:
  		if i == player:
  			for j in dicoAction[i]['actions']:
@@ -243,7 +246,7 @@ def postSales():
 								recette[item] = recette[item] - quantity
 
 							prixVente = j['price'][item]
-
+							print("start request")
 							db = Db()
 							#get jour
 							day = db.select("""SELECT map_day_nb from map;""")
@@ -261,6 +264,7 @@ def postSales():
 							#insert vente (0,10,12,'Toto','limonade')
 							sql = "INSERT INTO sale VALUES('" + str(day_tmp) + "','" + str(quantity) + "','" + str(prixVente) + "','" + str(player) + "','" + str(item) + "');"
 							db.execute(sql)
+							print("request execute")
 							db.close()
 	#if "quantity" not in sales :
 	#	return json_response({ "error" : "Missing quantity" }, 400)
