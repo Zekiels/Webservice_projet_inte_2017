@@ -139,11 +139,9 @@ def getMap():
 
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
-	db.close()
 
 
 	for i in rank:
-		db = Db()
 		rankNoKeys.append(i.get("name"))
 		#playerInfo
 		#budget
@@ -155,7 +153,7 @@ def getMap():
 		playerSales = playerSales_tmp[0]["sales"]
 
 		#profit
-		playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(i.get("name"), day.get("map_day_nb")))
+		playerProfit_tmp = db.select("SELECT COALESCE(SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time),0) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(i.get("name"), day.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]["profit"]
 
 		#drinksByPlayer
@@ -166,13 +164,11 @@ def getMap():
 			j["hasAlcohol"] = j["hasalcohol"]
 			del j["hasalcohol"]
 
-		db.close()
 		info = {"cash": playerCash, "sales":playerSales, "profit":playerProfit, "drinksOffered":playerDoableDrinks}
 
 
 		playerInfo[i['name']] = info
 
-		db = Db()
 		#itemsByPlayer)
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_latitude AS latitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
@@ -184,9 +180,7 @@ def getMap():
 			listItems = oneItem
 
 		itemsByPlayer[i['name']] = listItems
-		db.close()
 
-		db = Db()
 		#drinksByPlayer
 		#liste des types de boissons preparee*
 		listDrinks = db.select("SELECT sal_rcp_name AS name, sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM sale  INNER JOIN recipe ON recipe.rcp_name = sale.sal_rcp_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
@@ -197,7 +191,6 @@ def getMap():
 			del j["hasalcohol"]
 
 		drinksByPlayer[i['name']] = listDrinks
-		db.close()
 
 	Map = {"map":{"region":regionCoord, "ranking":rankNoKeys, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
 	print(Map)
@@ -268,7 +261,7 @@ def postRejoindre():
 	playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(name, day))
 	playerSales = playerSales_tmp[0]["sales"]
 	print(playerSales)
-	#profit
+	#profit renvoi null
 	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(name, day))
 	playerProfit = playerProfit_tmp[0]["profit"]
 	print(playerProfit)
