@@ -232,9 +232,9 @@ def postSales():
   	item = sales['item']
   	quantity = sales['quantity']
  	print(sales)
- 	for i in dicoTest:
+ 	for i in dicoAction:
  		if i == player:
- 			for j in dicoTest[i]['actions']:
+ 			for j in dicoAction[i]['actions']:
  				if j['kind'] == 'drinks':
  					recette = j['prepare']
  					if item in recette:
@@ -314,11 +314,6 @@ def postAction(PlayerName):
 	actions = request.get_json()
 	dicoAction[PlayerName] = actions
 	return json_response(dicoAction)
-
-
-
-
-	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 #@app.route("/idGet",methods=["GET"])
 #def idGet():
