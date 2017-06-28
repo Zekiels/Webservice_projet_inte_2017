@@ -209,8 +209,8 @@
                   <tr>
                     <th><h3><b>Météo actuelle</b></h3></th>
                     <th><h3><b>Prévision météo</b></h3></th>
-                    <th><h3><b>Localisation</b></h3></th>
-                    <th><h3><b>Heure</b></h3></th>
+                    <th><h3><b>Jour et heure</b></h3></th>
+                    <th><h3><b>Classement</b></h3></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -218,13 +218,11 @@
                     <td><span><h4 id="meteo">Canicule</h4></span></td>
                     <td><span><h4 id="prevision">Pluie</h4></span></td>
                     <td>
-                      <p><h4 id="ville">Region: Perpignan</h4></p>
-                      <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
-                      <p><h4 id="longitude">Longitude: 2°53′43″</h4></p>
-                    </td>
-                    <td>
                       <span><h4 id="jour">Jour 1</h4></span>
                       <span><h4 id="heure">15:00</h4></span>
+                    </td>
+                    <td>
+                      <span><h4 id="classement"></h4></span>
                     </td>
                   </tr>
                   <tr id="visuel">
@@ -305,12 +303,15 @@
         success: function(data){
         console.log(data.playerInfo.cash);
         $("#budget").text(data.playerInfo.cash+"€");
-        console.log(data.map.region.center.latitude);
+        for (place of data.ranking) {
+          
+        console.log(data.ranking.cash);
+        $("#budget").text(data.playerInfo.cash+"€");
+        /*console.log(data.map.region.center.latitude);
         console.log(data.map.region.center.longitude);
-        $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);
-        /*console.log(ville.map.region);
-        $("#longitude").text("Region: "+ville.map.region);*/
+        $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);*/
         }
+      }
       })
 
       /*$("#deconnexion").on('click',function(){
