@@ -209,7 +209,11 @@ def postquitter():
 @app.route("/player", methods=["POST"])
 def postRejoindre():
     rejoindre = request.get_json()
-    #name = rejoindre["name"]
+    name = rejoindre["name"]
+    db = Db()
+    sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"' ;"
+	joueur = db.select(sql)
+	db.close()
 	#print(joueur)
 	#if joueur = []:
 	#	coordX = random.randrange(330,670,1)
