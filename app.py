@@ -176,7 +176,7 @@ def getMap():
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_latitude AS latitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
-			listItems = [{"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}]	
+			listItems = [{"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}]
 		else:
 			oneItem = oneItem_temp
 			listItems = oneItem
@@ -214,7 +214,7 @@ def getBD():
 #################################                   POST   						 #######################################################
 
 @app.route("/players/<playerName>", methods=["POST"])
-def postquitter():
+def postquitter(playerName):
 	quitter = request.get_son()
 	print (quitter)
 
@@ -238,9 +238,9 @@ def postRejoindre():
 		db.execute(sqlPLayer)
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		db.execute(sqlMapItem)
-		sqlVente = db.execute(""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
-		db.execute(sqlVente)
-		sqlPod = db.execute(""" INSERT INTO production VALUES('{0}', 0, {1},'{2}', 'limonade');""".format(day, 0.82, name))
+		#sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
+		#db.execute(sqlVente)
+		sqlPod = (""" INSERT INTO production VALUES('{0}', 0, '0.82','{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
 		db.close()
 		pass
@@ -252,7 +252,7 @@ def postRejoindre():
 	coordinates = {"latitude":coordx, "longitude":coordy}
 
 	#drinkInfo
-	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = 'lolo' ;""")[0]
+	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))[0]
 	print(prod)
 
 
