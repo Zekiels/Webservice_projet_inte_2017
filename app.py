@@ -206,15 +206,10 @@ def postRejoindre():
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
 		db.execute(sqlPLayer)
-
 		sqlMap_Item = " INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_lattitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{1} ,{2} ,'{3}', 0);".format(longitude, latitude ,name)
-		db.execute(sqlMap_Item)
-
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
-		db.execute(sqlVente)
-
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
-		db.execute(sqlProd)
+		sql = sqlMap_Item + sqlVente + sqlProd
 
 		sqlDrinksINfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 		drinksInfo = db.execute(sqlDrinksINfo);
