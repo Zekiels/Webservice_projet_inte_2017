@@ -28,14 +28,17 @@ $(function(){
     $.ajax(server+'/player',{
       method:'POST',
       data:JSON.stringify({
-        "name": $("#name"),
+        "name": $("#name").val(),
       }),
       contentType: "application/json",
       success: function(name){
         $('#name').val();
-        document.location='http://limonade-equipe7.herokuapp.com/jeu.html';
+        document.location='http://limonade-equipe7.herokuapp.com/jeu.html?name='+$('#name').val();
       },
       error: function(error){
+        console.log(JSON.stringify({
+          "name": $("#name").val(),
+        }))
         console.log(error.error);
       }
     })

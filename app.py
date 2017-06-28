@@ -19,6 +19,7 @@ nombre = ['toto','tata','titi']
 
 CurrentWeather = []
 PrevisoinWeather = []
+dicoAction = {}
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -63,7 +64,6 @@ def getMapPlayer():
 	itemsByPlayer={}
 	playerInfo={}
 	drinksByPlayer={}
-
 
 	db = Db()
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_lattitude AS lattitude from map;")
@@ -143,44 +143,75 @@ def postquitter():
 
 @app.route("/player", methods=["POST"])
 def postRejoindre():
-    rejoindre = request.get_json()
-    print(rejoindre)
-
-    if rejoindre == 0 :
-        return json_response({ "error" : "Missing name" }, 400)
-	#Creation d'un nouveau joueur
+	rejoindre = request.get_json()
+	name = rejoindre['name']
 	db = Db()
-	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-	print(budget)
-	print(rejoindre)
-	db.execute("""
-		INSERT INTO Player VALUES ('{0}', "", {1}, 0);
-		""".format(rejoindre["name"],budget[0]["pre_value"]) , rejoindre)
+	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
+	joueur = db.select(sql)
+	print (joueur)
 	db.close()
-
-
-	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	if joueur == []:
+		coordX = random.randrange(330,670,1)
+		coordY = random.randrange(130,470,1)
+		db = Db()
+		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
+		db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
+		db.close()
+	return json_response()
 
 @app.route("/sales",methods=["POST"])
 def postSales():
  	sales = request.get_json()
+ 	player = sales['player']
+  	item = sales['item']
+  	quantity = sales['quantity']
  	print(sales)
+ 	for i in dicoTest:
+ 		if i == player:
+ 			for j in dicoTest[i]['actions']:
+ 				if j['kind'] == 'drinks':
+ 					recette = j['prepare']
+ 					if item in recette:
+ 						if recette[item] != 0:
+ 							if quantity > recette[item]:
+								quantity = recette[item]
+							else: 
+								recette[item] = recette[item] - quantity
 
-	if "quantity" not in sales :
-		return json_response({ "error" : "Missing quantity" }, 400)
-	if "player" not in sales :
-		return json_response({ "error" : "Missing player" }, 400)
-	if "item" not in sales :
-		return json_response({ "error" : "Missing item" }, 400)
+							prixVente = j['price'][item]
 
+							db = Db()
+							#get jour
+							day = db.select("""SELECT map_day_nb from map;""")
+							day_tmp = day.pop()
+							#get budget player
+							sqlGetBudget = "SELECT pla_cash FROM player WHERE pla_name = '"+ player +"';"
+							budget = db.select(sqlGetBudget)[0]['pla_cash']
+							print quantity
+							print prixVente
+							calBudget = budget + (quantity*prixVente)
+							print calBudget
+							#update budget
+							sqlBudget = "UPDATE player SET (pla_cash) = ('"+ str(calBudget) +"') WHERE pla_name = '" + player + "';"
+							db.execute(sqlBudget)
+							#insert vente (0,10,12,'Toto','limonade')
+							sql = "INSERT INTO sale VALUES('" + str(day_tmp) + "','" + str(quantity) + "','" + str(prixVente) + "','" + str(player) + "','" + str(item) + "');"
+							db.execute(sql)
+							db.close()
+	#if "quantity" not in sales :
+	#	return json_response({ "error" : "Missing quantity" }, 400)
+	#if "player" not in sales :
+	#	return json_response({ "error" : "Missing player" }, 400)
+	#if "item" not in sales :
+	#	return json_response({ "error" : "Missing item" }, 400)
 
-	db = Db()
-	day = db.select("""SELECT map_day_nb from map;""")
-	day_tmp = day.pop()
- 	db.execute("""
- 		INSERT INTO sale VALUES ({0}, @(quantity), 0, @(player), @(item));
- 	""".format(day_tmp.get("map_day_nb")), sales)
- 	db.close()
+	#db = Db()
+	#day = db.select("""SELECT map_day_nb from map;""")
+	#day_tmp = day.pop()
+ 	#db.execute("""
+ 	#	INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
+ 	#""".format(day_tmp['map_day_nb'],sales['quantity'],sales['price'],sales['player'],sales['item']))
+    #    db.close()
 
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
@@ -215,34 +246,8 @@ def postWheather():
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction(PlayerName):
 	actions = request.get_json()
-
-	if "actions" not in actions or len(actions["actions"]) == 0:
-		return json_response({ "error" : "Missing player" }, 400)
-	if actions["actions"]["kind"] == "drinks":
-		db = Db()
-		day = db.select("""SELECT map_day_nb from map;""")
-		day_tmp = day.pop()
-
-		db.execute("""
-	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
-		
-
-		#{ "sufficientFunds":bool, "totalCost":float }
-		rqt = db.select(""" 
-			SELECT I.ing_current_cost, c.com_quantity
-			From ingredient I, compose c
-			WHERE I.ing_name = c.com_ing_name
-			AND c.com_rcp_name = %s;
-			""", (actions["actions"]["prepare"].items()))
-		print(rqt)
-		db.close()
-		return json.dumps("ok"),200,{'Content-Type':'application/json'}
-	if actions["actions"]["kind"] == "recipe":
-
-		print("NON")
-	if actions["actions"]["kind"] == "ad":
-		print("NON")
+	dicoAction[PlayerName] = actions
+	return json_response(dicoAction)
 
 
 
