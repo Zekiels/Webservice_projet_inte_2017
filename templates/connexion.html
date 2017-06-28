@@ -11,7 +11,7 @@
 <p id="titre">Bienvenue sur Lemonade-Face-Off</p>
   <div class="login">
     <h1>Identifiant</h1>
-    <input type="text" placeholder="Mon identifiant" required="required" id="name"/>
+    <input type="text" placeholder="Mon identifiant" required="required" id="name" maxlength="50" pattern="[A-Za-z]{50}" title="Maximum 50 caractères A-Z ou a-z (pas de caractères spéciaux)"/>
     <button type="submit" class="btn btn-primary btn-block btn-large" id="connect">Connexion</button>
   </div>
 </body>
