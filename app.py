@@ -141,7 +141,7 @@ def getMap():
 		playerProfit = playerProfit_tmp[0]["profit"]
 
 		#drinksByPlayer	
-		playerDoableDrinks = db.select("SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';".format(i.get("name")))	
+		playerDoableDrinks = db.select("SELECT rcp_name AS name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';".format(i.get("name")))	
 
 		db.close()
 		info = {"cash": playerCash, "sales":playerSales, "profit":playerProfit, "drinksOffered":playerDoableDrinks}
@@ -197,7 +197,6 @@ def postRejoindre():
 	db = Db()
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
 	joueur = db.select(sql)
-	print (joueur)
 	db.close()
 	if joueur == []:
 		longitude = random.randrange(0,600)
@@ -211,8 +210,8 @@ def postRejoindre():
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		sql = sqlMapItem + sqlVente + sqlProd
 
-		sqlDrinksINfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
-		drinksInfo = db.execute(sqlDrinksINfo);
+		sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
+		drinksInfo = db.execute(sqlDrinksInfo);
 		print(drinksInfo)
 		db.close()
 
