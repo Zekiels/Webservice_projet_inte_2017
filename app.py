@@ -208,10 +208,10 @@ def postquitter():
 
 @app.route("/player", methods=["POST"])
 def postRejoindre():
-    rejoindre = request.get_json()
-    name = rejoindre["name"]
-    db = Db()
-    sql = "SELECT pla_name FROM player;"
+	rejoindre = request.get_json()
+	name = rejoindre["name"]
+	db = Db()
+	sql = "SELECT pla_name FROM player;"
 	joueur = db.select(sql)
 	print (sql)
 	db.close()
@@ -223,7 +223,7 @@ def postRejoindre():
     #	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
     #	db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
     #	db.close()
-    return json_response()
+	return json_response()
 
 @app.route("/sales",methods=["POST"])
 def postSales():
