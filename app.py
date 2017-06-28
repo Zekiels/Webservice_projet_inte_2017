@@ -79,13 +79,15 @@ def getMapPlayer(playerName):
 	sqlSpan = "SELECT map_latitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
 	coordinatesSpan = db.select(sqlSpan)[0]
 	#ranking
-	sqlRank = "SELECT pla_name FROM player ORDER BY pla_cash DESC;"
-	ranking = db.select(sqlRank)
+	rank = db.select("SELECT pla_name AS name from player order by pla_cash DESC;")
+	rankNoKeys = []
+	for i in rank:
+		rankNoKeys.append(i.get("name"))
 	db.close()
 
 	region = {"center": coordinates, "span": coordinatesSpan}
 	#ajouter Mapitem
-	mapInfo = {"region" : region, "ranking" : ranking}
+	mapInfo = {"region" : region, "ranking" : rankNoKeys}
 	print(region)
 	db = Db()
 	#infoPlayer
@@ -94,7 +96,7 @@ def getMapPlayer(playerName):
 	#info joueur profit
 	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(playerName, day))
 	#info joueur budget
-	sqlBudget = "SELECT pla_cash FROM player WHERE pla_name = '{0}';"
+	sqlBudget = "SELECT pla_cash as cash FROM player WHERE pla_name = '{0}';"
 	#info nb vente
 	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}';"
 	#info joueur drinkOffered
