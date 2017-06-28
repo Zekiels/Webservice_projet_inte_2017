@@ -218,7 +218,7 @@
                     <td><span><h4 id="meteo">Canicule</h4></span></td>
                     <td><span><h4 id="prevision">Pluie</h4></span></td>
                     <td>
-                      <p><h4 id="ville">Ville: Perpignan</h4></p>
+                      <p><h4 id="ville">Region: Perpignan</h4></p>
                       <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
                       <p><h4 id="longitude">Longitude: 2°53′43″</h4></p>
                     </td>
@@ -305,6 +305,10 @@
         success: function(budget){
         console.log(budget.playerInfo.cash);
         $("#budget").text(budget.playerInfo.cash+"€");
+        console.log(ville.map.region);
+        $("#ville").text("Region: "+ville.map.region);
+        /*console.log(ville.map.region);
+        $("#longitude").text("Region: "+ville.map.region);*/
         }
       })
 
