@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><h3 id="budget">+20.27€</h3></td>
+            <td><h3 id="budget">20.27€</h3></td>
           </tr>
         </tbody>
       </table>
@@ -209,8 +209,8 @@
                   <tr>
                     <th><h3><b>Météo actuelle</b></h3></th>
                     <th><h3><b>Prévision météo</b></h3></th>
-                    <th><h3><b>Localisation</b></h3></th>
-                    <th><h3><b>Heure</b></h3></th>
+                    <th><h3><b>Jour et heure</b></h3></th>
+                    <th><h3><b>Classement</b></h3></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -218,13 +218,11 @@
                     <td><span><h4 id="meteo">Canicule</h4></span></td>
                     <td><span><h4 id="prevision">Pluie</h4></span></td>
                     <td>
-                      <p><h4 id="ville">Ville: Perpignan</h4></p>
-                      <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
-                      <p><h4 id="longitude">Longitude: 2°53′43″</h4></p>
-                    </td>
-                    <td>
                       <span><h4 id="jour">Jour 1</h4></span>
                       <span><h4 id="heure">15:00</h4></span>
+                    </td>
+                    <td>
+                      <span><h4 id="classement"></h4></span>
                     </td>
                   </tr>
                   <tr id="visuel">
@@ -299,14 +297,21 @@
         }
       })
 
-      $.ajax(server+'/map'+joueur,{
+      $.ajax(server+'/map/'+joueur,{
         method:'GET',
         contentType: "application/json",
-        success: function(budget){
-          for (budget of playerInfo) {
-            console.log(playerInfo.cash);
-          }
+        success: function(data){
+        console.log(data.playerInfo.cash);
+        $("#budget").text(data.playerInfo.cash+"€");
+        for (place of data.ranking) {
+          
+        console.log(data.ranking.cash);
+        $("#budget").text(data.playerInfo.cash+"€");
+        /*console.log(data.map.region.center.latitude);
+        console.log(data.map.region.center.longitude);
+        $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);*/
         }
+      }
       })
 
       /*$("#deconnexion").on('click',function(){
