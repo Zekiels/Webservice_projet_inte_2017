@@ -234,10 +234,12 @@ def postRejoindre():
 		db.execute(sqlPLayer)
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		db.execute(sqlMapItem)
-		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}');""".format(day,name))
-		db.execute(sqlVente)
-		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade','{1}');""".format(day,name))
-		db.execute(sqlProd)
+		#sqlVente = 
+		db.execute(""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade','{1}');""".format(day, name))
+		#db.execute(sqlVente)
+		#sqlProd = 
+		db.execute(""" INSERT INTO production VALUES('{0}', 0, , 'limonade','{1}');""".format(day, name))
+		#db.execute(sqlProd)
 		db.close()
 		pass
 	db = Db()
