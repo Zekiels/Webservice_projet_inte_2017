@@ -103,7 +103,7 @@ def getMapPlayer(playerName):
 	print(budgetBase)
 	nbSales = db.select(sqlSales.format(playerName))[0]['nbsales']
 	print(nbSales)
-	drinksInfo = db.select(sqlDrinks.format(playerName))[0]
+	drinksInfo = db.select(sqlDrinks.format(playerName))
 	print(drinksInfo)
 	db.close()
 
