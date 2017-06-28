@@ -145,7 +145,9 @@ def getMap():
 		listCor = []
 		for j in playerDoableDrinks:
 			j["isCold"] = j.pop("iscold")
-			j["hasAlcohol"] = j.poo("hasalcohol")
+			del j[iscold]
+			j["hasAlcohol"] = j["hasalcohol"]
+			del j["hasalcohol"]
 
 		db.close()
 		info = {"cash": playerCash, "sales":playerSales, "profit":playerProfit, "drinksOffered":playerDoableDrinks}
