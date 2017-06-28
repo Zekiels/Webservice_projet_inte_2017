@@ -440,10 +440,10 @@ def postWheather():
 def postAction(PlayerName):
 	actions = request.get_json()
 	print(actions)
-	print(actions[0]["actions"]["kind"])
+	print(actions["actions"][0]["kind"])
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
-	if actions["actions"]["kind"] == "drinks":
+	if actions["actions"][0]["kind"] == "drinks":
 		db = Db()
 		day = db.select("""SELECT map_day_nb from map;""")
 		day_tmp = day.pop()
