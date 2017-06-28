@@ -73,7 +73,7 @@ def getMapPlayer(playerName):
 
 	db = Db()
 	#emplacement map centre
-	sql = "SELECT map_lattitude as latitude, map_longitude as longitude FROM map;"
+	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
 	coordinates = db.select(sql)[0]
 	#emplacement map span
 	sqlSpan = "SELECT map_lattitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
