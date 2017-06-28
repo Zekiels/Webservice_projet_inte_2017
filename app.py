@@ -103,7 +103,7 @@ def getMapPlayer(playerName):
 	print(budgetBase)
 	nbSales = db.select(sqlSales.format(playerName))[0]['nbsales']
 	print(nbSales)
-	drinksInfo = db.select(sqlDrinks.format(playerName))[0]
+	drinksInfo = db.select(sqlDrinks.format(playerName))
 	print(drinksInfo)
 	db.close()
 
@@ -176,7 +176,8 @@ def getMap():
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_latitude AS latitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
-			listItems = [{"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}]
+			listItems = [{"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}]	
+			#Atention je triche vu qu'on a qu'un seul map_item, en vrai il faudrait utiliser des list.append()
 		else:
 			oneItem = oneItem_temp
 			listItems = oneItem
@@ -187,7 +188,7 @@ def getMap():
 		db = Db()
 		#drinksByPlayer
 		#liste des types de boissons preparee*
-		listDrinks = db.select("SELECT pro_rcp_name AS name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+		listDrinks = db.select("SELECT pro_rcp_name AS name, sale.sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name INNER JOIN sale ON production.prod_rcp_name = sale.sal_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
 		for j in listDrinks:
 			j["isCold"] = j["iscold"]
 			del j["iscold"]
