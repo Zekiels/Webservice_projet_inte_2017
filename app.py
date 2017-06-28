@@ -109,7 +109,7 @@ def getMap():
 	drinksByPlayer={}
 
 	db = Db()
-	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS lattitude from map;")
+	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS latitude from map;")
 	coordinate = coordinate_tmp[0]
 
 	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_latitude_span AS latitude_span from map;")
@@ -206,7 +206,7 @@ def postRejoindre():
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
 		db.execute(sqlPLayer)
-		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_lattitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
+		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		sql = sqlMapItem + sqlVente + sqlProd
