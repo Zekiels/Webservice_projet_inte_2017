@@ -431,12 +431,12 @@ def postAction(PlayerName):
 			price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity) 
 												FROM ingredient 
 												INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
-												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))
+												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
 			print(price)
 			#create production
 			db.execute("""
 		    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price, PlayerName, action["prepare"].items()[0][0]))
+		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price["sum"], PlayerName, action["prepare"].items()[0][0]))
 
 			#create sale
 			db.execute("""
