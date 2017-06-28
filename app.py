@@ -22,8 +22,6 @@ CurrentWeather = []
 PrevisoinWeather = []
 dicoAction = {}
 
-day = 1
-
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
 
@@ -352,12 +350,14 @@ def postWheather():
 		currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
 		previsionWeather = weather["weather"][1]["weather"]
-
-	if (timestamp%24) == 0:
-		day = day + 1 
-		print (day)
-
 	db = Db()
+	day = ("SELECT map_day_nb FROM map;")[0]
+	print (day)
+	#if (timestamp%24) == 0:
+	#	day = day + 1 
+	#	print (day)
+
+	
 	db.execute("""
 		UPDATE map
 		SET  map_day_nb = {0}, map_time = {1}, map_prevision_weather = '{2}', map_current_weather =  '{3}'
