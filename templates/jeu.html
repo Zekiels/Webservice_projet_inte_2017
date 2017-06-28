@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><h3>+20.27€</h3></td>
+            <td><h3 id="budget">+20.27€</h3></td>
           </tr>
         </tbody>
       </table>
@@ -295,6 +295,16 @@
             $("#meteo").text(weather.weather);
             else
             $("#prevision").text(weather.weather);
+          }
+        }
+      })
+
+      $.ajax(server+'/map'+joueur,{
+        method:'GET',
+        contentType: "application/json",
+        success: function(budget){
+          for (budget of playerInfo) {
+            console.log(playerInfo.cash);
           }
         }
       })
