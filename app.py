@@ -209,7 +209,6 @@ def postRejoindre():
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		sql = sqlMapItem + sqlVente + sqlProd
-		print(drinksInfo)
 
 		db.close()
 
