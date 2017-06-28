@@ -215,19 +215,17 @@ def postquitter(playerName):
 
 	return json.dumps("error"),400,{'Content-Type':'application/json'}
 
-
 @app.route("/players", methods=["POST"])
 def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
 	db = Db()
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
 	joueur = db.select(sql)
-	db.close()
 	if joueur == []:
 		longitude = random.randrange(0,600)
 		latitude = random.randrange(0,600)
-		db = Db()
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
 		db.execute(sqlPLayer)
@@ -237,9 +235,7 @@ def postRejoindre():
 		db.execute(sqlVente)
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82,'{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
-		db.close()
-		pass
-	db = Db()
+
 	#recuperation des coord longitude et latitude
 	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))[0]
 	coordx=coord["mit_longitude"]
@@ -247,11 +243,11 @@ def postRejoindre():
 	coordinates = {"latitude":coordx, "longitude":coordy}
 
 	#drinkInfo
-	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade' """)[0]
+	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade' """)
 	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))
 
 
-	drinkInfo = {"name":drink["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink["rcp_has_alcohol"], "isCold":drink["rcp_is_cold"]}
+	#drinkInfo = {"name":drink[0]["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink[0]["rcp_has_alcohol"], "isCold":drink[0]["rcp_is_cold"]}
 
 	#player cash
 	playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name ='{0}';".format(name))
@@ -350,12 +346,13 @@ def postWheather():
 		currentWeather = weather["weather"][0]["weather"]
 	if weather["weather"][1]["dfn"] == 1:
 		previsionWeather = weather["weather"][1]["weather"]
+
 	db = Db()
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
-	print (day)
-	#if (timestamp%24) == 0:
-	#	day = day + 1 
-	#	print (day)
+	if (timestamp%24) == 0:
+		day = day + 1 
+	if(timestamp<23):
+		day = 1
 
 	
 	db.execute("""
