@@ -341,61 +341,32 @@ def postRejoindre():
 
 @app.route("/sales",methods=["POST"])
 def postSales():
- 	sales = request.get_json()
- 	player = sales['player']
-  	item = sales['item']
-  	quantity = sales['quantity']
- 	print(sales)
- 	print(dicoAction)
- 	for i in dicoAction:
- 		if i == player:
- 			for j in dicoAction[i]['actions']:
- 				if j['kind'] == 'drinks':
- 					recette = j['prepare']
- 					if item in recette:
- 						if recette[item] != 0:
- 							if quantity > recette[item]:
-								quantity = recette[item]
-							else:
-								recette[item] = recette[item] - quantity
 
-							prixVente = j['price'][item]
-							print("start request")
-							db = Db()
-							#get jour
-							day = db.select("""SELECT map_day_nb from map;""")
-							day_tmp = day.pop()
-							#get budget player
-							sqlGetBudget = "SELECT pla_cash FROM player WHERE pla_name = '"+ player +"';"
-							budget = db.select(sqlGetBudget)[0]['pla_cash']
-							print quantity
-							print prixVente
-							calBudget = budget + (quantity*prixVente)
-							print calBudget
-							#update budget
-							sqlBudget = "UPDATE player SET (pla_cash) = ('"+ str(calBudget) +"') WHERE pla_name = '" + player + "';"
-							db.execute(sqlBudget)
-							#insert vente (0,10,12,'Toto','limonade')
-							sql = "INSERT INTO sale VALUES('" + str(day_tmp) + "','" + str(quantity) + "','" + str(prixVente) + "','" + str(player) + "','" + str(item) + "');"
-							db.execute(sql)
-							print("request execute")
-							db.close()
-	#if "quantity" not in sales :
-	#	return json_response({ "error" : "Missing quantity" }, 400)
-	#if "player" not in sales :
-	#	return json_response({ "error" : "Missing player" }, 400)
-	#if "item" not in sales :
-	#	return json_response({ "error" : "Missing item" }, 400)
+	if "quantity" not in sales :
+		return json_response({ "error" : "Missing quantity" }, 400)
+	if "player" not in sales :
+		return json_response({ "error" : "Missing player" }, 400)
+	if "item" not in sales :
+		return json_response({ "error" : "Missing item" }, 400)
 
-	#db = Db()
-	#day = db.select("""SELECT map_day_nb from map;""")
-	#day_tmp = day.pop()
- 	#db.execute("""
- 	#	INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
- 	#""".format(day_tmp['map_day_nb'],sales['quantity'],sales['price'],sales['player'],sales['item']))
-    #    db.close()
+	db = Db()
+	#get day
+	day_tmp = db.select("SELECT map_day_nb from map;")
+	day = day_tmp[0]
+	
+	prod = db.select("SELECT pro_qty, pro_rcp_name FROM production WHERE pro_pla_name = '{0}' AND pro_day_nb = {1}").format(sales["player"], day) 
 
- 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	#if "item" in sales == "pro_rcp_name" in prod:
+	#	if "quantity" in sales <= "pro_qty" in prod:			
+	#	 	db.execute("""
+	#	 		INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
+	#	 	""".format(day, sales['quantity'],sales['price'],sales['player'],sales['item']))
+    #		return json.dumps("ok"),200,{'Content-Type':'application/json'}
+    #	else:
+    #		return json.dumps("quantity error"),400,{'Content-Type':'application/json'}
+    #else:
+	#	return json.dumps("item error"),400,{'Content-Type':'application/json'}		
+    db.close()
 
 
 @app.route("/metrology", methods=["POST"])
@@ -437,17 +408,20 @@ def postWheather():
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction(PlayerName):
 	actions = request.get_json()
-
+	print(actions)
+	print(actions["actions"][0]["prepare"].values()[0])
+	print(actions["actions"][0]["price"].values()[0])  
+	print(actions["actions"][0]["prepare"].items()[0][0])
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
-	if actions["actions"]["kind"] == "drinks":
+	if actions["actions"][0]["kind"] == "drinks":
 		db = Db()
 		day = db.select("""SELECT map_day_nb from map;""")
 		day_tmp = day.pop()
 
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
+	 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], actions["actions"][0]["price"].values()[0], PlayerName, actions["actions"][0]["prepare"].items()[0][0]))
 
 		#{ "sufficientFunds":bool, "totalCost":float }
 		#rqt = db.select("""
