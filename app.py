@@ -65,34 +65,42 @@ def getIngredienst():
 # Recupere les details d'une partie
 @app.route('/map/<playerName>', methods=['GET'])
 def getMapPlayer(playerName):
-	#create 
+	#info de boisson du joueur
 	db = Db()
-	sql = "SELECT b_nom as boisson, b_alcool as hasAlcool, b_chaud as isHot, i_nom as ingredient, i_prix as ingPrix, r_qte as quantite FROM ingredient INNER JOIN recette ON recette.i_id = ingredient.i_id INNER JOIN boisson ON boisson.b_id = recette.b_id WHERE boisson.b_id IN (SELECT b_id FROM boisson WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '" + playerName +"'));"
-	ingredients = db.select(sql)
+	sql = "SELECT ing_name as name, ing_has_alcohol as hasAlcool, ing_is_cold as isCold, ing_current_cost as cost FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name IN (SELECT acc_rcp_name FROM access WHERE acc_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}'));"
+	ingredients = db.select(sql.format(player_name))
 	db.close()
 
 	db = Db()
-	sql = "SELECT m_centreX as latitude, m_centreY as longitude FROM map;"
+	#emplacement map centre
+	sql = "SELECT map_lattitude as latitude, map_longitude as longitude FROM map;"
 	coordinates = db.select(sql)[0]
-	sqlSpan = "SELECT m_coordX as latitudeSpan, m_coordY as longitudeSpan FROM map;"
+	#emplacement map span
+	sqlSpan = "SELECT map_lattitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
 	coordinatesSpan = db.select(sqlSpan)[0]
-	sqlRank = "SELECT j_pseudo FROM JOUEUR ORDER BY j_budget DESC;"
+	#ranking
+	sqlRank = "SELECT pla_name FROM player ORDER BY pla_cash DESC;"
 	ranking = db.select(sqlRank)
 	db.close()
 
 	region = {"center": coordinates, "span": coordinatesSpan}
-
+	#ajouter Mapitem
 	mapInfo = {"region" : region, "ranking" : ranking}
 	print region
 	db = Db()
-	sqlCoord = "SELECT z_centerX as latitude, z_centerY as longitude FROM zone WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '" + player_name + "');"
-	sqlBudget = "SELECT j_budget FROM joueur WHERE j_pseudo = '"+ player_name +"';"
-	sqlSales = "SELECT COALESCE(0,SUM(v_qte)) as nbSales FROM ventes WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '"+ player_name +"');"
-	sqlDrinks = "SELECT b_nom as name, b_prixprod as price, b_alcool as hasAlcohol, b_chaud as isHot FROM boisson WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '" + player_name +"');"
-	coord = db.select(sqlCoord)[0]
-	budgetBase = db.select(sqlBudget)[0]['j_budget']
-	nbSales = db.select(sqlSales)[0]['nbsales']
-	drinksInfo = db.select(sqlDrinks)
+	#infoPlayer 
+	#joueur stand
+	sqlCoord = "SELECT mit_latitude as latitude, mit_longitude as longitude FROM map_item WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"
+	#info joueur budget
+	sqlBudget = "SELECT pla_cash FROM player WHERE pla_name = '{0}';"
+	#info nb vente
+	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}');"
+	#info joueur drinkOffered
+	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
+	coord = db.select(sqlCoord.format(player_name))[0]
+	budgetBase = db.select(sqlBudget.format(player_name))[0]['pla_cash']
+	nbSales = db.select(sqlSales.format(player_name))[0]['nbsales']
+	drinksInfo = db.select(sqlDrinks.format(player_name))
 	db.close()
 
 	profit = budgetBase - budget_depart;
