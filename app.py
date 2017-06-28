@@ -223,7 +223,7 @@ def postRejoindre():
     #	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
     #	db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
     #	db.close()
-    return json_response()
+	return json_response()
 
 @app.route("/sales",methods=["POST"])
 def postSales():
