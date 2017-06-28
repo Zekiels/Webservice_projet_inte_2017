@@ -65,7 +65,10 @@ def getIngredienst():
 def getMapPlayer(playerName):
 	#info de boisson du joueur
 	db = Db()
-	sql = "SELECT ing_name as name, ing_has_alcohol as hasAlcool, ing_is_cold as isCold, ing_current_cost as cost FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name IN (SELECT acc_rcp_name FROM access WHERE acc_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}'));"
+	day_tmp = db.select("SELECT map_day_nb from map;")
+	day = day_tmp[0]
+
+	sql = "SELECT ing_name as name, ing_has_alcohol as hasAlcool, ing_is_cold as isCold, ing_current_cost as cost FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name IN (	SELECT acc_rcp_name FROM access WHERE acc_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}'));"
 	ingredients = db.select(sql.format(playerName))
 	db.close()
 
@@ -73,37 +76,74 @@ def getMapPlayer(playerName):
 	#emplacement map centre
 	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
 	coordinates = db.select(sql)[0]
+	
 	#emplacement map span
 	sqlSpan = "SELECT map_latitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
 	coordinatesSpan = db.select(sqlSpan)[0]
+	
 	#ranking
-	sqlRank = "SELECT pla_name FROM player ORDER BY pla_cash DESC;"
-	ranking = db.select(sqlRank)
+	rank = db.select("SELECT pla_name AS name from player order by pla_cash DESC;")
+	rankNoKeys = []
+	for i in rank:
+		rankNoKeys.append(i.get("name"))
 	db.close()
 
 	region = {"center": coordinates, "span": coordinatesSpan}
+	
 	#ajouter Mapitem
-	mapInfo = {"region" : region, "ranking" : ranking}
+	mapInfo = {"region" : region, "ranking" : rankNoKeys}
 	print(region)
 	db = Db()
+	
 	#infoPlayer
+	
 	#joueur stand
-	sqlCoord = "SELECT mit_latitude as latitude, mit_longitude as longitude FROM map_item WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"
+	sqlCoord = """	SELECT mit_latitude as latitude, mit_longitude as longitude 
+					FROM map_item 
+					WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"""
+	
 	#info joueur profit
-	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(playerName, day))
+	playerProfit_tmp = """
+						SELECT
+							(SELECT COALESCE(0,SUM (sal_qty * sal_price)) 
+							FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name 
+							WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') 
+							- 
+							(SELECT COALESCE(0,SUM (pro_qty * pro_cost_at_that_time)) 
+							FROM production 
+							INNER JOIN player ON player.pla_name = production.pro_pla_name 
+							WHERE pro_day_nb = {1} 
+							AND pro_pla_name = '{0}') AS profit;"""
+	
 	#info joueur budget
-	sqlBudget = "SELECT pla_cash FROM player WHERE pla_name = '{0}';"
+	sqlBudget = """	SELECT pla_cash as cash 
+					FROM player 
+					WHERE pla_name = '{0}';"""
+	
 	#info nb vente
-	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}';"
+	sqlSales = """	SELECT COALESCE(0, SUM(sal_qty)) as sales 
+					FROM sale 
+					WHERE sal_pla_name = '{0}';"""
+	
 	#info joueur drinkOffered
-	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
-	coord = db.select(sqlCoord.format(playerName))
-	print(coord)[0]
-	budgetBase = db.select(sqlBudget.format(playerName))[0]['pla_cash']
+	sqlDrinks = """	SELECT rcp_name, 
+							(SELECT  SUM (ing_current_cost * compose.com_quantity) 
+							FROM ingredient 
+							INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
+							WHERE compose.com_rcp_name = rcp_name) AS price, 
+							rcp_is_cold AS isCold, 
+							rcp_has_alcohol AS hasAlcohol 
+					FROM recipe 
+					INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name 
+					WHERE access.acc_pla_name ='{0}';"""
+	
+	coord = db.select(sqlCoord.format(playerName))[0]
+	print(coord)
+	budgetBase = db.select(sqlBudget.format(playerName))[0]['cash']
 	print(budgetBase)
-	profit = playerProfit_tmp[0]["profit"]
+	profit = db.select(playerProfit_tmp..format(i.get("name"), day.get("map_day_nb")))[0]["profit"]
 	print(profit)
-	nbSales = db.select(sqlSales.format(playerName))[0]['nbsales']
+	nbSales = db.select(sqlSales.format(playerName))[0]['sales']
 	print(nbSales)
 	drinksInfo = db.select(sqlDrinks.format(playerName))
 	print(drinksInfo)
@@ -143,17 +183,50 @@ def getMap():
 
 	for i in rank:
 		rankNoKeys.append(i.get("name"))
+		
+		############################
 		#playerInfo
-		#budget
-		playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name = \'"+ i.get("name") + "\';")
-		playerCash = playerCash_tmp[0]["cash"]
+		############################
 
-		#qty vendu
-		playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+		##############
+		#Budget
+		##############
+		playerCash_tmp = db.select("""
+			SELECT pla_cash AS cash 
+			FROM player 
+			WHERE pla_name = '{0}';
+		""".format(i.get("name")))
+		playerCash = playerCash_tmp[0]["cash"]
+		print(playerCash_tmp)
+
+		##############
+		#Qty vendu
+		##############
+		playerSales_tmp = db.select("""
+			SELECT COALESCE (0,SUM (sal_qty)) AS sales 
+			FROM sale 
+			INNER JOIN player ON player.pla_name = sale.sal_pla_name 
+			WHERE sal_day_nb = {1} 
+			AND sal_pla_name = '{0}';
+		""".format(i.get("name"), day.get("map_day_nb")))
 		playerSales = playerSales_tmp[0]["sales"]
 
-		#profit
-		playerProfit_tmp = db.select("SELECT COALESCE((SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time)),0) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(i.get("name"), day.get("map_day_nb")))
+		##############
+		#Profit
+		##############
+		playerProfit_tmp = db.select("""
+			SELECT
+				(SELECT COALESCE(0,SUM (sal_qty * sal_price)) 
+				FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name 
+				WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') 
+				- 
+				(SELECT COALESCE(0,SUM (pro_qty * pro_cost_at_that_time)) 
+				FROM production 
+				INNER JOIN player ON player.pla_name = production.pro_pla_name 
+				WHERE pro_day_nb = {1} 
+				AND pro_pla_name = '{0}') AS profit; 
+			""".format(i.get("name"), day.get("map_day_nb")))
+		print(playerProfit_tmp)
 		playerProfit = playerProfit_tmp[0]["profit"]
 
 		#drinksByPlayer
