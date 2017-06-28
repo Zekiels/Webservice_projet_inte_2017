@@ -188,7 +188,7 @@ def getMap():
 		db = Db()
 		#drinksByPlayer
 		#liste des types de boissons preparee*
-		listDrinks = db.select("SELECT pro_rcp_name AS name, sale.sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name INNER JOIN sale ON production.pro_rcp_name = sale.sal_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+		listDrinks = db.select("SELECT pro_rcp_name AS name, sale.sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name INNER JOIN sale ON production.pro_pla_name = sale.sal_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' AND pro_rcp_name = sale.sal_rcp_name;".format(i.get("name"), day.get("map_day_nb")))
 		for j in listDrinks:
 			j["isCold"] = j["iscold"]
 			del j["iscold"]
