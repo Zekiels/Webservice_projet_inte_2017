@@ -358,17 +358,17 @@ def postSales():
 	
 	prod = db.select("SELECT pro_qty, pro_rcp_name FROM production WHERE pro_pla_name = '{0}' AND pro_day_nb = {1}").format(sales["player"], day) 
 
-	#if "item" in sales == "pro_rcp_name" in prod:
-	#	if "quantity" in sales <= "pro_qty" in prod:			
-	#	 	db.execute("""
-	#	 		INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
-	#	 	""".format(day, sales['quantity'],sales['price'],sales['player'],sales['item']))
-    #		return json.dumps("ok"),200,{'Content-Type':'application/json'}
-    #	else:
-    #		return json.dumps("quantity error"),400,{'Content-Type':'application/json'}
-    #else:
-	#	return json.dumps("item error"),400,{'Content-Type':'application/json'}		
-    db.close()
+	if "item" in sales == "pro_rcp_name" in prod:
+		if "quantity" in sales <= "pro_qty" in prod:			
+		 	db.execute("""
+		 		INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
+		 	""".format(day, sales['quantity'],sales['price'],sales['player'],sales['item']))
+			return json.dumps("ok"),200,{'Content-Type':'application/json'}
+		else:
+			return json.dumps("quantity error"),400,{'Content-Type':'application/json'}
+	else:
+		return json.dumps("item error"),400,{'Content-Type':'application/json'}		
+	db.close()
 
 
 @app.route("/metrology", methods=["POST"])
