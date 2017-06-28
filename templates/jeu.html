@@ -314,6 +314,8 @@
           }),
           contentType: "application/json",
           success: function(data){
+            var name = Object.keys(data)[0];
+            console.log(name)
             console.log(data)
             for (var prod of data[0]) {
               console.log(prod.prepare);
