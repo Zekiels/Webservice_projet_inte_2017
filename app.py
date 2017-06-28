@@ -185,9 +185,10 @@ def getBD():
 
 @app.route("/quitter", methods=["POST"])
 def postquitter():
-	# TODO
+	quitter = request.get_son()
+	print (quitter)
 
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	return json.dumps("pas ok"),200,{'Content-Type':'application/json'}
 
 
 @app.route("/player", methods=["POST"])
