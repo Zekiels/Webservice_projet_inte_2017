@@ -147,13 +147,13 @@ def getMap():
 		db = Db()
 		#itemsByPlayer)
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
-		print(oneItem_temp)
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
+			listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}	
 		else:
 			oneItem = oneItem_temp
-		print(oneItem)
-		listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}
+			listItems = oneItem
+			
 		itemsByPlayer[i['name']] = listItems
 		db.close()
 		
