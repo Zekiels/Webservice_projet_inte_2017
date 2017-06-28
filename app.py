@@ -208,10 +208,10 @@ def postquitter():
 
 @app.route("/player", methods=["POST"])
 def postRejoindre():
-    rejoindre = request.get_json()
-    name = rejoindre["name"]
-    db = Db()
-    sql = "SELECT pla_name FROM player;"
+	rejoindre = request.get_json()
+	name = rejoindre["name"]
+	db = Db()
+	sql = "SELECT pla_name FROM player;"
 	joueur = db.select(sql)
 	print (sql)
 	db.close()
