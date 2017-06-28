@@ -219,9 +219,9 @@ def postRejoindre():
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		bd.execute(sqlProd)
 		db.close()
+		
+	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
 
-	#sqlCoord = (""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
-	#coord = db.select(sqlCoord)
 	#print(coord)
 	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 	#drinksInfo = db.execute(sqlDrinksInfo);
