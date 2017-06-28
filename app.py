@@ -362,10 +362,12 @@ def postSales():
 						WHERE pro_pla_name = '{0}' 
 						AND pro_day_nb = {1};
 					""".format(sales["player"], day))
-	print("item" in sales)
-	print("pro_rcp_name" in prod)
-	if "item" in sales == "pro_rcp_name" in prod:
-		if "quantity" in sales <= "pro_qty" in prod:			
+	print(sales["item"])
+	print(prod["pro_rcp_name"])
+	print(sales["quantity"])
+	print(prod["pro_qty"])
+	if sales["item"] == prod["pro_rcp_name"]:
+		if sales["quantity"] <= prod["pro_qty"]:
 		 	db.execute("""
 		 		INSERT INTO sale VALUES ({0}, {1},{2}, '{3}', '{4}');
 		 	""".format(day, sales['quantity'],sales['price'],sales['player'],sales['item']))
