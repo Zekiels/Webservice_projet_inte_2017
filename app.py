@@ -209,16 +209,16 @@ def postquitter():
 @app.route("/player", methods=["POST"])
 def postRejoindre():
     rejoindre = request.get_json()
-    print(rejoindre)
-
-    if rejoindre == 0 :
-        return json_response({ "error" : "Missing name" }, 400)
+    name = rejoindre["name"]
 	#Creation d'un nouveau joueur
 	db = Db()
-	joueur = db.select("""SELECT pla_name FROM player ;""")
-	print (joueur)
+	sql = "SELECT pla_name FROM player WHERE pla_name = \"+ name +\" ;"
+	joueur = db.select(sql)
+	db.close()
+	if joueur = []
+	db = Db()
     budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-    db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(rejoindre["name"],budget[0]["pre_value"]))
+    db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
     db.close()
     return json_response()
 
