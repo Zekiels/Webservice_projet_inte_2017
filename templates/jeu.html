@@ -315,6 +315,10 @@
               contentType: "application/json",
               success: function(data){
                     console.log(data);
+                    for (data of Limonade) {
+                      console.log(data.prepare);
+                      console.log(data.price);
+                    }
                 },
               error: function(error){
                 console.log(error.error)
