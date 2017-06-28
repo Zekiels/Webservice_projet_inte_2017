@@ -65,7 +65,8 @@ def getIngredienst():
 def getMapPlayer(playerName):
 	#info de boisson du joueur
 	db = Db()
-	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
+	day_tmp = db.select("SELECT map_day_nb from map;")
+	day = day_tmp[0]
 
 	sql = "SELECT ing_name as name, ing_has_alcohol as hasAlcool, ing_is_cold as isCold, ing_current_cost as cost FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name IN (	SELECT acc_rcp_name FROM access WHERE acc_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}'));"
 	ingredients = db.select(sql.format(playerName))
@@ -102,16 +103,17 @@ def getMapPlayer(playerName):
 					WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"""
 	
 	#info joueur profit
-	playerProfit_tmp = """	SELECT (SELECT SUM (sal_qty * sal_price) 
+	playerProfit_tmp = """
+						SELECT
+							(SELECT COALESCE(0,SUM (sal_qty * sal_price)) 
 							FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name 
-							WHERE sal_day_nb = {1} 
-							AND sal_pla_name = '{0}') 
+							WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') 
 							- 
-							(SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit 
+							(SELECT COALESCE(0,SUM (pro_qty * pro_cost_at_that_time)) 
 							FROM production 
 							INNER JOIN player ON player.pla_name = production.pro_pla_name 
 							WHERE pro_day_nb = {1} 
-							AND pro_pla_name = '{0}') AS profit; """
+							AND pro_pla_name = '{0}') AS profit;"""
 	
 	#info joueur budget
 	sqlBudget = """	SELECT pla_cash as cash 
@@ -135,13 +137,13 @@ def getMapPlayer(playerName):
 					INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name 
 					WHERE access.acc_pla_name ='{0}';"""
 	
-	coord = db.select(sqlCoord.format(playerName))
+	coord = db.select(sqlCoord.format(playerName))[0]
 	print(coord)
-	budgetBase = db.select(sqlBudget.format(playerName))#[0]['cash']
+	budgetBase = db.select(sqlBudget.format(playerName))[0]['cash']
 	print(budgetBase)
-	profit = db.select(playerProfit_tmp.format(playerName))#["profit"]
+	profit = db.select(playerProfit_tmp..format(i.get("name"), day.get("map_day_nb")))[0]["profit"]
 	print(profit)
-	nbSales = db.select(sqlSales.format(playerName))#[0]['sales']
+	nbSales = db.select(sqlSales.format(playerName))[0]['sales']
 	print(nbSales)
 	drinksInfo = db.select(sqlDrinks.format(playerName))
 	print(drinksInfo)
