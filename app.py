@@ -153,7 +153,7 @@ def getMap():
 		else:
 			oneItem = oneItem_temp
 			listItems = oneItem
-			
+
 		itemsByPlayer[i['name']] = listItems
 		db.close()
 		
@@ -164,7 +164,7 @@ def getMap():
 		drinksByPlayer[i['name']] = listDrinks
 		db.close()
 
-	Map = {"region":regionCoord, "ranking":rankNoCash, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}
+	Map = {"map":{"region":regionCoord, "ranking":rankNoCash, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
 	print(Map)
 	db.close()
 
