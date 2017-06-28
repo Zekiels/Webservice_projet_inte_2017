@@ -334,7 +334,7 @@ def postRejoindre():
 
 	db.close()
 
-	playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinksInfo}
+	playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinkInfo}
 	reponse = {"name": name, "location": coordinates, "info":playerInfo}
 	
 	print (reponse)
