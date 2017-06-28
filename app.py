@@ -76,7 +76,7 @@ def getMapPlayer(playerName):
 	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
 	coordinates = db.select(sql)[0]
 	#emplacement map span
-	sqlSpan = "SELECT map_lattitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
+	sqlSpan = "SELECT map_latitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
 	coordinatesSpan = db.select(sqlSpan)[0]
 	#ranking
 	sqlRank = "SELECT pla_name FROM player ORDER BY pla_cash DESC;"
@@ -97,10 +97,14 @@ def getMapPlayer(playerName):
 	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}');"
 	#info joueur drinkOffered
 	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
-	coord = db.select(sqlCoord.format(playerName))[0]
-	budgetBase = db.select(sqlBudget.format(playerName))[0]['pla_cash']
-	nbSales = db.select(sqlSales.format(playerName))[0]['nbsales']
+	coord = db.select(sqlCoord.format(playerName))
+	print(coord)
+	budgetBase = db.select(sqlBudget.format(playerName))['pla_cash']
+	print(budgetBase)
+	nbSales = db.select(sqlSales.format(playerName))['nbsales']
+	print(nbSales)
 	drinksInfo = db.select(sqlDrinks.format(playerName))
+	print(drinksInfo)
 	db.close()
 
 	profit = budgetBase - budget_depart;
@@ -234,10 +238,12 @@ def postRejoindre():
 		db.execute(sqlPLayer)
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		db.execute(sqlMapItem)
-		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}');""".format(day,name))
-		db.execute(sqlVente)
-		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade','{1}');""".format(day,name))
-		db.execute(sqlProd)
+		#sqlVente = 
+		db.execute(""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, name))
+		#db.execute(sqlVente)
+		#sqlProd = 
+		db.execute(""" INSERT INTO production VALUES('{0}', 0, 0.82 ,'{1}', 'limonade');""".format(day, name))
+		#db.execute(sqlProd)
 		db.close()
 		pass
 	db = Db()
