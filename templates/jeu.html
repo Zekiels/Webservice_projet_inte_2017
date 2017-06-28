@@ -313,11 +313,10 @@
                 }]
               }),
               contentType: "application/json",
-              success: function(data){
-                    console.log(data);
-                    for (data of data.joueur) {
-                      console.log(data.prepare);
-                      console.log(data.price);
+              success: function(prod){
+                    for (var prod of data.joueur) {
+                      console.log(prod.prepare);
+                      console.log(prod.price);
                     }
                 },
               error: function(error){
