@@ -58,6 +58,46 @@ def getIngredienst():
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
+# Fonction pour la route /map/<player_name> avec GET
+# Recupere les details d'une partie
+@app.route('/map/<playerName>', methods=['GET'])
+def getMapPlayer(playerName):
+	#create 
+	db = Db()
+	sql = "SELECT b_nom as boisson, b_alcool as hasAlcool, b_chaud as isHot, i_nom as ingredient, i_prix as ingPrix, r_qte as quantite FROM ingredient INNER JOIN recette ON recette.i_id = ingredient.i_id INNER JOIN boisson ON boisson.b_id = recette.b_id WHERE boisson.b_id IN (SELECT b_id FROM boisson WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '" + playerName +"'));"
+	ingredients = db.select(sql)
+	db.close()
+
+	db = Db()
+	sql = "SELECT m_centreX as latitude, m_centreY as longitude FROM map;"
+	coordinates = db.select(sql)[0]
+	sqlSpan = "SELECT m_coordX as latitudeSpan, m_coordY as longitudeSpan FROM map;"
+	coordinatesSpan = db.select(sqlSpan)[0]
+	sqlRank = "SELECT j_pseudo FROM JOUEUR ORDER BY j_budget DESC;"
+	ranking = db.select(sqlRank)
+	db.close()
+
+	region = {"center": coordinates, "span": coordinatesSpan}
+
+	mapInfo = {"region" : region, "ranking" : ranking}
+	print region
+	db = Db()
+	sqlCoord = "SELECT z_centerX as latitude, z_centerY as longitude FROM zone WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '" + player_name + "');"
+	sqlBudget = "SELECT j_budget FROM joueur WHERE j_pseudo = '"+ player_name +"';"
+	sqlSales = "SELECT COALESCE(0,SUM(v_qte)) as nbSales FROM ventes WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '"+ player_name +"');"
+	sqlDrinks = "SELECT b_nom as name, b_prixprod as price, b_alcool as hasAlcohol, b_chaud as isHot FROM boisson WHERE j_id = (SELECT j_id FROM joueur WHERE j_pseudo = '" + player_name +"');"
+	coord = db.select(sqlCoord)[0]
+	budgetBase = db.select(sqlBudget)[0]['j_budget']
+	nbSales = db.select(sqlSales)[0]['nbsales']
+	drinksInfo = db.select(sqlDrinks)
+	db.close()
+
+	profit = budgetBase - budget_depart;
+	info = {"cash": budgetBase, "sales": nbSales, "profit": profit, "drinksOffered": drinksInfo}
+
+	message = {"availableIngredients": ingredients, "map": mapInfo, "playerInfo": info}
+	return json_response(message)
+
 @app.route("/map", methods=["GET"])
 def getMapPlayer():
 	Map = {}
