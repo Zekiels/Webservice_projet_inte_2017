@@ -157,15 +157,31 @@ def getMap():
 
 	for i in rank:
 		rankNoKeys.append(i.get("name"))
+		
+		############################
 		#playerInfo
-		#budget
-		playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name = \'"+ i.get("name") + "\';")
+		############################
+
+		##############
+		#Budget
+		##############
+		playerCash_tmp = db.select("""
+			SELECT pla_cash AS cash 
+			FROM player 
+			WHERE pla_name = \'"+ i.get("name") + "\';
+		""")
 		playerCash = playerCash_tmp[0]["cash"]
 
 		##############
-		#qty vendu
+		#Qty vendu
 		##############
-		playerSales_tmp = db.select("SELECT COALESCE (0,SUM (sal_qty)) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+		playerSales_tmp = db.select("""
+			SELECT COALESCE (0,SUM (sal_qty)) AS sales 
+			FROM sale 
+			INNER JOIN player ON player.pla_name = sale.sal_pla_name 
+			WHERE sal_day_nb = {1} 
+			AND sal_pla_name = '{0}';
+		""".format(i.get("name"), day.get("map_day_nb")))
 		playerSales = playerSales_tmp[0]["sales"]
 
 		##############
