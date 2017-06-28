@@ -315,7 +315,7 @@
               contentType: "application/json",
               success: function(data){
                     console.log(data);
-                    for (data of actions) {
+                    for (data of data.joueur) {
                       console.log(data.prepare);
                       console.log(data.price);
                     }
