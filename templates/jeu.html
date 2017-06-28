@@ -315,7 +315,7 @@
           contentType: "application/json",
           success: function(data){
             console.log(data)
-            for (var prod of data.data[0]) {
+            for (var prod of data[0]) {
               console.log(prod.prepare);
               console.log(prod.price);
             }
