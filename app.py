@@ -116,6 +116,11 @@ def getMap():
 	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitudeSpan, map_latitude_span AS latitudeSpan from map;")
 	coordinate_span = coordinate_span_tmp[0]
 
+	coordinate_span['latitudeSpan'] = coordinate_span['latitudespan']
+	del coordinate_span['latitudespan']
+	coordinate_span['longitudespan'] = coordinate_span['longitudeSpan']
+	del coordinate_span['longitudespan']
+
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
 	rank = db.select("SELECT pla_name AS name, pla_cash AS cash from player order by pla_cash DESC;")
 
@@ -170,7 +175,13 @@ def getMap():
 		db = Db()
 		#drinksByPlayer
 		#liste des types de boissons preparee*
-		listDrinks = db.select("SELECT pro_rcp_name AS name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+		listDrinks = db.select("SELECT pro_rcp_name AS name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))		
+		for j in listDrinks:
+			j["isCold"] = j["iscold"]
+			del j["iscold"]
+			j["hasAlcohol"] = j["hasalcohol"]
+			del j["hasalcohol"]
+
 		drinksByPlayer[i['name']] = listDrinks
 		db.close()
 
