@@ -316,29 +316,28 @@ def postRejoindre():
 	coordinates = {"latitude":coordx, "longitude":coordy}
 
 	#drinkInfo
-	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade'; """)
-	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))
+	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade'; """)[0]
+	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))[0]
+	drinkInfo = {"name":drink["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink["rcp_has_alcohol"], "isCold":drink["rcp_is_cold"]}
 	
-	#drinkInfo = {"name":drink[0]["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink[0]["rcp_has_alcohol"], "isCold":drink[0]["rcp_is_cold"]}
-	print(drink)
 	#player cash
 	playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name ='{0}';".format(name))
 	playerCash = playerCash_tmp[0]["cash"]
-	print(playerCash)
+
 	#qty vendu
 	playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(name, day))
 	playerSales = playerSales_tmp[0]["sales"]
-	print(playerSales)
+
 	#profit renvoi null
 	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(name, day))
 	playerProfit = playerProfit_tmp[0]["profit"]
-	print(playerProfit)
+
 	db.close()
 
-	#playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinksInfo}
-	#reponse = {"name": name, "location": coordinates, "info":playerInfo}
+	playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinkInfo}
+	reponse = {"name": name, "location": coordinates, "info":playerInfo}
 	
-	#print (reponse)
+	print (reponse)
 	return json_response()
 	#return json_response(reponse)
 
@@ -471,7 +470,7 @@ def postAction(PlayerName):
 
 
 
-return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 #@app.route("/idGet",methods=["GET"])
 #def idGet():
