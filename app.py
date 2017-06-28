@@ -351,7 +351,7 @@ def postWheather():
 	if weather["weather"][1]["dfn"] == 1:
 		previsionWeather = weather["weather"][1]["weather"]
 	db = Db()
-	day = db.select("SELECT map_day_nb FROM map;")[0]
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
 	print (day)
 	#if (timestamp%24) == 0:
 	#	day = day + 1 
