@@ -210,12 +210,12 @@ def postRejoindre():
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
 		sql = sqlMapItem + sqlVente + sqlProd
-
+		db.execute(sql)
 		db.close()
 
-	sqlCoord = (""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
-	coord = db.select(sqlCoord)
-	print(coord)
+	#sqlCoord = (""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
+	#coord = db.select(sqlCoord)
+	#print(coord)
 	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 	#drinksInfo = db.execute(sqlDrinksInfo);
 	#prixVente = (""" SELECT sal_price FROM Sale WHERE pla_name ='"+ name + "' rcp_name = 'limonade' sal_day_nb = '"+ day +"';""")
