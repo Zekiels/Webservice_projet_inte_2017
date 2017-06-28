@@ -109,7 +109,7 @@ def getMap():
 	drinksByPlayer={}
 
 	db = Db()
-	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_lattitude AS lattitude from map;")
+	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS lattitude from map;")
 	coordinate = coordinate_tmp[0]
 
 	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_latitude_span AS latitude_span from map;")
