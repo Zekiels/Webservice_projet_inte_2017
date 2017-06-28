@@ -163,9 +163,8 @@ def getMap():
 				FROM production 
 				INNER JOIN player ON player.pla_name = production.pro_pla_name 
 				WHERE pro_day_nb = {1} 
-				AND pro_pla_name = '{0}' ) AS profit; 
-			)
-		""".format(i.get("name"), day.get("map_day_nb")))
+				AND pro_pla_name = '{0}'),0) AS profit; 
+			""".format(i.get("name"), day.get("map_day_nb")))
 		playerProfit = playerProfit_tmp[0]["profit"]
 
 		#drinksByPlayer
