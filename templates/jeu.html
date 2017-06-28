@@ -302,11 +302,11 @@
       $.ajax(server+'/map/'+joueur,{
         method:'GET',
         contentType: "application/json",
-        success: function(budget){
-        console.log(budget.playerInfo.cash);
-        $("#budget").text(budget.playerInfo.cash+"€");
-        console.log(ville.map.region);
-        $("#ville").text("Region: "+ville.map.region);
+        success: function(data){
+        console.log(data.playerInfo.cash);
+        $("#budget").text(data.playerInfo.cash+"€");
+        console.log(data.map.region);
+        $("#ville").text("Region: "+data.map.region);
         /*console.log(ville.map.region);
         $("#longitude").text("Region: "+ville.map.region);*/
         }
