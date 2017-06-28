@@ -200,7 +200,6 @@ def postquitter():
 def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
-	print("""'{0}'""".format(name))
 	db = Db()
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
 	joueur = db.select(sql)
@@ -220,7 +219,7 @@ def postRejoindre():
 		db.execute(sqlProd)
 		db.close()
 
-	#coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name ='{0}';""".format(name))
+	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
 	#print(coord)
 	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 	#drinksInfo = db.execute(sqlDrinksInfo);
