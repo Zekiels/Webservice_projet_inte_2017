@@ -34,9 +34,9 @@
   <div id="Tab" class="container col-md-6">
     <ul  class="nav nav-pills">
       <li class="active">
-        <a  href="#1b" data-toggle="tab"><h4>Production</h4></a>
+        <a  href="#1b" data-toggle="tab"><h4>Production pour lendemain</h4></a>
       </li>
-      <li><a href="#2b" data-toggle="tab"><h4>Vente détaillée</h4></a>
+      <li><a href="#2b" data-toggle="tab"><h4>Vente de la veille</h4></a>
       </li>
       <li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
       </li>
@@ -299,13 +299,18 @@
                 }
             })
             $("#boutonprod").on('click',function(){
-            $.ajax(server+'/sales',{
+            $.ajax(server+'/actions/'+$("#name").val(),{
               method:'POST',
               data: JSON.stringify({
-                "quantity": "nombrelimonade": $("#nombrelimonade").val(),
-                "price":"prixventelimonade": $("#prixventelimonade").val(),,
-                "player": /*$("#id")*/"Jacques",
-                "item": /*$("#id")*/"limonade",
+                "actions":[{
+                  "kind":"drinks",
+                  "prepare":{"Limonade": $("#nombrelimonade").val()},
+                  "price":{"Limonade":$("#prixventelimonade").val(),}},
+                  /*{"kind":"ad",
+                  "location": {"latitude": 100, "longitude": 100},
+                  "radius": 10,
+                  "price": 10*/
+                }]
               }),
               contentType: "application/json",
               success: function(data){
