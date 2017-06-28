@@ -119,7 +119,7 @@ def getMapPlayer(playerName):
 					WHERE pla_name = '{0}';"""
 	
 	#info nb vente
-	sqlSales = """	SELECT COALESCE(SUM(sal_qty), 0) as sales 
+	sqlSales = """	SELECT COALESCE(0, SUM(sal_qty)) as sales 
 					FROM sale 
 					WHERE sal_pla_name = '{0}';"""
 	
@@ -139,7 +139,7 @@ def getMapPlayer(playerName):
 	print(coord)
 	budgetBase = db.select(sqlBudget.format(playerName))[0]['cash']
 	print(budgetBase)
-	profit = db.select(playerProfit_tmp.format(playerName, day))[0]["profit"]
+	profit = db.select(playerProfit_tmp.format(playerName))[0]["profit"]
 	print(profit)
 	nbSales = db.select(sqlSales.format(playerName))[0]['sales']
 	print(nbSales)
