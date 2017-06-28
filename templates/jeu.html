@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><h3>+20.27€</h3></td>
+            <td><h3 id="budget">20.27€</h3></td>
           </tr>
         </tbody>
       </table>
@@ -218,7 +218,7 @@
                     <td><span><h4 id="meteo">Canicule</h4></span></td>
                     <td><span><h4 id="prevision">Pluie</h4></span></td>
                     <td>
-                      <p><h4 id="ville">Ville: Perpignan</h4></p>
+                      <p><h4 id="ville">Region: Perpignan</h4></p>
                       <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
                       <p><h4 id="longitude">Longitude: 2°53′43″</h4></p>
                     </td>
@@ -296,6 +296,20 @@
             else
             $("#prevision").text(weather.weather);
           }
+        }
+      })
+
+      $.ajax(server+'/map/'+joueur,{
+        method:'GET',
+        contentType: "application/json",
+        success: function(data){
+        console.log(data.playerInfo.cash);
+        $("#budget").text(data.playerInfo.cash+"€");
+        console.log(data.map.region.center.latitude);
+        console.log(data.map.region.center.longitude);
+        $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);
+        /*console.log(ville.map.region);
+        $("#longitude").text("Region: "+ville.map.region);*/
         }
       })
 

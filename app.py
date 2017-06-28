@@ -193,8 +193,7 @@ def getMap():
 		db = Db()
 		#drinksByPlayer
 		#liste des types de boissons preparee*
-		listDrinks = []
-		listDrinks = db.select("SELECT pro_rcp_name AS name, sale.sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name INNER JOIN sale ON production.pro_pla_name = sale.sal_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' AND pro_rcp_name = sale.sal_rcp_name;".format(i.get("name"), day.get("map_day_nb")))
+		listDrinks = db.select("SELECT sal_rcp_name AS name, sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM sale  INNER JOIN recipe ON recipe.rcp_name = sale.sal_rcp_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
 		for j in listDrinks:
 			j["isCold"] = j["iscold"]
 			del j["iscold"]
@@ -259,8 +258,11 @@ def postRejoindre():
 	coordinates = {"latitude":coordx, "longitude":coordy}
 
 	#drinkInfo
+	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade' """)[0]
 	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))
-	print(prod)
+
+
+	drinkInfo = {"name":drink["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink["rcp_has_alcohol"], "isCold":drink["rcp_is_cold"]}
 
 	#player cash
 	playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name ='{0}';".format(name))
@@ -269,23 +271,17 @@ def postRejoindre():
 	#qty vendu
 	playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(name, day))
 	playerSales = playerSales_tmp[0]["sales"]
-	print(postSales)
+	print(playerSales)
 	#profit
 	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(name, day))
 	playerProfit = playerProfit_tmp[0]["profit"]
 	print(playerProfit)
-
-	#playerInfo = {"cash" = playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinksInfo}
-
-
-	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
-	#drinksInfo = db.execute(sqlDrinksInfo);
-	#prixVente = (""" SELECT sal_price FROM Sale WHERE pla_name ='"+ name + "' rcp_name = 'limonade' sal_day_nb = '"+ day +"';""")
-	#prixProd = (""" SELECT pro_cost_at_that_time FROM production WHERE pla_name ='"+ name + "' rcp_name = 'limonade' pro_day_nb = '"+ day +"';""")
-
-	#reponse = {"name": name,
 	db.close()
-	return json_response()
+
+	playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinksInfo}
+	reponse = {"name": name, "location": coordinates, "info":playerInfo}
+	print (reponse)
+	return json_response(reponse)
 
 @app.route("/sales",methods=["POST"])
 def postSales():
