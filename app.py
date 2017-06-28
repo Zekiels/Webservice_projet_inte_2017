@@ -5,6 +5,7 @@ from pprint import pprint
 import random
 import json
 from db import Db
+from math import *
 
 #os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
 
@@ -20,6 +21,8 @@ nombre = ['toto','tata','titi']
 CurrentWeather = []
 PrevisoinWeather = []
 dicoAction = {}
+
+day = 0
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -147,13 +150,13 @@ def getMap():
 		db = Db()
 		#itemsByPlayer)
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
-		print(oneItem_temp)
-		if oneItem_temp.len() > 0 :
+		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
+			listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}	
 		else:
 			oneItem = oneItem_temp
-		print(oneItem)
-		listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}
+			listItems = oneItem
+
 		itemsByPlayer[i['name']] = listItems
 		db.close()
 		
@@ -164,7 +167,7 @@ def getMap():
 		drinksByPlayer[i['name']] = listDrinks
 		db.close()
 
-	Map = {"region":regionCoord, "ranking":rankNoCash, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}
+	Map = {"map":{"region":regionCoord, "ranking":rankNoCash, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
 	print(Map)
 	db.close()
 
@@ -197,12 +200,29 @@ def postRejoindre():
 	print (joueur)
 	db.close()
 	if joueur == []:
-		coordX = random.randrange(330,670,1)
-		coordY = random.randrange(130,470,1)
+		longitude = random.randrange(0,600)
+		latitude = random.randrange(0,600)
 		db = Db()
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-		db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
+		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
+		db.execute(sqlPLayer)
+
+		sqlMap_Item = (""" INSERT INTO Map_Item VALUES(NULL,'stand' ,10 ,{1} ,{2} ,'{3}', 0);""".format(longitude, latitude ,name))
+		db.execute(sqlMap_Item)
+
+		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
+		db.execute(sqlVente)
+
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
+		db.execute(sqlProd)
+
+		sqlDrinksINfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
+		drinksInfo = db.execute(sqlDrinksINfo);
+		print(drinksInfo)
 		db.close()
+
+	#prixVente = (""" SELECT sal_price FROM Sale WHERE pla_name ='"+ name + "' rcp_name = 'limonade' sal_day_nb = '"+ day +"';""")
+	#prixProd = (""" SELECT pro_cost_at_that_time FROM production WHERE pla_name ='"+ name + "' rcp_name = 'limonade' pro_day_nb = '"+ day +"';""")
 	return json_response()
 
 @app.route("/sales",methods=["POST"])
@@ -282,12 +302,14 @@ def postWheather():
 	if weather["weather"][1]["dfn"] == 1:
 		previsionWeather = weather["weather"][1]["weather"]
 
+	day = timestamp%24
+
 	db = Db()
 	db.execute("""
 		UPDATE map
-		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
+		map_day_nb = {0}, SET map_time = {1}, map_prevision_weather = '{2}', map_current_weather =  '{3}'
 		WHERE map_id = 0;
-	""".format(timestamp ,previsionWeather, currentWeather))
+	""".format(day, timestamp ,previsionWeather, currentWeather))
 	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
