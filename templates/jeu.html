@@ -215,8 +215,8 @@
                 </thead>
                 <tbody>
                   <tr >
-                    <td><h4 id="meteo">Canicule</h4></td>
-                    <td><h4 id="prevision">Pluie</h4></td>
+                    <td><span><h4 id="meteo">Canicule</h4></span></td>
+                    <td><span><h4 id="prevision">Pluie</h4></span></td>
                     <td>
                       <p><h4 id="ville">Ville: Perpignan</h4></p>
                       <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
@@ -315,6 +315,10 @@
               contentType: "application/json",
               success: function(data){
                     console.log(data);
+                    for (data of Limonade) {
+                      console.log(data.prepare);
+                      console.log(data.price);
+                    }
                 },
               error: function(error){
                 console.log(error.error)
