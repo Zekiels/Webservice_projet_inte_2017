@@ -212,7 +212,7 @@ def postRejoindre():
     name = rejoindre["name"]
 	#Creation d'un nouveau joueur
 	db = Db()
-	sql = "SELECT pla_name FROM player WHERE pla_name = \"+ name +\" ;"
+	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"' ;"
 	joueur = db.select(sql)
 	db.close()
 	if joueur = []
