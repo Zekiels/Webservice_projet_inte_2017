@@ -357,7 +357,11 @@ def postSales():
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
 	
-	prod = db.select("SELECT pro_qty, pro_rcp_name FROM production WHERE pro_pla_name = '{0}' AND pro_day_nb = {1} ;").format(sales["player"], day) 
+	prod = db.select("""SELECT pro_qty, pro_rcp_name 
+						FROM production 
+						WHERE pro_pla_name = '{0}' 
+						AND pro_day_nb = {1};
+					""".format(sales["player"], day))
 
 	if "item" in sales == "pro_rcp_name" in prod:
 		if "quantity" in sales <= "pro_qty" in prod:			
