@@ -215,7 +215,7 @@ def postRejoindre():
 		db.close()
 
 	sqlCoord = (""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
-	coord = db.select(sqlCoord)[0]
+	coord = db.select(sqlCoord)
 	print(coord)
 	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 	#drinksInfo = db.execute(sqlDrinksInfo);
