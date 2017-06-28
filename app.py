@@ -192,8 +192,8 @@ def getMap():
 		playerCash_tmp = db.select("""
 			SELECT pla_cash AS cash 
 			FROM player 
-			WHERE pla_name = \'"+ i.get("name") + "\';
-		""")
+			WHERE pla_name = '{0}';
+		""").format(i.get("name"))
 		playerCash = playerCash_tmp[0]["cash"]
 		print(playerCash_tmp)
 
