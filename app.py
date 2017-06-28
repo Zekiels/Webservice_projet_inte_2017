@@ -113,7 +113,7 @@ def getMap():
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS latitude from map;")
 	coordinate = coordinate_tmp[0]
 
-	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_latitude_span AS latitude_span from map;")
+	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitudeSpan, map_latitude_span AS latitudeSpan from map;")
 	coordinate_span = coordinate_span_tmp[0]
 
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
