@@ -223,6 +223,7 @@ def getMap():
 				WHERE pro_day_nb = {1} 
 				AND pro_pla_name = '{0}') AS profit; 
 			""".format(i.get("name"), day.get("map_day_nb")))
+		print(playerProfit_tmp)
 		playerProfit = playerProfit_tmp[0]["profit"]
 
 		#drinksByPlayer
