@@ -139,7 +139,7 @@ def getMapPlayer(playerName):
 	print(coord)
 	budgetBase = db.select(sqlBudget.format(playerName))[0]['cash']
 	print(budgetBase)
-	profit = db.select(playerProfit_tmp.format(playerName))["profit"]
+	profit = db.select(playerProfit_tmp.format(playerName))#["profit"]
 	print(profit)
 	nbSales = db.select(sqlSales.format(playerName))[0]['sales']
 	print(nbSales)
