@@ -175,7 +175,8 @@ def getMap():
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_latitude AS latitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
-			listItems = [{"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}]
+			listItems = [{"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}]	
+			#Atention je triche vu qu'on a qu'un seul map_item, en vrai il faudrait utiliser des list.append()
 		else:
 			oneItem = oneItem_temp
 			listItems = oneItem
@@ -186,7 +187,7 @@ def getMap():
 		db = Db()
 		#drinksByPlayer
 		#liste des types de boissons preparee*
-		listDrinks = db.select("SELECT pro_rcp_name AS name, (pro_cost_at_that_time * pro_qty) AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+		listDrinks = db.select("SELECT pro_rcp_name AS name, sale.sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM production  INNER JOIN recipe ON recipe.rcp_name = production.pro_rcp_name INNER JOIN sale ON production.pro_rcp_name = sale.sal_rcp_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
 		for j in listDrinks:
 			j["isCold"] = j["iscold"]
 			del j["iscold"]
@@ -237,9 +238,9 @@ def postRejoindre():
 		db.execute(sqlPLayer)
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		db.execute(sqlMapItem)
-		#sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
-		#db.execute(sqlVente)
-		sqlPod = (""" INSERT INTO production VALUES('{0}', 0, '0.82','{1}', 'limonade');""".format(day, name))
+		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
+		db.execute(sqlVente)
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, '0.82','{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
 		db.close()
 		pass
@@ -252,18 +253,19 @@ def postRejoindre():
 
 	#drinkInfo
 	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))[0]
-	print(prod)
+	
 
 
 	#player cash
-	#playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name = \'"+ i.get("name") + "\';")
-	#playerCash = playerCash_tmp[0]["cash"]
+	playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name = \'"+ i.get("name") + "\';")
+	playerCash = playerCash_tmp[0]["cash"]
 	#qty vendu
-	#playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
-	#playerSales = playerSales_tmp[0]["sales"]
+	playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
+	playerSales = playerSales_tmp[0]["sales"]
 	#profit
-	#playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(i.get("name"), day.get("map_day_nb")))
-	#playerProfit = playerProfit_tmp[0]["profit"]
+	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(i.get("name"), day.get("map_day_nb")))
+	playerProfit = playerProfit_tmp[0]["profit"]
+
 	#playerInfo = {"cash" = playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinksInfo}
 
 
