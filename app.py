@@ -98,7 +98,7 @@ def getMapPlayer(playerName):
 	#info joueur budget
 	sqlBudget = "SELECT pla_cash as cash FROM player WHERE pla_name = '{0}';"
 	#info nb vente
-	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}';"
+	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as sales FROM sale WHERE sal_pla_name = '{0}';"
 	#info joueur drinkOffered
 	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
 	coord = db.select(sqlCoord.format(playerName))
