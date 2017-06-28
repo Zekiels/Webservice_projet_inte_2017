@@ -335,6 +335,7 @@ def postSales():
 
 @app.route("/metrology", methods=["POST"])
 def postWheather():
+	global day
 	weather = request.get_json()
 	print(weather)
 
@@ -344,6 +345,7 @@ def postWheather():
 		return json_response({ "error" : "Missing dfn"}, 400)
 	if "weather" not in weather["weather"][0]:
 		return json_response({ "error" : "Missing weather"}, 400)
+
 	if  weather["timestamp"] != 0 :
 		timestamp = weather["timestamp"]
 	if weather["weather"][0]["dfn"] == 0:
@@ -352,12 +354,13 @@ def postWheather():
 		previsionWeather = weather["weather"][1]["weather"]
 
 	if (timestamp%24) == 0:
-		day = day + 1
+		day = day + 1 
+		print (day)
 
 	db = Db()
 	db.execute("""
 		UPDATE map
-		map_day_nb = {0}, SET map_time = {1}, map_prevision_weather = '{2}', map_current_weather =  '{3}'
+		SET  map_day_nb = {0}, map_time = {1}, map_prevision_weather = '{2}', map_current_weather =  '{3}'
 		WHERE map_id = 0;
 	""".format(day, timestamp ,previsionWeather, currentWeather))
 	db.close()
