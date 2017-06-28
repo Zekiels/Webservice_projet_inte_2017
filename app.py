@@ -107,6 +107,7 @@ def getMap():
 	itemsByPlayer={}
 	playerInfo={}
 	drinksByPlayer={}
+	rankNoKeys = []
 
 	db = Db()
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS latitude from map;")
@@ -126,7 +127,7 @@ def getMap():
 	
 	for i in rank:
 		db = Db()
-
+		rankNoKeys.append(i.get("name"))
 		#playerInfo
 		#budget
 		playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name = \'"+ i.get("name") + "\';")
@@ -167,7 +168,7 @@ def getMap():
 		drinksByPlayer[i['name']] = listDrinks
 		db.close()
 
-	Map = {"map":{"region":regionCoord, "ranking":rankNoCash, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
+	Map = {"map":{"region":regionCoord, "ranking":rankNoKeys, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
 	print(Map)
 	db.close()
 
@@ -185,9 +186,10 @@ def getBD():
 
 @app.route("/quitter", methods=["POST"])
 def postquitter():
-	# TODO
+	quitter = request.get_son()
+	print (quitter)
 
-	return json.dumps(),200,{'Content-Type':'application/json'}
+	return json.dumps("pas ok"),200,{'Content-Type':'application/json'}
 
 
 @app.route("/player", methods=["POST"])
