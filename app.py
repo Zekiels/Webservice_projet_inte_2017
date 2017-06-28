@@ -355,7 +355,7 @@ def postSales():
 	db = Db()
 	#get day
 	day_tmp = db.select("SELECT map_day_nb from map;")
-	day = day_tmp[0]
+	day = day_tmp[0]["map_day_nb"]
 	
 	prod = db.select("""SELECT pro_qty, pro_rcp_name 
 						FROM production 
