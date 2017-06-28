@@ -221,7 +221,7 @@ def postquitter():
 	return json.dumps("error"),400,{'Content-Type':'application/json'}
 
 
-@app.route("/player", methods=["POST"])
+@app.route("/players", methods=["POST"])
 def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
