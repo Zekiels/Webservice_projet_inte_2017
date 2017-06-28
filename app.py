@@ -435,12 +435,12 @@ def postAction(PlayerName):
 		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price["sum"], PlayerName, action["prepare"].items()[0][0]))
 
 			#mise a jour budget joueur
-			cash = db.select("""SELECT pla_cash from player WHERE play_name = '{0}';""".format(PlayerName))[0]
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
 			print(cash)
 			budget = cash["pla_cash"] - (actions["actions"][0]["prepare"].values()[0]*price["sum"])
 			print(budget)
 			db.execute("""
-		 		UPDATE player SET pla_cash = {0} WHERE  play_name = '{1}';
+		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
 		 	""".format(budget, PlayerName))
 
 			#create sale
