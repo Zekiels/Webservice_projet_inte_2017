@@ -440,7 +440,9 @@ def postWheather():
 def postAction(PlayerName):
 	actions = request.get_json()
 	print(actions)
-	print(actions["actions"][0]["kind"])
+	print(actions["actions"][0]["prepare"].values()[0])
+	print(actions["actions"][0]["price"].values()[0])  
+	print(actions["actions"][0]["prepare"].items()[0][0])
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing player" }, 400)
 	if actions["actions"][0]["kind"] == "drinks":
@@ -450,7 +452,7 @@ def postAction(PlayerName):
 
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
+	 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], actions["actions"][0]["price"].values()[0], PlayerName, actions["actions"][0]["prepare"].items()[0][0]))
 
 		#{ "sufficientFunds":bool, "totalCost":float }
 		#rqt = db.select("""
