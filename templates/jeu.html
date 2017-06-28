@@ -299,7 +299,7 @@
                 }
             })
             $("#boutonprod").on('click',function(){
-            $.ajax(server+'/actions/'+$("#name").val(),{
+            $.ajax(server+'/actions/'+joueur,{
               method:'POST',
               data: JSON.stringify({
                 "actions":[{
