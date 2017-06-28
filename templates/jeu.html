@@ -298,6 +298,20 @@
           }
         }
       })
+
+      $("#deconnexion").on('click',function(){
+        $.ajax(server+'/players/'+joueur,{
+          methods:'POST',
+          contentType:"application/json",
+          success: function(){
+            document.location='http://limonade-equipe7.herokuapp.com/connexion.html';
+          },
+          error: function(error){
+            console.log(console.error.error);
+          }
+        })
+      })
+
       $("#boutonprod").on('click',function(){
         $.ajax(server+'/actions/'+joueur,{
           method:'POST',
@@ -317,20 +331,20 @@
             var name = Object.keys(data)[0];
             console.log(name)
             console.log(data[name])
-              $("#nombrelimonade").val();
-              $("#prixventelimonade").val();
+            $("#nombrelimonade").val();
+            $("#prixventelimonade").val();
           },
           error: function(error){
             /*console.log({
-              "Limonade": $("#nombrelimonade").val()
-              "Limonade":$("#prixventelimonade").val(),
-            })*/
-            console.log(error.error)
-          }
-        })
+            "Limonade": $("#nombrelimonade").val()
+            "Limonade":$("#prixventelimonade").val(),
+          })*/
+          console.log(error.error)
+        }
       })
+    })
 
 
-});
+  });
 
-</script>
+  </script>
