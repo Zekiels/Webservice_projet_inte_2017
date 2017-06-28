@@ -195,6 +195,7 @@ def getMap():
 			WHERE pla_name = \'"+ i.get("name") + "\';
 		""")
 		playerCash = playerCash_tmp[0]["cash"]
+		print(playerCash_tmp)
 
 		##############
 		#Qty vendu
