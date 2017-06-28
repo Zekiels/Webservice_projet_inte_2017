@@ -366,7 +366,7 @@ def postSales():
 	if sales["item"] == prod["pro_rcp_name"]:
 		if sales["quantity"] <= prod["pro_qty"]:
 		 	db.execute("""
-		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3});
+		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 		 	""".format(sales['quantity'], sales['item'],sales['player'], day))
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 		else:
