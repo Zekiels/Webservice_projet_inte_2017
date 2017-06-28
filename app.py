@@ -61,14 +61,14 @@ def getIngredienst():
 
 	return json.dumps(tmp),200,{'Content-Type':'application/json'}
 
-# Fonction pour la route /map/<player_name> avec GET
+# Fonction pour la route /map/<playerName> avec GET
 # Recupere les details d'une partie
 @app.route('/map/<playerName>', methods=['GET'])
 def getMapPlayer(playerName):
 	#info de boisson du joueur
 	db = Db()
 	sql = "SELECT ing_name as name, ing_has_alcohol as hasAlcool, ing_is_cold as isCold, ing_current_cost as cost FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name INNER JOIN recipe ON recipe.rcp_name = compose.com_rcp_name WHERE recipe.rcp_name IN (SELECT acc_rcp_name FROM access WHERE acc_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}'));"
-	ingredients = db.select(sql.format(player_name))
+	ingredients = db.select(sql.format(playerName))
 	db.close()
 
 	db = Db()
@@ -97,10 +97,10 @@ def getMapPlayer(playerName):
 	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}');"
 	#info joueur drinkOffered
 	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
-	coord = db.select(sqlCoord.format(player_name))[0]
-	budgetBase = db.select(sqlBudget.format(player_name))[0]['pla_cash']
-	nbSales = db.select(sqlSales.format(player_name))[0]['nbsales']
-	drinksInfo = db.select(sqlDrinks.format(player_name))
+	coord = db.select(sqlCoord.format(playerName))[0]
+	budgetBase = db.select(sqlBudget.format(playerName))[0]['pla_cash']
+	nbSales = db.select(sqlSales.format(playerName))[0]['nbsales']
+	drinksInfo = db.select(sqlDrinks.format(playerName))
 	db.close()
 
 	profit = budgetBase - budget_depart;
