@@ -362,6 +362,7 @@ def postWheather():
 
 	if (timestamp%24) == 0:
 		day = day + 1 
+		print (day)
 
 	db = Db()
 	db.execute("""
