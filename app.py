@@ -223,7 +223,7 @@ def postSales():
 								recette[item] = recette[item] - quantity
 
 							prixVente = j['price'][item]
-
+							print("start request")
 							db = Db()
 							#get jour
 							day = db.select("""SELECT map_day_nb from map;""")
@@ -241,6 +241,7 @@ def postSales():
 							#insert vente (0,10,12,'Toto','limonade')
 							sql = "INSERT INTO sale VALUES('" + str(day_tmp) + "','" + str(quantity) + "','" + str(prixVente) + "','" + str(player) + "','" + str(item) + "');"
 							db.execute(sql)
+							print("request execute")
 							db.close()
 	#if "quantity" not in sales :
 	#	return json_response({ "error" : "Missing quantity" }, 400)
