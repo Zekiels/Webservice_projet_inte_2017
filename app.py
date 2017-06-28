@@ -97,19 +97,43 @@ def getMapPlayer(playerName):
 	#infoPlayer
 	
 	#joueur stand
-	sqlCoord = "SELECT mit_latitude as latitude, mit_longitude as longitude FROM map_item WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"
+	sqlCoord = """	SELECT mit_latitude as latitude, mit_longitude as longitude 
+					FROM map_item 
+					WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"""
 	
 	#info joueur profit
-	playerProfit_tmp = "SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}') AS profit; "
+	playerProfit_tmp = """	SELECT (SELECT SUM (sal_qty * sal_price) 
+							FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name 
+							WHERE sal_day_nb = {1} 
+							AND sal_pla_name = '{0}') 
+							- 
+							(SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit 
+							FROM production 
+							INNER JOIN player ON player.pla_name = production.pro_pla_name 
+							WHERE pro_day_nb = {1} 
+							AND pro_pla_name = '{0}') AS profit; """
 	
 	#info joueur budget
-	sqlBudget = "SELECT pla_cash as cash FROM player WHERE pla_name = '{0}';"
+	sqlBudget = """	SELECT pla_cash as cash 
+					FROM player 
+					WHERE pla_name = '{0}';"""
 	
 	#info nb vente
-	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as sales FROM sale WHERE sal_pla_name = '{0}';"
+	sqlSales = """	SELECT COALESCE(SUM(sal_qty), 0) as sales 
+					FROM sale 
+					WHERE sal_pla_name = '{0}';"""
 	
 	#info joueur drinkOffered
-	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
+	sqlDrinks = """	SELECT rcp_name, 
+							(SELECT  SUM (ing_current_cost * compose.com_quantity) 
+							FROM ingredient 
+							INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
+							WHERE compose.com_rcp_name = rcp_name) AS price, 
+							rcp_is_cold AS isCold, 
+							rcp_has_alcohol AS hasAlcohol 
+					FROM recipe 
+					INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name 
+					WHERE access.acc_pla_name ='{0}';"""
 	
 	coord = db.select(sqlCoord.format(playerName))
 	print(coord)
