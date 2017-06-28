@@ -195,7 +195,7 @@ def postquitter():
 def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
-	print(name)
+	print("""'{0}'""".format(name))
 	db = Db()
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
 	joueur = db.select(sql)
