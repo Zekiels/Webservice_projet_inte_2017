@@ -315,7 +315,7 @@
           contentType: "application/json",
           success: function(data){
             console.log(data)
-            for (var prod of data.joueur) {
+            for (var prod of data.data[0]) {
               console.log(prod.prepare);
               console.log(prod.price);
             }
@@ -325,22 +325,6 @@
           }
         })
       })
-
-      /*  $.ajax(server+'/actions/<PlayerName>',{
-      method:'POST',
-      data: JSON.stringify({
-      "location": //$("#id")"random",
-      "radius": 10,
-      "prepare":
-    }),
-    contentType: "application/json",
-    success: function(data){
-    console.log(data);
-  },
-  error: function(error){
-  console.log(error.error)
-}
-})*/
 
 
 });
