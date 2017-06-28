@@ -112,17 +112,12 @@ def getMap():
 	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_lattitude_span AS lattitude_span from map;")
 	coordinate_span = coordinate_span_tmp[0]
 
-	print (coordinate)
-	print (coordinate_tmp)
-
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
 	rank = db.select("SELECT pla_name AS name, pla_cash AS cash from player order by pla_cash DESC;")
 	rankNoCash = db.select("SELECT pla_name AS name from player order by pla_cash DESC;")
 
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
-	print(day_tmp)
-	print(day)
 	db.close()
 
 	
@@ -153,7 +148,10 @@ def getMap():
 		#itemsByPlayer)
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		print(oneItem_temp)
-		oneItem = oneItem_temp[0]
+		if oneItem_temp.len() > 0 :
+			oneItem = oneItem_temp[0]
+		else:
+			oneItem = oneItem_temp
 		print(oneItem)
 		listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}
 		itemsByPlayer[i['name']] = listItems
