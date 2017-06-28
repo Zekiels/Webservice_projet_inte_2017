@@ -319,7 +319,7 @@ def postRejoindre():
 	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade' """)
 	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))
 	print(drink[0])
-	
+
 
 	#drinkInfo = {"name":drink[0]["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink[0]["rcp_has_alcohol"], "isCold":drink[0]["rcp_is_cold"]}
 
@@ -339,8 +339,10 @@ def postRejoindre():
 
 	#playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinksInfo}
 	#reponse = {"name": name, "location": coordinates, "info":playerInfo}
-	print (reponse)
-	return json_response(reponse)
+	
+	#print (reponse)
+	return json_response()
+	#return json_response(reponse)
 
 @app.route("/sales",methods=["POST"])
 def postSales():
