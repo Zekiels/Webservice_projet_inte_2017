@@ -80,6 +80,8 @@ def getMapPlayer():
 
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
+	print(day_tmp)
+	print(day)
 	db.close()
 
 	
