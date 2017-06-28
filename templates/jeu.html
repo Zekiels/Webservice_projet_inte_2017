@@ -97,7 +97,7 @@
             </div>
             <br></br>
             <div>
-              <button type="submit" class="btn btn-primary btn-lg center-block">Produire!</button><br>
+              <button type="submit" class="btn btn-primary btn-lg center-block" id="boutonprod">Produire!</button><br>
             </div>
           </div>
         </div>
@@ -298,13 +298,13 @@
                     }
                 }
             })
-
+            $("#boutonprod").on('click',function(){
             $.ajax(server+'/sales',{
               method:'POST',
               data: JSON.stringify({
                 "quantity": /*$("#id")*/10,
                 "price":10.0,
-                "player": /*$("#id")*/"Paul",
+                "player": /*$("#id")*/"Jacques",
                 "item": /*$("#id")*/"limonade",
               }),
               contentType: "application/json",
@@ -314,6 +314,7 @@
               error: function(error){
                 console.log(error.error)
               }
+            })
             })
 
           /*  $.ajax(server+'/actions/<PlayerName>',{
