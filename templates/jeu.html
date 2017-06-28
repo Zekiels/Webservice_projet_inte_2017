@@ -319,9 +319,12 @@
             console.log(data[name])
               $("#nombrelimonade").val();
               $("#prixventelimonade").val();
-            }
           },
           error: function(error){
+            console.log(JSON.stringify({
+              "Limonade": $("#nombrelimonade").val()
+              "Limonade":$("#prixventelimonade").val(),
+            }))
             console.log(error.error)
           }
         })
