@@ -25,7 +25,7 @@ $(function(){
   var server='http://limonade-equipe7.herokuapp.com';
 
   $("#connect").on('click',function(){
-    $.ajax(server+'/player',{
+    $.ajax(server+'/players',{
       method:'POST',
       data:JSON.stringify({
         "name": $("#name").val(),
