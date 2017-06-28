@@ -418,8 +418,10 @@ def postAction(PlayerName):
 	print(actions)
 	if "actions" not in actions or len(actions["actions"]) == 0:
 		return json_response({ "error" : "Missing actions" }, 400)
-	print(actions[0]["actions"]["kind"])
-	if actions["actions"]["kind"] == "drinks":
+	print(actions["actions"][0]["kind"])
+
+	#for kind in actions["actions"]
+	if actions["actions"][0]["kind"] == "drinks":
 		db = Db()
 		#get day
 		day = db.select("""SELECT map_day_nb from map;""")
@@ -434,12 +436,12 @@ def postAction(PlayerName):
 		#create production
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], price, PlayerName, actions["actions"]["prepare"].items()[0][0]))
+	 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price, PlayerName, actions["actions"][0]["prepare"].items()[0][0]))
 
 		#create sale
 		db.execute("""
 		INSERT INTO sale VALUES ({0}, {1}, {2}, '{3}', '{4}');
-		""".format(day_tmp.get("map_day_nb"), 0,actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
+		""".format(day_tmp.get("map_day_nb"), 0,actions["actions"][0]["price"].values()[0], PlayerName, actions["actions"][0]["prepare"].items()[0][0]))
 
 		#{ "sufficientFunds":bool, "totalCost":float }
 		#rqt = db.select("""
