@@ -145,7 +145,7 @@ def getMap():
 		listCor = []
 		for j in playerDoableDrinks:
 			j["isCold"] = j.pop("iscold")
-			del j[iscold]
+			del j["iscold"]
 			j["hasAlcohol"] = j["hasalcohol"]
 			del j["hasalcohol"]
 
