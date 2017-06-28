@@ -211,6 +211,7 @@ def postSales():
   	item = sales['item']
   	quantity = sales['quantity']
  	print(sales)
+ 	print(dicoAction)
  	for i in dicoAction:
  		if i == player:
  			for j in dicoAction[i]['actions']:
