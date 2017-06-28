@@ -108,7 +108,6 @@ def getMap():
 	playerInfo={}
 	drinksByPlayer={}
 	rankNoKeys = []
-	drinksOffered = []
 
 	db = Db()
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS latitude from map;")
@@ -143,11 +142,13 @@ def getMap():
 
 		#drinksByPlayer	
 		playerDoableDrinks = db.select("SELECT rcp_name AS name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';".format(i.get("name")))	
-		drinksOffered.append({"name":playerDoableDrinks['name'], "price":playerDoableDrinks['price'], "hasAlcohol":playerDoableDrinks['hasalcohol'],"iscold":playerDoableDrinks['iscold']})
-
+		listCor = []
+		for j in playerDoableDrinks
+			j["isCold"] = j.pop("iscold")
+			j["hasAlcohol"] = j.poo("hasalcohol")
 
 		db.close()
-		info = {"cash": playerCash, "sales":playerSales, "profit":playerProfit, "drinksOffered":drinksOffered}
+		info = {"cash": playerCash, "sales":playerSales, "profit":playerProfit, "drinksOffered":playerDoableDrinks}
 
 
 		playerInfo[i['name']] = info
@@ -200,7 +201,6 @@ def postquitter():
 def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
-	print(name)
 	db = Db()
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"';"
 	joueur = db.select(sql)
@@ -214,13 +214,14 @@ def postRejoindre():
 		db.execute(sqlPLayer)
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		db.execute(sqlMapItem)
-		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}');""".format(day,name))
-		db.execute(sqlVente)
-		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}');""".format(day,name))
-		db.execute(sqlProd)
+		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0, 'limonade' '{1}';""".format(day,name))
+		bd.execute(sqlVente)
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}';""".format(day,name))
+		bd.execute(sqlProd)
 		db.close()
 
-	#coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name ='{0}';""".format(name))
+	#sqlCoord = (""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
+	#coord = db.select(sqlCoord)
 	#print(coord)
 	#sqlDrinksInfo = (""" SELECT * FROM recipe WHERE rcp_name = 'limonade';""")
 	#drinksInfo = db.execute(sqlDrinksInfo);
