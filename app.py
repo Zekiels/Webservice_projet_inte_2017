@@ -76,7 +76,7 @@ def getMapPlayer(playerName):
 	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
 	coordinates = db.select(sql)[0]
 	#emplacement map span
-	sqlSpan = "SELECT map_lattitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
+	sqlSpan = "SELECT map_latitude_span as latitudeSpan, map_longitude_span as longitudeSpan FROM map;"
 	coordinatesSpan = db.select(sqlSpan)[0]
 	#ranking
 	sqlRank = "SELECT pla_name FROM player ORDER BY pla_cash DESC;"
