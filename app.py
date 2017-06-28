@@ -112,7 +112,7 @@ def getMap():
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_lattitude AS lattitude from map;")
 	coordinate = coordinate_tmp[0]
 
-	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_lattitude_span AS lattitude_span from map;")
+	coordinate_span_tmp = db.select("SELECT  map_longitude_span AS longitude_span, map_latitude_span AS latitude_span from map;")
 	coordinate_span = coordinate_span_tmp[0]
 
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
@@ -152,7 +152,7 @@ def getMap():
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_lattitude AS lattitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
-			listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"lattitude":oneItem["lattitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}	
+			listItems = {"kind":oneItem["kind"], "owner":oneItem["owner"], "location":{"latitude":oneItem["latitude"], "longitude":oneItem["longitude"]},"influence":oneItem["influence"]}	
 		else:
 			oneItem = oneItem_temp
 			listItems = oneItem
