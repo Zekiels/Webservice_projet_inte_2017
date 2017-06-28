@@ -215,13 +215,14 @@ def postRejoindre():
 	sql = "SELECT pla_name FROM player WHERE pla_name = '"+ name +"' ;"
 	joueur = db.select(sql)
 	db.close()
-	if joueur = []:
-		coordX = random.randrange(330,670,1)
-    	coordY = random.randrange(130,470,1)
-		db = Db()
-    	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-    	db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
-    	db.close()
+	print(joueur)
+	#if joueur = []:
+	#	coordX = random.randrange(330,670,1)
+    #	coordY = random.randrange(130,470,1)
+	#	db = Db()
+    #	budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
+    #	db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
+    #	db.close()
     return json_response()
 
 @app.route("/sales",methods=["POST"])
