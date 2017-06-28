@@ -12,7 +12,7 @@
 <body>
 
   <div class="row">
-    <div id="bienvenue" class="container col-md-6"><br><br><h2>Bienvenue "mon_identifiant" </h2></div>
+    <div class="container col-md-6"><br><br><h2>Bienvenue <span id="bienvenue">"mon_identifiant"</span></h2></div>
     <div id="argent" class="container col-md-4">
       <table id="tableargent" class="table table-bordered">
         <thead>
@@ -97,7 +97,7 @@
             </div>
             <br></br>
             <div>
-              <button type="submit" class="btn btn-primary btn-lg center-block">Produire!</button><br>
+              <button type="submit" class="btn btn-primary btn-lg center-block" id="boutonprod">Produire!</button><br>
             </div>
           </div>
         </div>
@@ -250,6 +250,19 @@
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
 
+            function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+            var joueur = getParameterByName('name');
+            console.log(joueur);
+            $("#bienvenue").html(joueur);
+
           /*  $.ajax(server+'/map',{
               method:'GET',
               contentType: "application/json",
@@ -285,12 +298,13 @@
                     }
                 }
             })
-
+            $("#boutonprod").on('click',function(){
             $.ajax(server+'/sales',{
               method:'POST',
               data: JSON.stringify({
-                "quantity": /*$("#id")*/10,
-                "player": /*$("#id")*/"Toto",
+                "quantity": "nombrelimonade": $("#nombrelimonade").val(),
+                "price":"prixventelimonade": $("#prixventelimonade").val(),,
+                "player": /*$("#id")*/"Jacques",
                 "item": /*$("#id")*/"limonade",
               }),
               contentType: "application/json",
@@ -300,6 +314,7 @@
               error: function(error){
                 console.log(error.error)
               }
+            })
             })
 
           /*  $.ajax(server+'/actions/<PlayerName>',{
