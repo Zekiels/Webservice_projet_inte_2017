@@ -183,7 +183,7 @@ def getBD():
 
 #################################                   POST   						 #######################################################
 
-@app.route("/quitter", methods=["POST"])
+@app.route("/players/<playerName>", methods=["POST"])
 def postquitter():
 	quitter = request.get_son()
 	print (quitter)
