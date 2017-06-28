@@ -470,7 +470,7 @@ def postAction(PlayerName):
 
 
 
-return json.dumps("ok"),200,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
 #@app.route("/idGet",methods=["GET"])
 #def idGet():
