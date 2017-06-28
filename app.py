@@ -351,6 +351,8 @@ def postSales():
 		return json_response({ "error" : "Missing player" }, 400)
 	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
+	if "item" not in sales :
+		return json_response({ "error" : "Missing item" }, 400)
 
 	db = Db()
 	#get day
@@ -362,10 +364,7 @@ def postSales():
 						WHERE pro_pla_name = '{0}' 
 						AND pro_day_nb = {1};
 					""".format(sales["player"], day))[0]
-	print(sales["item"])
-	print(prod["pro_rcp_name"])
-	print(sales["quantity"])
-	print(prod["pro_qty"])
+
 	if sales["item"] == prod["pro_rcp_name"]:
 		if sales["quantity"] <= prod["pro_qty"]:
 		 	db.execute("""
@@ -421,12 +420,25 @@ def postAction(PlayerName):
 		return json_response({ "error" : "Missing player" }, 400)
 	if actions["actions"]["kind"] == "drinks":
 		db = Db()
+		#get day
 		day = db.select("""SELECT map_day_nb from map;""")
 		day_tmp = day.pop()
 
+		#get price
+		price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity) 
+											FROM ingredient 
+											INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
+											WHERE compose.com_rcp_name = rcp_name;""")
+		print(price)
+		#create production
 		db.execute("""
 	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
+	 	""".format(day_tmp.get("map_day_nb"), actions["actions"]["prepare"].values()[0], price, PlayerName, actions["actions"]["prepare"].items()[0][0]))
+
+		#create sale
+		db.execute("""
+		INSERT INTO sale VALUES ({0}, {1}, {2}, '{3}', '{4}');
+		""".format(day_tmp.get("map_day_nb"), 0,actions["actions"]["price"].values()[0], PlayerName, actions["actions"]["prepare"].items()[0][0]))
 
 		#{ "sufficientFunds":bool, "totalCost":float }
 		#rqt = db.select("""
