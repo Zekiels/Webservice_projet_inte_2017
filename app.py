@@ -121,7 +121,7 @@ def getMapPlayer():
 		drinksByPlayer[i['name']] = listDrinks
 		db.close()
 
-	Map = {"region" : regionCoord, "ranking" : rank, "itemsByPlayer" : itemsByPlayer, "playerInfo",playerInfo, "drinksByPlayer":drinksByPlayer}
+	Map = {"region":regionCoord, "ranking":rank, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}
 	print(Map)
 	db.close()
 
