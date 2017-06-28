@@ -218,6 +218,7 @@ def postRejoindre():
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82, 'limonade' '{1}');""".format(day,name))
 		db.execute(sqlProd)
 		db.close()
+			pass
 
 	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))
 	#print(coord)
