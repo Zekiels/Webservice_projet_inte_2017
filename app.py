@@ -126,7 +126,7 @@ def getMap():
 
 	coordinate_span['latitudeSpan'] = coordinate_span['latitudespan']
 	del coordinate_span['latitudespan']
-	coordinate_span['longitudespan'] = coordinate_span['longitudeSpan']
+	coordinate_span['longitudeSpan'] = coordinate_span['longitudespan']
 	del coordinate_span['longitudespan']
 
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
