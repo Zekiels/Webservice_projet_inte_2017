@@ -216,11 +216,15 @@ def postRejoindre():
 	print (joueur)
 	db.close()
 	if joueur == []:
-		coordX = random.randrange(330,670,1)
-		coordY = random.randrange(130,470,1)
+		longitude = random.randrange(0,600)
+		latitude = random.randrange(0,600)
 		db = Db()
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
-		db.execute("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
+		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
+		db.execute(sqlPLayer)
+		sqlMap_Item = (""" INSERT INTO Map_Item VALUES(NULL,'stand' ,10 ,{1} ,{2} ,'{3}', 0);""".format(longitude, latitude ,name))
+		prixVente = (""" SELECT sal_price FROM Sale WHERE pla_name ='"+ name + "' rcp_name = 'limonade';""")
+		prixProd
 		db.close()
 	return json_response()
 
