@@ -316,13 +316,11 @@ def postRejoindre():
 	coordinates = {"latitude":coordx, "longitude":coordy}
 
 	#drinkInfo
-	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade' """)
+	drink = db.select("""SELECT * FROM recipe WHERE rcp_name ='limonade'; """)
 	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))
-	print(drink[0])
-
-
+	
 	#drinkInfo = {"name":drink[0]["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink[0]["rcp_has_alcohol"], "isCold":drink[0]["rcp_is_cold"]}
-
+	print(drink)
 	#player cash
 	playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name ='{0}';".format(name))
 	playerCash = playerCash_tmp[0]["cash"]
