@@ -420,44 +420,44 @@ def postAction(PlayerName):
 		return json_response({ "error" : "Missing actions" }, 400)
 	print(actions["actions"][0]["kind"])
 
-	#for kind in actions["actions"]
-	if actions["actions"][0]["kind"] == "drinks":
-		db = Db()
-		#get day
-		day = db.select("""SELECT map_day_nb from map;""")
-		day_tmp = day.pop()
+	for action in actions["actions"]:
+		if action["kind"] == "drinks":
+			db = Db()
+			#get day
+			day = db.select("""SELECT map_day_nb from map;""")
+			day_tmp = day.pop()
 
-		#get price
-		price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity) 
-											FROM ingredient 
-											INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
-											WHERE compose.com_rcp_name = rcp_name;""")
-		print(price)
-		#create production
-		db.execute("""
-	    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-	 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price, PlayerName, actions["actions"][0]["prepare"].items()[0][0]))
+			#get price
+			price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity) 
+												FROM ingredient 
+												INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
+												WHERE compose.com_rcp_name = rcp_name;""")
+			print(price)
+			#create production
+			db.execute("""
+		    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
+		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price, PlayerName, action["prepare"].items()[0][0]))
 
-		#create sale
-		db.execute("""
-		INSERT INTO sale VALUES ({0}, {1}, {2}, '{3}', '{4}');
-		""".format(day_tmp.get("map_day_nb"), 0,actions["actions"][0]["price"].values()[0], PlayerName, actions["actions"][0]["prepare"].items()[0][0]))
+			#create sale
+			db.execute("""
+			INSERT INTO sale VALUES ({0}, {1}, {2}, '{3}', '{4}');
+			""".format(day_tmp.get("map_day_nb"), 0, action["price"].values()[0], PlayerName, action["prepare"].items()[0][0]))
 
-		#{ "sufficientFunds":bool, "totalCost":float }
-		#rqt = db.select("""
-		#	SELECT I.ing_current_cost, c.com_quantity
-		#	From ingredient I, compose c
-		#	WHERE I.ing_name = c.com_ing_name
-		#	AND c.com_rcp_name = %s;
-		#	""", (actions["actions"]["prepare"].items()[0]))
-		#print(rqt)
-		db.close()
-		return json.dumps("ok"),200,{'Content-Type':'application/json'}
-	if actions["actions"]["kind"] == "recipe":
+			#{ "sufficientFunds":bool, "totalCost":float }
+			#rqt = db.select("""
+			#	SELECT I.ing_current_cost, c.com_quantity
+			#	From ingredient I, compose c
+			#	WHERE I.ing_name = c.com_ing_name
+			#	AND c.com_rcp_name = %s;
+			#	""", (actions["actions"]["prepare"].items()[0]))
+			#print(rqt)
+			db.close()
+			return json.dumps("ok"),200,{'Content-Type':'application/json'}
+		if action["kind"] == "recipe":
 
-		print("NON")
-	if actions["actions"]["kind"] == "ad":
-		print("NON")
+			print("NON")
+		if action["kind"] == "ad":
+			print("NON")
 
 
 
