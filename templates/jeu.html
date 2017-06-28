@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           <tr>
-            <td><h3 id="budget">+20.27€</h3></td>
+            <td><h3 id="budget">20.27€</h3></td>
           </tr>
         </tbody>
       </table>
@@ -304,6 +304,7 @@
         contentType: "application/json",
         success: function(budget){
         console.log(budget.playerInfo.cash);
+        $("#budget").text(budget.playerInfo.cash+"€");
         }
       })
 
