@@ -22,7 +22,7 @@ CurrentWeather = []
 PrevisoinWeather = []
 dicoAction = {}
 
-day = 0
+day = 1
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -86,7 +86,7 @@ def getMapPlayer(playerName):
 	region = {"center": coordinates, "span": coordinatesSpan}
 	#ajouter Mapitem
 	mapInfo = {"region" : region, "ranking" : ranking}
-	print region
+	print(region)
 	db = Db()
 	#infoPlayer
 	#joueur stand
@@ -94,14 +94,14 @@ def getMapPlayer(playerName):
 	#info joueur budget
 	sqlBudget = "SELECT pla_cash FROM player WHERE pla_name = '{0}';"
 	#info nb vente
-	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}');"
+	sqlSales = "SELECT COALESCE(0,SUM(sal_qty)) as nbSales FROM sale WHERE sal_pla_name = '{0}';"
 	#info joueur drinkOffered
 	sqlDrinks = "SELECT rcp_name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';"
 	coord = db.select(sqlCoord.format(playerName))
-	print(coord)
-	budgetBase = db.select(sqlBudget.format(playerName))['pla_cash']
+	print(coord)[0]
+	budgetBase = db.select(sqlBudget.format(playerName))[0]['pla_cash']
 	print(budgetBase)
-	nbSales = db.select(sqlSales.format(playerName))['nbsales']
+	nbSales = db.select(sqlSales.format(playerName))[0]['nbsales']
 	print(nbSales)
 	drinksInfo = db.select(sqlDrinks.format(playerName))
 	print(drinksInfo)
@@ -215,14 +215,14 @@ def getBD():
 #################################                   POST   						 #######################################################
 
 @app.route("/players/<playerName>", methods=["POST"])
-def postquitter():
+def postquitter(playerName):
 	quitter = request.get_son()
 	print (quitter)
 
 	return json.dumps("error"),400,{'Content-Type':'application/json'}
 
 
-@app.route("/player", methods=["POST"])
+@app.route("/players", methods=["POST"])
 def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
@@ -239,12 +239,10 @@ def postRejoindre():
 		db.execute(sqlPLayer)
 		sqlMapItem = (""" INSERT INTO Map_Item(mit_type,  mit_influence, mit_longitude, mit_latitude, mit_pla_name, mit_map_id) VALUES('stand' ,10.0 ,{0} ,{1} ,'{2}', 0);""".format(longitude, latitude ,name))
 		db.execute(sqlMapItem)
-		#sqlVente = 
-		db.execute(""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, name))
+		#sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
 		#db.execute(sqlVente)
-		#sqlProd = 
-		db.execute(""" INSERT INTO production VALUES('{0}', 0, 0.82 ,'{1}', 'limonade');""".format(day, name))
-		#db.execute(sqlProd)
+		sqlPod = (""" INSERT INTO production VALUES('{0}', 0, '0.82','{1}', 'limonade');""".format(day, name))
+		db.execute(sqlProd)
 		db.close()
 		pass
 	db = Db()
@@ -255,7 +253,7 @@ def postRejoindre():
 	coordinates = {"latitude":coordx, "longitude":coordy}
 
 	#drinkInfo
-	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = 'lolo' ;""")[0]
+	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))[0]
 	print(prod)
 
 
