@@ -99,7 +99,7 @@ def getMapPlayer(playerName):
 	return json_response(message)
 
 @app.route("/map", methods=["GET"])
-def getMapPlayer():
+def getMap():
 
 	itemsByPlayer={}
 	playerInfo={}
