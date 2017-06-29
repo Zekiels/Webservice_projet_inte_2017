@@ -279,12 +279,19 @@ def getBD():
 
 #################################                   POST   						 #######################################################
 
-@app.route("/players/<playerName>", methods=["POST"])
+@app.route("/players/<'playerName'>", methods=["POST"])
 def postquitter(playerName):
-	quitter = request.get_son()
-	print (quitter)
+	quitter = request.get_json()
+	if playerName == '':
+		return json_response({ "error" : "Missing name" }, 400)
 
-	return json.dumps("error"),400,{'Content-Type':'application/json'}
+	db.execute("""
+		DELETE FROM player 
+		WHERE pla_name = {0};
+		""".format(playerName)
+	)
+
+	return json.dumps("done"),200,{'Content-Type':'application/json'}
 
 
 @app.route("/players", methods=["POST"])
