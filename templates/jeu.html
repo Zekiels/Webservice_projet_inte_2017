@@ -290,10 +290,6 @@
         method:'GET',
         contentType: "application/json",
         success: function(meteo){
-          var load = setTimeout(function() {
-            document.getElementById("redirect").src="js/load.js";
-          }, 5000);
-
           console.log(meteo.timestamp);
           for (weather of meteo.weather) {
             console.log(weather.dfn);
