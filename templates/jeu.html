@@ -210,7 +210,10 @@
         <th><h3><b>Météo actuelle</b></h3></th>
         <th><h3><b>Prévision météo</b></h3></th>
         <th><h3><b>Jour et heure</b></h3></th>
-        <th><h3><b>Classement</b></h3></th>
+        <th>
+          <h3><b>Classement</b></h3>
+          <h3><b>Rang: <span id="rang"></span></b></h3>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -316,6 +319,7 @@ $.ajax(server+'/map/'+joueur,{
     console.log(data.playerInfo.cash);
     $("#budget").text(data.playerInfo.cash+"€");
     console.log(data.map.ranking.indexOf(joueur));
+    $("#rang").v
     for (place of data.map.ranking) {
       console.log(place);
       $("#classement").text($("#classement").text()+"\n"+place)
