@@ -561,10 +561,10 @@ def createTab():
 
 	for i in name:
 		print(i["pla_name"])
-		#sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, i))
-		#db.execute(sqlVente)
-		#sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, i))
-		#db.execute(sqlProd)
+		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 1, 0,'{1}','limonade');""".format(day, i["pla_name"]))
+		db.execute(sqlVente)
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 1, 0,'{1}', 'limonade');""".format(day, i["pla_name"]))
+		db.execute(sqlProd)
 	db.close()
 
 #######################################################################################################################################
