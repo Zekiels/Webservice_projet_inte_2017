@@ -466,7 +466,7 @@ def postSales():
 		return json_response({ "error" : "Missing player" }, 400)
 	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
-	print(sales["player"])
+	print(sales)
 
 	db = Db()
 
