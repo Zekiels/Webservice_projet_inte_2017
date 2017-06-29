@@ -36,9 +36,8 @@ def connect():
 @app.route("/day", methods=["GET"])
 def getDay():
 	db = Db()
-	tmp = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
 	db.close()
-	day = {"day":tmp}
 
 	return json.dumps(day),200,{'Content-Type':'application/json'}
 
@@ -587,7 +586,7 @@ def postAction(PlayerName):
 		if action["kind"] == "recipe":
 			print("NON")
 			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
-
+			
 		if action["kind"] == "ad":
 			radiusToAdd = action["radius"]
 
