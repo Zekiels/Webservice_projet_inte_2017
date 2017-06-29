@@ -399,11 +399,12 @@ def postRejoindre():
 	rejoindre = request.get_json()
 	name = rejoindre['name']
 	db = Db()
-	#on recupere le jour dans la bdd
+
+	#Recuperation de la date actuelle
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
-	#variable temporaire pour verifier si le joueur existe
+
+	# Verification de l'exitence du jouer, si non on le genere lui et ses tables associees
 	joueur = db.select("SELECT pla_name FROM player WHERE pla_name = '"+ name +"';")
-	#verifi si le joueur existe ou pas si jamais il n existe pas on lui creer les tables qui sont lie au joueur
 	if joueur == []:
 		longitude = random.randrange(50,950)
 		latitude = random.randrange(50,950)
@@ -419,7 +420,9 @@ def postRejoindre():
 		sqlRecette = (""" INSERT INTO access VALUES ('limonade', '{0}')""".format(name))
 		db.execute(sqlRecette)
 
-	#recuperation des coord longitude et latitude
+	#SINON on recupere les informations du joueur en question
+
+	#Recuperation des coordonnees du stand du joueur
 	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))[0]
 	coordx=coord["mit_longitude"]
 	coordy=coord["mit_latitude"]
@@ -430,25 +433,29 @@ def postRejoindre():
 	prod = db.select("""SELECT pro_cost_at_that_time FROM production WHERE pro_rcp_name = 'limonade' and pro_pla_name = '{0}' ;""".format(name))[0]
 	drinkInfo = {"name":drink["rcp_name"], "price":prod["pro_cost_at_that_time"], "hasAlcohol":drink["rcp_has_alcohol"], "isCold":drink["rcp_is_cold"]}
 
-	#player cash qui genere l'argent dispo sur le compte du joueur
+	#Recuperation de l argent du joueur
 	playerCash_tmp = db.select("SELECT pla_cash AS cash FROM player WHERE pla_name ='{0}';".format(name))
 	playerCash = playerCash_tmp[0]["cash"]
 
-	#qty vendu recupere les vente du joueur
+	#Recuperation des ventes totale du joueur
 	playerSales_tmp = db.select("SELECT SUM (sal_qty) AS sales FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(name, day))
 	playerSales = playerSales_tmp[0]["sales"]
 
-	#profit rcorrespond au profit sur les ventes du joueur
+	#Recuperation du profit actuel du joueur
 	playerProfit_tmp = db.select("SELECT (SELECT SUM (sal_qty * sal_price) FROM sale INNER JOIN player ON player.pla_name = sale.sal_pla_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}') - (SELECT SUM (pro_qty * pro_cost_at_that_time) AS profit FROM production INNER JOIN player ON player.pla_name = production.pro_pla_name WHERE pro_day_nb = {1} AND pro_pla_name = '{0}' ) AS profit; ".format(name, day))
 	playerProfit = playerProfit_tmp[0]["profit"]
 	db.close()
 
-	#on concataine dans la reponse finale
+	#Transformation en format JSON
 	playerInfo = {"cash":playerCash, "sales":playerSales,"profit":playerProfit, "drinksOffered": drinkInfo}
 	reponse = {"name": name, "location": coordinates, "info":playerInfo}
 
 	return json_response(reponse) #on retourne le message au client web
 
+##############
+#ROUTE POST /sales
+##############
+#Gere les ventes
 @app.route("/sales",methods=["POST"])
 def postSales():
  	sales = request.get_json()
@@ -460,21 +467,27 @@ def postSales():
 	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
 	print(sales["player"])
+
 	db = Db()
-	#get day
+
+	#Recuperation du jour actuel
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]["map_day_nb"]
 
+	#Recuperation de la production du jour
 	prod = db.select("""SELECT pro_qty, pro_rcp_name
 						FROM production
 						WHERE pro_pla_name = '{0}'
 						AND pro_day_nb = {1};
 					""".format(sales["player"], day))[0]
 
+	#On verifie si il vend une recette produite
 	if sales["item"] == prod["pro_rcp_name"]:
+		#On vend moins que produit
 		if sales["quantity"] <= prod["pro_qty"]:
 
-			#mise a jour budget joueur
+			#Mise a jour du cash du joueur
+			#Recuperation
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(sales['player']))[0]
 			price = db.select("""SELECT sal_price from sale WHERE  sal_rcp_name = '{0}' AND sal_pla_name = '{1}' AND sal_day_nb = {2};""".format(sales['item'],sales['player'], day))[0]
 			print(cash["pla_cash"])
@@ -482,6 +495,8 @@ def postSales():
 			print(price["sal_price"])
 			budget = cash["pla_cash"] + (float(sales['quantity'])*price["sal_price"])
 			print(budget)
+
+			#Mise a jour cash
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
 		 	""".format(budget, sales['player']))
@@ -490,9 +505,15 @@ def postSales():
 		 	db.execute("""
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 		 	""".format(sales['quantity'], sales['item'],sales['player'], day))
+
+		 	db.close()
+
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
+
+		#SINON on est censer vendre plus que produit, on vend donc juste la quantite produite
 		else:
-			#mise a jour budget joueur
+			#Mise a jour du cash joueur
+			#Recuperation
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(sales['player']))[0]
 			price = db.select("""SELECT sal_price from sale WHERE  sal_rcp_name = '{0}' AND sal_pla_name = '{1}' AND sal_day_nb = {2};""".format(sales['item'],sales['player'], day))[0]
 			quantity = db.select("""SELECT pro_qty from production WHERE  pro_rcp_name = '{0}' AND pro_pla_name = '{1}' AND pro_day_nb = {2};""".format(sales['item'], sales['player'], day))[0]
@@ -501,20 +522,30 @@ def postSales():
 			print(price["sal_price"])
 			budget = cash["pla_cash"] + (float(quantity['pro_qty'])*price["sal_price"])
 			print(budget)
+
+			#Mise a jour cash
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
 		 	""".format(budget, sales['player']))
 
-			#mise a jour sale
+			#Mise a jour sale
 		 	db.execute("""
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 		 	""".format(quantity['pro_qty'], sales['item'],sales['player'], day))
+
+		 	db.close()
+
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	else:
+		db.close()
+
 		return json.dumps("item error"),400,{'Content-Type':'application/json'}
-	db.close()
 
-
+	
+##############
+#ROUTE POST /metrology
+##############
+#Mise a jour de la meteo
 @app.route("/metrology", methods=["POST"])
 def postWheather():
 	weather = request.get_json()
@@ -534,6 +565,8 @@ def postWheather():
 		previsionWeather = weather["weather"][1]["weather"]
 
 	db = Db()
+
+	#Recuperation du jour actuel
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
 	if (timestamp%24) == 0:
 		day = day + 1
@@ -545,14 +578,21 @@ def postWheather():
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		print('bonjour')
 
+	#Mise a jour
 	db.execute("""
 		UPDATE map
 		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
 		WHERE map_id = 0;
 	""".format(timestamp ,previsionWeather, currentWeather))
+
 	db.close()
+
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
+##############
+#ROUTE POST /actions/<PlayerName>
+##############
+# Envoi de l action qu a pris le joueur
 @app.route("/actions/<PlayerName>", methods=["POST"])
 def postAction(PlayerName):
 	actions = request.get_json()
@@ -561,20 +601,26 @@ def postAction(PlayerName):
 		return json_response({ "error" : "Missing actions" }, 400)
 
 	for action in actions["actions"]:
+
+		#Action de production
 		if action["kind"] == "drinks":
 			db = Db()
+
 			#get day
 			day = db.select("""SELECT map_day_nb from map;""")
 			day_tmp = day.pop()
+
 			print(action["prepare"].items()[0][0])
 			print(action["prepare"].values()[0])
 			print(action["price"].values()[0])
+
 			#get price
 			price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity)
 												FROM ingredient
 												INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name
 												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
 			print(price)
+
 			#create production
 			db.execute("""
 			    UPDATE production
@@ -605,12 +651,15 @@ def postAction(PlayerName):
 			""".format(action["price"].values()[0], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			db.close()
+
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
+		#Action de creation de recette
 		if action["kind"] == "recipe":
 			print("NON")
 			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
 
+		#Action d achat de publicite
 		if action["kind"] == "ad":
 			radiusToAdd = action["radius"]
 
@@ -658,6 +707,7 @@ def createTab():
 		db.execute(sqlProd)
 	db.close()
 
+#Fonction de reinitialisation de l influence de tout les stands
 def reinitPub():
 	db = Db()
 	db.execute("""
