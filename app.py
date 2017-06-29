@@ -465,6 +465,7 @@ def postWheather():
 	if (timestamp%24) == 0:
 		day = day + 1 
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
+		reinitPub()
 		createTab()
 	if(timestamp<23):
 		day = 0
@@ -511,7 +512,7 @@ def postAction(PlayerName):
 		 	""".format(action["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
-			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
 			print(cash["pla_cash"])
 			print(float(action["prepare"].values()[0]))
 			print(price["sum"])
@@ -542,7 +543,7 @@ def postAction(PlayerName):
 			#Verifier le type
 			if radiusToAdd >= 15 :
 				sizeType = "pub_grand"
-			elif radiusToAdd >=10 :
+			elif radiusToAdd >= 10 :
 				sizeType = "pub_moyen"
 			else : 
 				sizeType = "pub_petit"
@@ -583,6 +584,14 @@ def createTab():
 	db.close()
 
 #######################################################################################################################################
+
+def reinitPub():
+	db = Db()
+	db.execute("""
+		UPDATE map_item
+		SET mit_influence = 10;
+		""")
+	db.close()
 
 #######################################################################################################################################
 
