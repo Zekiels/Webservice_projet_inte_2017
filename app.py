@@ -94,10 +94,10 @@ def getMapPlayer(playerName):
 	ingredients = db.select(sql.format(playerName))
 
 	for j in ingredients :
-		j["hasAlcohol"] = j["hasalcohol"]
-		del j["hasalcohol"]
-		j["isCold"] = j["iscold"]
-		del j["iscold"]
+		j['hasAlcohol'] = j['hasalcohol']
+		del j['hasalcohol']
+		j['isCold'] = j['iscold']
+		del j['iscold']
 	print(ingredients)
 
 	#Coordonnees de la carte de la partie
@@ -178,10 +178,10 @@ def getMapPlayer(playerName):
 	drinksInfo = db.select(sqlDrinks.format(playerName))
 
 	for j in drinksInfo:
-		j["isCold"] = j["iscold"]
-		del j["iscold"]
-		j["hasAlcohol"] = j["hasalcohol"]
-		del j["hasalcohol"]
+		j['isCold'] = j['iscold']
+		del j['iscold']
+		j['hasAlcohol'] = j['hasalcohol']
+		del j['hasalcohol']
 
 	db.close()
 
