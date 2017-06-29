@@ -283,14 +283,34 @@ def getMap():
 
 	return json.dumps(Map),200,{'Content-Type':'application/json'}
 	
-##############
+
 ##############
 #ROUTE GET /
-##############
 ##############
 @app.route("/", methods=["GET"])
 def getIndex():
 	return redirect(url_for('connect'))
+
+##############
+#ROUTE GET /reset
+##############
+@app.route("/reset", methods=["GET"])
+def getIndex():
+	db=Db()
+	db.execute("""
+		DELETE *
+		FROM player;
+		""")
+	DB.execute("""
+		UPDATE map
+		SET map_day_nb = 0,
+		map_time = 0,
+		map_prevision_weather = '',
+		map_current_weather = ''
+		WHERE map_id = 0
+		""")
+	db.close()
+	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
 #######################################################################################################################################
 #################################                   POST   						#######################################################
@@ -501,7 +521,33 @@ def postAction(PlayerName):
 			print("NON")
 			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
 		if action["kind"] == "ad":
-			print("NON")
+			radiusToAdd = action["radius"]
+
+			#Verifier le type
+			if radius >= 15 :
+				sizeType = "pub_grand"
+			elif radius >=10 :
+				sizeType = "pub_moyen"
+			else : 
+				sizeType = "pub_petit"
+			
+			db=Db()
+			
+			#Mettre a jour l'influence du stand
+			db.execute("""
+				UPDATE map_item
+				SET mit_influence = mit_influense + {0}
+				WHERE mit_pla_name = '{1}'
+			""".format(radiusToAdd, PlayerName))
+
+			#mettre a jour le cash et le profit du joueur
+			db.execute("""
+				UPDATE player
+				SET pla_cash = pla_cash - (SELECT pref_value FROM preference WHERE pref_name = {0}),
+				pla_profit = pla_profit - (SELECT pref_value FROM preference WHERE pref_name = {0})
+				WHERE pla_name = '{1}';
+			""".format(sizeType,PlayerName))
+			db.close()
 
 	return json.dumps("error kind"),400,{'Content-Type':'application/json'}
 
