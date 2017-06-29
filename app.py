@@ -26,6 +26,13 @@ def connect():
 #################################                   GET   						#######################################################
 #######################################################################################################################################
 
+@app.route("/day", methods=["GET"])
+def getDay():
+	db = Db()
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
+	db.close()
+	return json.dumps(day),200,{'Content-Type':'application/json'}
+
 @app.route("/metrology", methods=["GET"])
 def getWeather():
 	db = Db()
@@ -459,7 +466,7 @@ def postWheather():
 		createTab()
 	if(timestamp<23):
 		day = 1
-		print(bonjour)
+		print('bonjour')
 
 	db.execute("""
 		UPDATE map
