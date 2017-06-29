@@ -93,6 +93,7 @@ def getMapPlayer(playerName):
 		);"""
 	ingredients = db.select(sql.format(playerName))
 
+	print(ingredients)
 	for j in ingredients :
 		j["hasAlcohol"] = j["hasalcohol"]
 		del j["hasalcohol"]
@@ -175,7 +176,7 @@ def getMapPlayer(playerName):
 	nbSales = db.select(sqlSales.format(playerName))[0]['sales']
 
 	drinksInfo = db.select(sqlDrinks.format(playerName))
-	
+
 	for j in drinksInfo:
 		j["isCold"] = j["iscold"]
 		del j["iscold"]
