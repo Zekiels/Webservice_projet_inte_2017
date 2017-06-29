@@ -507,12 +507,12 @@ def postAction(PlayerName):
 #fonction qui permet de creer une pable vide pour chaque joueur a chaque fois q un nouveau jour commence 
 def createTab():
 	db = Db()
-	name = db.select("SELECT pla_name FROM player;")[0]
+	name = db.select("SELECT * FROM player;")
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
 	print(name)
 
-	for i in name :
-		print(name["pla_name"])
+	#for name in name["pla_name"]:
+		#print(name["pla_name"])
 
 if __name__ == "__main__":
  	app.run()
