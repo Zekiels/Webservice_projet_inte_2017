@@ -93,11 +93,11 @@ def getMapPlayer(playerName):
 		);"""
 	ingredients = db.select(sql.format(playerName))
 
-	ingredients['hasAlcohol'] = ingredients['hasalcohol']
-	del ingredients['hasalcohol']
-
-	ingredients['isCold'] = ingredients['iscold']
-	del ingredients['iscold']
+	for j in ingredients :
+		j["hasAlcohol"] = j["hasalcohol"]
+		del j["hasalcohol"]
+		j["isCold"] = j["iscold"]
+		del j["iscold"]
 
 	#Coordonnees de la carte de la partie
 	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
@@ -166,19 +166,21 @@ def getMapPlayer(playerName):
 					FROM recipe 
 					INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name 
 					WHERE access.acc_pla_name ='{0}';"""
+
 	
 	#Execution des requetes
 	coord = db.select(sqlCoord.format(playerName))[0]
 	budgetBase = db.select(sqlBudget.format(playerName))[0]['cash']
 	profit = db.select(playerProfit_tmp.format(playerName, day.get("map_day_nb")))[0]["profit"]
 	nbSales = db.select(sqlSales.format(playerName))[0]['sales']
+
 	drinksInfo = db.select(sqlDrinks.format(playerName))
-
-	drinksInfo['hasAlcohol'] = drinksInfo['hasalcohol']
-	del drinksInfo['hasalcohol']
-
-	drinksInfo['isCold'] = drinksInfo['iscold']
-	del drinksInfo['iscold']
+	
+	for j in drinksInfo:
+		j["isCold"] = j["iscold"]
+		del j["iscold"]
+		j["hasAlcohol"] = j["hasalcohol"]
+		del j["hasalcohol"]
 
 	db.close()
 
