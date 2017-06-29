@@ -347,8 +347,8 @@ def postRejoindre():
 	joueur = db.select("SELECT pla_name FROM player WHERE pla_name = '"+ name +"';")
 	#verifi si le joueur existe ou pas si jamais il n existe pas on lui creer les tables qui sont lie au joueur
 	if joueur == []: 
-		longitude = random.randrange(0,600)
-		latitude = random.randrange(0,600)
+		longitude = random.randrange(50,950)
+		latitude = random.randrange(50,950)
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
 		db.execute(sqlPLayer)
