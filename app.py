@@ -561,7 +561,6 @@ def postAction(PlayerName):
 			db.execute("""
 				UPDATE player
 				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = '{0}'),
-				pla_profit = pla_profit - (SELECT pre_value FROM preference WHERE pre_name = '{0}')
 				WHERE pla_name = '{1}';
 			""".format(sizeType,PlayerName))
 			db.close()
