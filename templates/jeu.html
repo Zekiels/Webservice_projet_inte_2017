@@ -287,11 +287,11 @@ $(function(){
 
   $("#pub15").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
-
+    var radius = $("#pub15").val();
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
-        "actions":[{"kind":"ad"}]
+        "actions":[{"kind":"ad","radius":radius}]
       }),
       contentType: "application/json",
       success: function(pub){
