@@ -20,15 +20,10 @@ body {
 }
 
 #citron{
-	height: 35%;
-	width: 30%;
-
+	height: 50%;
+	width: 50%;
+	text-align: center;
 	margin-left: -10%;
-}
-
-img{
-	height: 35%;
-	width: 30%;
 }
 
 .login {
