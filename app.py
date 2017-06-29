@@ -552,7 +552,7 @@ def postAction(PlayerName):
 			#Mettre a jour l influence du stand
 			db.execute("""
 				UPDATE map_item
-				SET mit_influence = mit_influense + {0}
+				SET mit_influence = mit_influence + {0}
 				WHERE mit_pla_name = '{1}'
 			""".format(radiusToAdd, PlayerName))
 
