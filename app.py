@@ -559,12 +559,12 @@ def createTab():
 	name = db.select("SELECT pla_name FROM player;")
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
 
-	for i in name["pla_name"]:
-		print(i)
-		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, i))
-		db.execute(sqlVente)
-		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, i))
-		db.execute(sqlProd)
+	for i in name:
+		print(i["pla_name"])
+		#sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, i))
+		#db.execute(sqlVente)
+		#sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, i))
+		#db.execute(sqlProd)
 	db.close()
 
 #######################################################################################################################################
