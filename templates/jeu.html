@@ -322,10 +322,7 @@ $.ajax(server+'/map/'+joueur,{
     $("#rang").v
     for (place of data.map.ranking) {
       console.log(place);
-      $("#classement").text($("#classement").text()+"\n"+place)
-      /*console.log(data.map.region.center.latitude);
-      console.log(data.map.region.center.longitude);
-      $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);*/
+      $("#classement").text($("Vous êtes rang "+place)
     }
   }
 })
