@@ -459,9 +459,8 @@ def postWheather():
 		createTab()
 	if(timestamp<23):
 		day = 1
+		print(bonjour)
 
-
-	
 	db.execute("""
 		UPDATE map
 		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
