@@ -378,14 +378,14 @@ def postquitter(playerName):
 	if playerName == '':
 		return json_response({ "error" : "playerName is empty" }, 400)
 
-        db = Db()
+	db = Db()
 	#Supprimer le joueur qui quitte la partie
 	db.execute("""
 		DELETE FROM player
 		WHERE pla_name = '{0}';
 		""".format(playerName)
 	)
-
+	db.close()
 	#Rediriger le joueur vers la page de connexion
 	#return redirect(url_for('connect'))
 	return json.dumps("Done"),200,{'Content-Type':'application/json'}
@@ -506,7 +506,6 @@ def postSales():
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 		 	""".format(sales['quantity'], sales['item'],sales['player'], day))
 
-		 	db.close()
 
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
@@ -532,7 +531,6 @@ def postSales():
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 			""".format(prod["pro_qty"], sales['item'],sales['player'], day))
 
-		 	db.close()
 
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 	else:
