@@ -185,7 +185,8 @@ def getMapPlayer(playerName):
 	db.close()
 
 	if budgetBase < 0 :
-		return redirect('http://limonade-equipe7.herokuapp.com/players/' + playerName + '')
+		reponse = "dead"
+		return json_response(response)
 
 	#Transformation en JSON
 	info = {"cash": budgetBase, "sales": nbSales, "profit": profit, "drinksOffered": drinksInfo}
@@ -386,6 +387,10 @@ def postquitter(playerName):
 	#return redirect(url_for('connect'))
 	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
+##############
+#ROUTE POST /players
+##############
+# Permet a un utilisateur de rejoindre la partie
 @app.route("/players", methods=["POST"])
 def postRejoindre():
 	rejoindre = request.get_json()
