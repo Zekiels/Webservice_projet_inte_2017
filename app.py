@@ -271,6 +271,9 @@ def getMap():
 
 		drinksByPlayer[i['name']] = listDrinks
 
+	##############
+	#Construction du JSON de retour
+	##############
 	Map = {"map":{"region":regionCoord, "ranking":rankNoKeys, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
 	print(Map)
 	db.close()
