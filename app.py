@@ -387,7 +387,7 @@ def postSales():
 		if sales["quantity"] <= prod["pro_qty"]:
 
 			#mise a jour budget joueur
-			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(sales['player']))[0]
 			price = db.select("""SELECT sal_price from sale WHERE  sal_rcp_name = '{0}' AND sal_pla_name = '{1}' AND sal_day_nb = {2};""".format(sales['item'],sales['player'], day))[0]
 			print(cash["pla_cash"])
 			print(float(sales['quantity']))
