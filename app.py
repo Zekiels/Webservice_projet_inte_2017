@@ -326,6 +326,8 @@ def postRejoindre():
 		db.execute(sqlVente)
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82,'{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
+		sqlRecette = (""" INSERT INTO access VALUES (''limonade', {0}')""".format(name))
+		db.execute(sqlRecette)
 
 	#recuperation des coord longitude et latitude
 	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))[0]
@@ -472,16 +474,8 @@ def postAction(PlayerName):
 				WHERE  sal_rcp_name = '{1}'
 				AND sal_pla_name = '{2}'
 				AND sal_day_nb = {3};
-			""".format(day_tmp.get("map_day_nb"), 0, action["price"].values()[0], PlayerName, action["prepare"].items()[0][0]))
+			""".format(action["price"].values()[0], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
-			#{ "sufficientFunds":bool, "totalCost":float }
-			#rqt = db.select("""
-			#	SELECT I.ing_current_cost, c.com_quantity
-			#	From ingredient I, compose c
-			#	WHERE I.ing_name = c.com_ing_name
-			#	AND c.com_rcp_name = %s;
-			#	""", (actions["actions"]["prepare"].items()[0]))
-			#print(rqt)
 			db.close()
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 		if action["kind"] == "recipe":
