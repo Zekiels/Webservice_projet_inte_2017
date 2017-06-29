@@ -14,10 +14,6 @@ body {
   margin-right: 10px;
 }
 
-#informations{
-  margin-left: 100%;
-}
-
 #reset{
   width:5%;
   margin-right: 10px;
@@ -33,7 +29,7 @@ body {
   padding : 5px;
   vertical-align: middle;
   text-align: center;
-  min-height: 20em;
+  min-height: 40em;
 }
 
 #Tab input[type="text"]{
@@ -66,10 +62,9 @@ li{
 }
 
 #tableinfo tr td, #tableinfo tr th{
-  width: 50%;
+  width: 25%;
   vertical-align: middle;
   text-align: center !important;
-  color:black;
 }
 
 table tr td{
