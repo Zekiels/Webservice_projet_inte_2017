@@ -137,6 +137,11 @@ def getMapPlayer(playerName):
 	message = {"availableIngredients": ingredients, "map": mapInfo, "playerInfo": info}
 	return json_response(message)
 
+############################
+############################
+#ROUTE GET /MAP
+############################
+############################
 @app.route("/map", methods=["GET"])
 def getMap():
 
@@ -146,6 +151,10 @@ def getMap():
 	rankNoKeys = []
 
 	db = Db()
+
+	##############
+	#Coordonnee map
+	##############
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS latitude from map;")
 	coordinate = coordinate_tmp[0]
 
@@ -158,8 +167,15 @@ def getMap():
 	del coordinate_span['longitudespan']
 
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
+
+	##############
+	#Joueurs classes
+	##############
 	rank = db.select("SELECT pla_name AS name, pla_cash AS cash from player order by pla_cash DESC;")
 
+	##############
+	#Jour actuel
+	##############
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
 
@@ -261,7 +277,11 @@ def getMap():
 
 	return json.dumps(Map),200,{'Content-Type':'application/json'}
 	
-
+##############
+##############
+#ROUTE GET /
+##############
+##############
 @app.route("/", methods=["GET"])
 def getBD():
 	return redirect(url_for('connect'))
