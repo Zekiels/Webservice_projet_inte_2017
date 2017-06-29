@@ -397,7 +397,7 @@ def postSales():
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
-		 	""".format(budget, PlayerName))
+		 	""".format(budget, sales['player']))
 
 			#mise a jour sale
 		 	db.execute("""
