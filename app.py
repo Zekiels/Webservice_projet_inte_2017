@@ -534,12 +534,13 @@ def postWheather():
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		reinitPub()
 		createTab()
-		impot()
+		
 	if(timestamp<23):
 		day = 0
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		print('bonjour')
 
+	impot()
 	db.execute("""
 		UPDATE map
 		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
