@@ -562,8 +562,8 @@ def createTab():
 	print(name[0])
 	print(name[1])
 
-	#for name in name["pla_name"]:
-		#print(name["pla_name"])
+	for i in name:
+		print(i)
 
 #######################################################################################################################################
 
