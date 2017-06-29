@@ -515,6 +515,7 @@ def postAction(PlayerName):
 			print(cash["pla_cash"])
 			print(float(action["prepare"].values()[0]))
 			print(price["sum"])
+			
 			budget = cash["pla_cash"] - (float(action["prepare"].values()[0])*price["sum"])
 			print(budget)
 			db.execute("""
