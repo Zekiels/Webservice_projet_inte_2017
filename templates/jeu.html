@@ -12,23 +12,28 @@
 <body>
 
   <div class="row">
-    <div><img src="static/citron.jpg" alt="logo" id="logojeu"></div>
-    <div class="container col-md-4"><br><br><h2>Bienvenue <span id="bienvenue">"mon_identifiant"</span></h2></div>
-    <div id="argent" class="container col-md-4">
-      <table id="tableargent" class="table table-bordered">
-        <thead>
-          <tr>
-            <th><h3><b>Budget</b></h3></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><h3 id="budget">20.27€</h3></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div class="container col-md-10"><br><br><h2>Bienvenue <span id="bienvenue">"mon_identifiant"</span></h2></div>
     <button id="deconnexion" class="btn btn-warning col-md-2">Deconnexion</button>
+  </div>
+
+  <div class="row">
+    <div class="container col-md-4">
+      <div><img src="static/citron.jpg" alt="logo" id="logojeu"></div>
+      <div id="argent" class="container col-md-4">
+        <table id="tableargent" class="table table-bordered">
+          <thead>
+            <tr>
+              <th><h3><b>Budget</b></h3></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><h3 id="budget">20.27€</h3></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <div class="row">
@@ -117,14 +122,14 @@
 <td><h4>Petite</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value=""></label>
+      <label><input type="checkbox" value="10" id="pub5"></label>
     </div>
   </td>
   <tr>
     <td><h4>Moyenne</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value=""></label>
+      <label><input type="checkbox" value="50" id="pub10"></label>
     </div>
   </td>
 </tr>
@@ -132,7 +137,7 @@
 <td><h4>Grande</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value=""></label>
+      <label><input type="checkbox" value="100" id="pub15"></label>
     </div>
   </td>
 </tr>
@@ -236,14 +241,72 @@ $(function(){
       for (ingredient of ingredients) {
         console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
       }
-    }
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
+
+  $("#pub5").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{"kind":"ad"}]
+      }),
+      contentType: "application/json",
+      success: function(pub){
+        console.log("#pub".val());
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
   })
 
 
+  $("#pub10").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{"kind":"ad"}]
+      }),
+      contentType: "application/json",
+      success: function(pub){
+        console.log("#pub".val());
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
+
+  $("#pub15").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{"kind":"ad"}]
+      }),
+      contentType: "application/json",
+      success: function(pub){
+        console.log("#pub".val());
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
+
   $("#deconnexion").on('click',function(){
     $.ajax(server+'/players/'+joueur,{
-      methods:'POST',
-      data: JSON.stringify(),
+      method:'POST',
+      data: JSON.stringify({}),
       contentType:"application/json",
       success: function(){
         document.location='connexion.html';
@@ -282,7 +345,6 @@ $(function(){
   })
 })
 
-});
 
 setInterval(function (){
   var server="http://limonade-equipe7.herokuapp.com"

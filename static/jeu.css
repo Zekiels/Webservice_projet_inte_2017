@@ -10,16 +10,16 @@ body {
 }
 
 #logojeu{
-  width: 50%;
-  height: 50%;
+  width: 60%;
+  height: 60%;
   vertical-align: middle;
   text-align: center !important;
-  margin: 10px;
+  margin-left: 50px;
 
 }
 
 #deconnexion{
-  width:10%;
+  width:15%;
   margin-right: 10px;
 }
 
