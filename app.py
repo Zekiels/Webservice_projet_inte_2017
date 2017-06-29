@@ -25,6 +25,7 @@ def connect():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
+	createTab()
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
