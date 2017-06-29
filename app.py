@@ -487,7 +487,8 @@ def postAction(PlayerName):
 			price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity) 
 												FROM ingredient 
 												INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
-												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
+												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))
+			print(price)
 			#create production
 			db.execute("""
 			    UPDATE production
