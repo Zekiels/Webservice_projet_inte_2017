@@ -93,11 +93,11 @@ def getMapPlayer(playerName):
 		);"""
 	ingredients = db.select(sql.format(playerName))
 
-	ingredient['hasAlcohol'] = ingredient['hasalcohol']
-	del ingredient['hasalcohol']
+	ingredients['hasAlcohol'] = ingredients['hasalcohol']
+	del ingredients['hasalcohol']
 
-	ingredient['isCold'] = ingredient['iscold']
-	del ingredient['iscold']
+	ingredients['isCold'] = ingredients['iscold']
+	del ingredients['iscold']
 
 	#Coordonnees de la carte de la partie
 	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
