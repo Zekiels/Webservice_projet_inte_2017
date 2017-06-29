@@ -516,11 +516,10 @@ def postSales():
 			#Recuperation
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(sales['player']))[0]
 			price = db.select("""SELECT sal_price from sale WHERE  sal_rcp_name = '{0}' AND sal_pla_name = '{1}' AND sal_day_nb = {2};""".format(sales['item'],sales['player'], day))[0]
-			quantity = db.select("""SELECT pro_qty from production WHERE  pro_rcp_name = '{0}' AND pro_pla_name = '{1}' AND pro_day_nb = {2};""".format(sales['item'], sales['player'], day))[0]
 			print(cash["pla_cash"])
-			print(float(quantity['pro_qty']))
+			print(float(prod["pro_qty"]))
 			print(price["sal_price"])
-			budget = cash["pla_cash"] + (float(quantity['pro_qty'])*price["sal_price"])
+			budget = cash["pla_cash"] + (float(prod["pro_qty"])*price["sal_price"])
 			print(budget)
 
 			#Mise a jour cash
@@ -531,7 +530,7 @@ def postSales():
 			#Mise a jour sale
 		 	db.execute("""
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
-		 	""".format(quantity['pro_qty'], sales['item'],sales['player'], day))
+			""".format(prod["pro_qty"], sales['item'],sales['player'], day))
 
 		 	db.close()
 
@@ -573,10 +572,13 @@ def postWheather():
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		reinitPub()
 		createTab()
+		
 	if(timestamp<23):
 		day = 0
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		print('bonjour')
+	
+	impot()
 
 	#Mise a jour
 	db.execute("""
@@ -714,6 +716,16 @@ def reinitPub():
 		UPDATE map_item
 		SET mit_influence = 10;
 		""")
+	db.close()
+
+def impot():
+	db = Db()
+	name = db.select("SELECT pla_name FROM player;")
+	for i in name:
+		cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(i["pla_name"]))[0]
+		print(i["pla_name"])
+		print(cash)
+		db.execute(""" UPDATE player SET pla_cash = {0} WHERE pla_name = '{1}' """.format((cash*0.95), i["pla_name"]))
 	db.close()
 
 #######################################################################################################################################
