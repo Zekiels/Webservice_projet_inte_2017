@@ -472,16 +472,8 @@ def postAction(PlayerName):
 				WHERE  sal_rcp_name = '{1}'
 				AND sal_pla_name = '{2}'
 				AND sal_day_nb = {3};
-			""".format(day_tmp.get("map_day_nb"), 0, action["price"].values()[0], PlayerName, action["prepare"].items()[0][0]))
+			""".format(action["price"].values()[0], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
-			#{ "sufficientFunds":bool, "totalCost":float }
-			#rqt = db.select("""
-			#	SELECT I.ing_current_cost, c.com_quantity
-			#	From ingredient I, compose c
-			#	WHERE I.ing_name = c.com_ing_name
-			#	AND c.com_rcp_name = %s;
-			#	""", (actions["actions"]["prepare"].items()[0]))
-			#print(rqt)
 			db.close()
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 		if action["kind"] == "recipe":
