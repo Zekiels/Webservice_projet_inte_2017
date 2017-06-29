@@ -373,9 +373,9 @@ setInterval(function (){
         console.log(place);
         $("#classement").text(place);
       }
-      for (prixprod of data.playerInfo.drinkOffered) {
-        console.log(data.playerInfo.drinkOffered[prixprod].price);
-        $("#prixprodlimonade").text(data.playerInfo.drinkOffered[prixprod].price);
+      for (prixprod of data.playerInfo.drinksOffered) {
+        console.log(data.playerInfo.drinksOffered[prixprod].price);
+        $("#prixprodlimonade").text(data.playerInfo.drinksOffered[prixprod].price);
       }
     }
   })
