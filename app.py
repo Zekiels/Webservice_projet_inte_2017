@@ -461,7 +461,7 @@ def postAction(PlayerName):
 			print(cash["pla_cash"])
 			print(float(actions["actions"][0]["prepare"].values()[0]))
 			print(price["sum"])
-			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0]*price["sum"]))
+			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
