@@ -39,8 +39,8 @@
       </li>
       <li><a href="#2b" data-toggle="tab"><h4>Vente de la veille</h4></a>
       </li>
-      <li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
-      </li>
+      <!--<li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
+      </li>-->
     </ul>
 
     <div class="tab-content clearfix">
@@ -318,20 +318,19 @@
       }
       })
 
-      /*$("#deconnexion").on('click',function(){
+      $("#deconnexion").on('click',function(){
         $.ajax(server+'/players/'+joueur,{
           methods:'POST',
-          data: JSON.stringify({
-          }),
+          data: JSON.stringify(),
           contentType:"application/json",
           success: function(){
             document.location='connexion.html';
           },
           error: function(error){
-            console.log(console.error.error);
+            console.log(error.error);
           }
         })
-      })*/
+      })
 
       $("#boutonprod").on('click',function(){
         $.ajax(server+'/actions/'+joueur,{
