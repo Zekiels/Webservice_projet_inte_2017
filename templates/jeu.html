@@ -315,9 +315,9 @@ $.ajax(server+'/map/'+joueur,{
   success: function(data){
     console.log(data.playerInfo.cash);
     $("#budget").text(data.playerInfo.cash+"€");
-    console.log(data.map.ranking.indexOf(joueur));
-    for (place of data.map.ranking) {
-      console.log(data.map.ranking[place]);
+    console.log(data.ranking.indexOf(joueur));
+    for (place of data.ranking) {
+      console.log(data.ranking[place]);
 
       /*console.log(data.map.region.center.latitude);
       console.log(data.map.region.center.longitude);
