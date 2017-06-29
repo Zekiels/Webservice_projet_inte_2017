@@ -250,6 +250,27 @@
 
           <script>
 
+          setInterval(meteo(),5000)
+
+          function meteo(){
+            var server="http://limonade-equipe7.herokuapp.com"
+          $.ajax(server+'/metrology',{
+            method:'GET',
+            contentType: "application/json",
+            success: function(meteo){
+              console.log(meteo.timestamp);
+              for (weather of meteo.weather) {
+                console.log(weather.dfn);
+                console.log(weather.weather);
+                if (weather.dfn==0)
+                $("#meteo").text(weather.weather);
+                else
+                $("#prevision").text(weather.weather);
+              }
+            }
+          })
+          }
+
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
 
@@ -282,22 +303,6 @@
         success: function(ingredients){
           for (ingredient of ingredients) {
             console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
-          }
-        }
-      })
-
-      $.ajax(server+'/metrology',{
-        method:'GET',
-        contentType: "application/json",
-        success: function(meteo){
-          console.log(meteo.timestamp);
-          for (weather of meteo.weather) {
-            console.log(weather.dfn);
-            console.log(weather.weather);
-            if (weather.dfn==0)
-            $("#meteo").text(weather.weather);
-            else
-            $("#prevision").text(weather.weather);
           }
         }
       })
