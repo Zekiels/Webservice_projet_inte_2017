@@ -386,10 +386,11 @@ def postSales():
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
+			price = db.select("""SELECT sal_price from sale WHERE  sal_rcp_name = '{0}' AND sal_pla_name = '{1}' AND sal_day_nb = {2};""".format(sales['item'],sales['player'], day))[0]
 			print(cash["pla_cash"])
-			print(float(actions["actions"][0]["prepare"].values()[0]))
-			print(price["sum"])
-			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
+			print(float(sales['quantity']))
+			print(price["sal_price"])
+			budget = cash["pla_cash"] - (float(sales['quantity'])*price["sal_price"])
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
