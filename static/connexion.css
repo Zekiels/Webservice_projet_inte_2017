@@ -19,6 +19,10 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
+#citron{
+	background-image: url('http://limonade-equipe7.herokuapp.com/static/citron.png');
+}
+
 .login {
 	position: absolute;
 	top: 75%;
