@@ -9,6 +9,14 @@ body {
   vertical-align: middle !important;
 }
 
+#logojeu{
+  width: 50%;
+  height: 50%;
+  vertical-align: middle;
+  text-align: center !important;
+
+}
+
 #deconnexion{
   width:10%;
   margin-right: 10px;
