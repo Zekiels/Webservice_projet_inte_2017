@@ -7,8 +7,6 @@ import json
 from db import Db
 from math import *
 
-#os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
-
 app = Flask(__name__, static_folder='static')
 app.debug = True
 CORS(app)
@@ -214,7 +212,9 @@ def getMap():
 		print(playerProfit_tmp)
 		playerProfit = playerProfit_tmp[0]["profit"]
 
+		##############
 		#drinksByPlayer
+		##############
 		playerDoableDrinks = db.select("SELECT rcp_name AS name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';".format(i.get("name")))
 		for j in playerDoableDrinks:
 			j["isCold"] = j["iscold"]
@@ -227,7 +227,9 @@ def getMap():
 
 		playerInfo[i['name']] = info
 
-		#itemsByPlayer)
+		##############
+		#itemsByPlayer
+		##############
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_latitude AS latitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
@@ -239,8 +241,11 @@ def getMap():
 
 		itemsByPlayer[i['name']] = listItems
 
+		############################
 		#drinksByPlayer
-		#liste des types de boissons preparee*
+		############################
+		#liste des types de boissons preparee
+
 		listDrinks = db.select("SELECT sal_rcp_name AS name, sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM sale  INNER JOIN recipe ON recipe.rcp_name = sale.sal_rcp_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
 		for j in listDrinks:
 			j["isCold"] = j["iscold"]
@@ -255,7 +260,7 @@ def getMap():
 	db.close()
 
 	return json.dumps(Map),200,{'Content-Type':'application/json'}
-	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
+	
 
 @app.route("/", methods=["GET"])
 def getBD():
@@ -274,8 +279,7 @@ def postquitter(playerName):
 		WHERE pla_name = {0};
 		""".format(playerName)
 	)
-
-	return json.dumps("done"),200,{'Content-Type':'application/json'}
+	return redirect(url_for('connect'))
 
 @app.route("/players", methods=["POST"])
 def postRejoindre():
