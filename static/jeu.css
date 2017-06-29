@@ -9,13 +9,18 @@ body {
   vertical-align: middle !important;
 }
 
+#logojeu{
+  width: 50%;
+  height: 50%;
+  vertical-align: middle;
+  text-align: center !important;
+  margin: 10px;
+
+}
+
 #deconnexion{
   width:10%;
   margin-right: 10px;
-}
-
-#informations{
-  margin-left: 100%;
 }
 
 #reset{
@@ -40,7 +45,7 @@ body {
   color: black;
 }
 
-#Tab table tr th:first-child, #Tab table tr td:first-child{
+#Tab table tr th:first-child, #Tab table tr td:first-child, #tableargent tr th td{
   text-align: left !important;
 }
 
@@ -66,10 +71,9 @@ li{
 }
 
 #tableinfo tr td, #tableinfo tr th{
-  width: 50%;
+  width: 25%;
   vertical-align: middle;
   text-align: center !important;
-  color:black;
 }
 
 table tr td{
