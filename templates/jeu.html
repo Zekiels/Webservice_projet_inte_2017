@@ -247,7 +247,7 @@ $(function(){
 
   $("#deconnexion").on('click',function(){
     $.ajax(server+'/players/'+joueur,{
-      methods:'POST',
+      method:'POST',
       data: JSON.stringify(),
       contentType:"application/json",
       success: function(){
