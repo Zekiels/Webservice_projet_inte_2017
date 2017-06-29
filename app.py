@@ -22,6 +22,9 @@ def jeu():
 def connect():
 	return render_template('connexion.html')
 
+#######################################################################################################################################
+#################################                   GET   						#######################################################
+#######################################################################################################################################
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
@@ -281,18 +284,38 @@ def getMap():
 
 	return json.dumps(Map),200,{'Content-Type':'application/json'}
 	
-##############
+
 ##############
 #ROUTE GET /
 ##############
-##############
 @app.route("/", methods=["GET"])
-def getBD():
+def getIndex():
 	return redirect(url_for('connect'))
 
+##############
+#ROUTE GET /reset
+##############
+@app.route("/reset", methods=["GET"])
+def getReset():
+	db=Db()
+	db.execute("""
+		DELETE
+		FROM player;
+		""")
+	DB.execute("""
+		UPDATE map
+		SET map_day_nb = 0,
+		map_time = 0,
+		map_prevision_weather = '',
+		map_current_weather = ''
+		WHERE map_id = 0
+		""")
+	db.close()
+	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
-
-#################################                   POST   						 #######################################################
+#######################################################################################################################################
+#################################                   POST   						#######################################################
+#######################################################################################################################################
 
 @app.route("/players/<playerName>", methods=["POST"])
 def postquitter(playerName):
@@ -499,7 +522,34 @@ def postAction(PlayerName):
 			print("NON")
 			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
 		if action["kind"] == "ad":
-			print("NON")
+			radiusToAdd = action["radius"]
+
+			#Verifier le type
+			if radius >= 15 :
+				sizeType = "pub_grand"
+			elif radius >=10 :
+				sizeType = "pub_moyen"
+			else : 
+				sizeType = "pub_petit"
+			
+			db=Db()
+			
+			#Mettre a jour l influence du stand
+			db.execute("""
+				UPDATE map_item
+				SET mit_influence = mit_influense + {0}
+				WHERE mit_pla_name = '{1}'
+			""".format(radiusToAdd, PlayerName))
+
+			#mettre a jour le cash et le profit du joueur
+			#apparement on peut soustraire par None, on est pas cense tomber dans le cas
+			db.execute("""
+				UPDATE player
+				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = {0}),
+				pla_profit = pla_profit - (SELECT pre_value FROM preference WHERE pre_name = {0})
+				WHERE pla_name = '{1}';
+			""".format(sizeType,PlayerName))
+			db.close()
 
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
@@ -507,13 +557,20 @@ def postAction(PlayerName):
 #fonction qui permet de creer une pable vide pour chaque joueur a chaque fois q un nouveau jour commence 
 def createTab():
 	db = Db()
-	name = db.select("SELECT pla_name FROM player;")[0]
+	name = db.select("SELECT pla_name FROM player;")
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
-	print(name)
 
-	for i in name :
-		print("bonjour")
+	for i in name:
+		print(i["pla_name"])
+		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 1, 0,'{1}','limonade');""".format(day, i["pla_name"]))
+		db.execute(sqlVente)
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 1, 0,'{1}', 'limonade');""".format(day, i["pla_name"]))
+		db.execute(sqlProd)
+	db.close()
+
+#######################################################################################################################################
+
+#######################################################################################################################################
 
 if __name__ == "__main__":
  	app.run()
- 	createTab()
