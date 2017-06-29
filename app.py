@@ -13,15 +13,6 @@ app = Flask(__name__, static_folder='static')
 app.debug = True
 CORS(app)
 
-#variable de test
-identifiant=['adrien']
-postSales=[]
-nombre = ['toto','tata','titi']
-
-CurrentWeather = []
-PrevisoinWeather = []
-dicoAction = {}
-
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
 
@@ -32,12 +23,6 @@ def jeu():
 @app.route('/connexion.html')
 def connect():
 	return render_template('connexion.html')
-
-@app.route("/reset", methods=["GET"])
-def getReset():
-	global nombre
-	temp = random.choice(nombre)
-	return json.dumps(temp),200,{'Content-Type':'application/json'}
 
 
 @app.route("/metrology", methods=["GET"])
@@ -431,12 +416,18 @@ def postAction(PlayerName):
 												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
 			#create production
 			db.execute("""
-		    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price["sum"], PlayerName, action["prepare"].items()[0][0]))
+			    UPDATE production
+				SET pro_qty = {0}, pro_cost_at_that_time = {1}
+				WHERE  pro_rcp_name = '{2}'
+				AND pro_pla_name = '{3}'
+				AND pro_day_nb = {4};
+		 	""".format(actions["actions"][0]["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
-			print(cash)
+			print(cash["pla_cash"])
+			print(actions["actions"][0]["prepare"].values()[0])
+			print(price["sum"])
 			budget = cash["pla_cash"] - (actions["actions"][0]["prepare"].values()[0]*price["sum"])
 			print(budget)
 			db.execute("""
@@ -445,7 +436,11 @@ def postAction(PlayerName):
 
 			#create sale
 			db.execute("""
-			INSERT INTO sale VALUES ({0}, {1}, {2}, '{3}', '{4}');
+				UPDATE sale
+				SET sal_price = {0}
+				WHERE  sal_rcp_name = '{1}'
+				AND sal_pla_name = '{2}'
+				AND sal_day_nb = {3};
 			""".format(day_tmp.get("map_day_nb"), 0, action["price"].values()[0], PlayerName, action["prepare"].items()[0][0]))
 
 			#{ "sufficientFunds":bool, "totalCost":float }
@@ -464,14 +459,7 @@ def postAction(PlayerName):
 		if action["kind"] == "ad":
 			print("NON")
 
-
-
-
-	return json.dumps("ok"),200,{'Content-Type':'application/json'}
-
-#@app.route("/idGet",methods=["GET"])
-#def idGet():
-#	return "test"
+	return json.dumps("error kind"),400,{'Content-Type':'application/json'}
 
 if __name__ == "__main__":
  	app.run()
