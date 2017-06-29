@@ -28,7 +28,6 @@ def connect():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
-	createTab()
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
@@ -456,15 +455,17 @@ def postWheather():
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
 	if (timestamp%24) == 0:
 		day = day + 1 
+		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
+		createTab()
 	if(timestamp<23):
 		day = 1
+		print(bonjour)
 
-	
 	db.execute("""
 		UPDATE map
-		SET  map_day_nb = {0}, map_time = {1}, map_prevision_weather = '{2}', map_current_weather =  '{3}'
+		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
 		WHERE map_id = 0;
-	""".format(day, timestamp ,previsionWeather, currentWeather))
+	""".format(timestamp ,previsionWeather, currentWeather))
 	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
