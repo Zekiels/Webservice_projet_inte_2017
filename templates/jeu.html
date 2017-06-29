@@ -365,8 +365,10 @@ setInterval(function (){
     method:'GET',
     contentType:"application/json",
     success: function(date){
-      console.log(date);
-      if(date != $("#jour").text()){
+      console.log(date.toString());
+      console.log($("#jour").text());
+
+      if("Jour: "+date.toString() != $("#jour").text()){
         $("#pub5").prop('checked', false);
         $("#pub10").prop('checked', false);
         $("#pub15").prop('checked', false);
