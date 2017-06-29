@@ -19,6 +19,19 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
+#citron{
+	height: 35%;
+	width: 30%;
+	background-image: image('static/citron.jpg');
+	background-repeat: no-repeat;
+	background-size: contain;
+	margin-left: -10%;
+}
+
+img{
+
+}
+
 .login {
 	position: absolute;
 	top: 75%;

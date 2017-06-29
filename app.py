@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, redirect, url_for
 from flask_cors import CORS, cross_origin
 from flask import render_template
 from pprint import pprint
@@ -7,20 +7,9 @@ import json
 from db import Db
 from math import *
 
-#os.environ['DATABASE_URL'] = S3Connection(os.environ['DATABASE_URL'])
-
 app = Flask(__name__, static_folder='static')
 app.debug = True
 CORS(app)
-
-#variable de test
-identifiant=['adrien']
-postSales=[]
-nombre = ['toto','tata','titi']
-
-CurrentWeather = []
-PrevisoinWeather = []
-dicoAction = {}
 
 def json_response(data="OK", status=200):
   return json.dumps(data), status, { "Content-Type": "application/json" }
@@ -32,12 +21,6 @@ def jeu():
 @app.route('/connexion.html')
 def connect():
 	return render_template('connexion.html')
-
-@app.route("/reset", methods=["GET"])
-def getReset():
-	global nombre
-	temp = random.choice(nombre)
-	return json.dumps(temp),200,{'Content-Type':'application/json'}
 
 
 @app.route("/metrology", methods=["GET"])
@@ -154,6 +137,11 @@ def getMapPlayer(playerName):
 	message = {"availableIngredients": ingredients, "map": mapInfo, "playerInfo": info}
 	return json_response(message)
 
+############################
+############################
+#ROUTE GET /MAP
+############################
+############################
 @app.route("/map", methods=["GET"])
 def getMap():
 
@@ -163,6 +151,10 @@ def getMap():
 	rankNoKeys = []
 
 	db = Db()
+
+	##############
+	#Coordonnee map
+	##############
 	coordinate_tmp = db.select("SELECT map_longitude AS longitude, map_latitude AS latitude from map;")
 	coordinate = coordinate_tmp[0]
 
@@ -175,8 +167,15 @@ def getMap():
 	del coordinate_span['longitudespan']
 
 	regionCoord = {"center": coordinate, "span" : coordinate_span}
+
+	##############
+	#Joueurs classes
+	##############
 	rank = db.select("SELECT pla_name AS name, pla_cash AS cash from player order by pla_cash DESC;")
 
+	##############
+	#Jour actuel
+	##############
 	day_tmp = db.select("SELECT map_day_nb from map;")
 	day = day_tmp[0]
 
@@ -229,7 +228,9 @@ def getMap():
 		print(playerProfit_tmp)
 		playerProfit = playerProfit_tmp[0]["profit"]
 
+		##############
 		#drinksByPlayer
+		##############
 		playerDoableDrinks = db.select("SELECT rcp_name AS name, (SELECT  SUM (ing_current_cost * compose.com_quantity) FROM ingredient INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name WHERE compose.com_rcp_name = rcp_name) AS price, rcp_is_cold AS isCold, rcp_has_alcohol AS hasAlcohol FROM recipe INNER JOIN access ON access.acc_rcp_name = recipe.rcp_name WHERE access.acc_pla_name ='{0}';".format(i.get("name")))
 		for j in playerDoableDrinks:
 			j["isCold"] = j["iscold"]
@@ -242,7 +243,9 @@ def getMap():
 
 		playerInfo[i['name']] = info
 
-		#itemsByPlayer)
+		##############
+		#itemsByPlayer
+		##############
 		oneItem_temp = db.select("SELECT mit_type AS kind, mit_pla_name AS owner, mit_longitude AS longitude, mit_latitude AS latitude, mit_influence AS influence FROM map_item WHERE mit_pla_name =\'" + i.get("name")+ "\';")
 		if len(oneItem_temp) > 0 :
 			oneItem = oneItem_temp[0]
@@ -254,8 +257,11 @@ def getMap():
 
 		itemsByPlayer[i['name']] = listItems
 
+		############################
 		#drinksByPlayer
-		#liste des types de boissons preparee*
+		############################
+		#liste des types de boissons preparee
+
 		listDrinks = db.select("SELECT sal_rcp_name AS name, sal_price AS price, recipe.rcp_is_cold AS isCold, recipe.rcp_has_alcohol AS hasAlcohol FROM sale  INNER JOIN recipe ON recipe.rcp_name = sale.sal_rcp_name WHERE sal_day_nb = {1} AND sal_pla_name = '{0}';".format(i.get("name"), day.get("map_day_nb")))
 		for j in listDrinks:
 			j["isCold"] = j["iscold"]
@@ -265,19 +271,23 @@ def getMap():
 
 		drinksByPlayer[i['name']] = listDrinks
 
+	##############
+	#Construction du JSON de retour
+	##############
 	Map = {"map":{"region":regionCoord, "ranking":rankNoKeys, "itemsByPlayer":itemsByPlayer, "playerInfo":playerInfo, "drinksByPlayer":drinksByPlayer}}
 	print(Map)
 	db.close()
 
 	return json.dumps(Map),200,{'Content-Type':'application/json'}
-	#tmp={"map"{"region":"perpignan","ranking":["Kevin","adam"],"itemsByPlayer":{"kind":"shop","owner":"Jack336","location":coordinate{"latitude":0.6,"longitude":5.7},"influance":10.8},"PlayerInfo":{"jean"{"cash":3000.50,"sales":80,"profit":100.8,"drinksOffered":["name":"Mojito","price":5.80,"hasAlcohol":True,"isCold":True]}}}}
-
+	
+##############
+##############
+#ROUTE GET /
+##############
+##############
 @app.route("/", methods=["GET"])
 def getBD():
-	db = Db()
-	tmp = db.select("""SELECT * FROM player;""")
-	db.close()
-	return json.dumps(tmp),200,{'Content-Type':'application/json'}
+	return redirect(url_for('connect'))
 
 
 
@@ -285,10 +295,16 @@ def getBD():
 
 @app.route("/players/<playerName>", methods=["POST"])
 def postquitter(playerName):
-	quitter = request.get_son()
-	print (quitter)
+	quitter = request.get_json()
+	if playerName == '':
+		return json_response({ "error" : "playerName is empty" }, 400)
 
-	return json.dumps("error"),400,{'Content-Type':'application/json'}
+	db.execute("""
+		DELETE FROM player 
+		WHERE pla_name = {0};
+		""".format(playerName)
+	)
+	return redirect(url_for('connect'))
 
 @app.route("/players", methods=["POST"])
 def postRejoindre():
@@ -312,6 +328,8 @@ def postRejoindre():
 		db.execute(sqlVente)
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
+		sqlRecette = (""" INSERT INTO access VALUES ('limonade', '{0}')""".format(name))
+		db.execute(sqlRecette)
 
 	#recuperation des coord longitude et latitude
 	coord = db.select(""" SELECT mit_longitude,mit_latitude FROM Map_Item WHERE mit_pla_name = '{0}' ;""".format(name))[0]
@@ -367,6 +385,20 @@ def postSales():
 
 	if sales["item"] == prod["pro_rcp_name"]:
 		if sales["quantity"] <= prod["pro_qty"]:
+
+			#mise a jour budget joueur
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
+			price = db.select("""SELECT sal_price from sale WHERE  sal_rcp_name = '{0}' AND sal_pla_name = '{1}' AND sal_day_nb = {2};""".format(sales['item'],sales['player'], day))[0]
+			print(cash["pla_cash"])
+			print(float(sales['quantity']))
+			print(price["sal_price"])
+			budget = cash["pla_cash"] - (float(sales['quantity'])*price["sal_price"])
+			print(budget)
+			db.execute("""
+		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
+		 	""".format(budget, PlayerName))
+
+			#mise a jour sale
 		 	db.execute("""
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 		 	""".format(sales['quantity'], sales['item'],sales['player'], day))
@@ -433,13 +465,19 @@ def postAction(PlayerName):
 												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
 			#create production
 			db.execute("""
-		    INSERT INTO production VALUES ({0}, {1}, {2}, '{3}', '{4}');
-		 	""".format(day_tmp.get("map_day_nb"), actions["actions"][0]["prepare"].values()[0], price["sum"], PlayerName, action["prepare"].items()[0][0]))
+			    UPDATE production
+				SET pro_qty = {0}, pro_cost_at_that_time = {1}
+				WHERE  pro_rcp_name = '{2}'
+				AND pro_pla_name = '{3}'
+				AND pro_day_nb = {4};
+		 	""".format(actions["actions"][0]["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
-			print(cash)
-			budget = cash["pla_cash"] - (actions["actions"][0]["prepare"].values()[0]*price["sum"])
+			print(cash["pla_cash"])
+			print(float(actions["actions"][0]["prepare"].values()[0]))
+			print(price["sum"])
+			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
@@ -447,17 +485,13 @@ def postAction(PlayerName):
 
 			#create sale
 			db.execute("""
-			INSERT INTO sale VALUES ({0}, {1}, {2}, '{3}', '{4}');
-			""".format(day_tmp.get("map_day_nb"), 0, action["price"].values()[0], PlayerName, action["prepare"].items()[0][0]))
+				UPDATE sale
+				SET sal_price = {0}
+				WHERE  sal_rcp_name = '{1}'
+				AND sal_pla_name = '{2}'
+				AND sal_day_nb = {3};
+			""".format(action["price"].values()[0], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
-			#{ "sufficientFunds":bool, "totalCost":float }
-			#rqt = db.select("""
-			#	SELECT I.ing_current_cost, c.com_quantity
-			#	From ingredient I, compose c
-			#	WHERE I.ing_name = c.com_ing_name
-			#	AND c.com_rcp_name = %s;
-			#	""", (actions["actions"]["prepare"].items()[0]))
-			#print(rqt)
 			db.close()
 			return json.dumps("ok"),200,{'Content-Type':'application/json'}
 		if action["kind"] == "recipe":
@@ -465,9 +499,6 @@ def postAction(PlayerName):
 			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
 		if action["kind"] == "ad":
 			print("NON")
-
-
-
 
 	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
@@ -479,10 +510,6 @@ def createTab():
 
 	for i in name :
 		print("bonjour")
-
-#@app.route("/idGet",methods=["GET"])
-#def idGet():
-#	return "test"
 
 if __name__ == "__main__":
  	app.run()
