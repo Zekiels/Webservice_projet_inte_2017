@@ -502,7 +502,7 @@ def postAction(PlayerName):
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
-			print(cash["pla_cash"][0])
+			print(cash["pla_cash"])
 			print(float(action["prepare"].values()[0]))
 			print(price["sum"])
 			budget = cash["pla_cash"] - (float(action["prepare"].values()[0])*price["sum"])
