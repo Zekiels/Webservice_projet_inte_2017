@@ -248,50 +248,57 @@ $(function(){
   $("#pub5").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub5").val();
-    $.ajax(server+'/actions/'+joueur,{
-      method:'POST',
-      data: JSON.stringify({
-        "actions":[{"kind":"ad","radius":parseInt(radius)}]
-      }),
-      contentType: "application/json",
-      success: function(pub){
-      },
-      error: function(error){
-        console.log(error.error);
-      }
-    })
+    if($("#pub5").is(':checked')){
+      $.ajax(server+'/actions/'+joueur,{
+        method:'POST',
+        data: JSON.stringify({
+          "actions":[{"kind":"ad","radius":parseInt(radius)}]
+        }),
+        contentType: "application/json",
+        success: function(pub){
+        },
+        error: function(error){
+          console.log(error.error);
+        }
+      })
+    }
+
   })
   $("#pub10").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub10").val();
-    $.ajax(server+'/actions/'+joueur,{
-      method:'POST',
-      data: JSON.stringify({
-        "actions":[{"kind":"ad","radius":parseInt(radius)}]
-      }),
-      contentType: "application/json",
-      success: function(pub){
-      },
-      error: function(error){
-        console.log(error.error);
+      if($("#pub10").is(':checked')){
+        $.ajax(server+'/actions/'+joueur,{
+          method:'POST',
+          data: JSON.stringify({
+            "actions":[{"kind":"ad","radius":parseInt(radius)}]
+          }),
+          contentType: "application/json",
+          success: function(pub){
+          },
+          error: function(error){
+            console.log(error.error);
+          }
+        })
       }
-    })
   })
   $("#pub15").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub15").val();
-    $.ajax(server+'/actions/'+joueur,{
-      method:'POST',
-      data: JSON.stringify({
-        "actions":[{"kind":"ad","radius":parseInt(radius)}]
-      }),
-      contentType: "application/json",
-      success: function(pub){
-      },
-      error: function(error){
-        console.log(error.error);
+      if($("#pub15").is(':checked')){
+        $.ajax(server+'/actions/'+joueur,{
+          method:'POST',
+          data: JSON.stringify({
+            "actions":[{"kind":"ad","radius":parseInt(radius)}]
+          }),
+          contentType: "application/json",
+          success: function(pub){
+          },
+          error: function(error){
+            console.log(error.error);
+          }
+        })
       }
-    })
   })
   $("#deconnexion").on('click',function(){
     var server="http://limonade-equipe7.herokuapp.com"
@@ -350,6 +357,7 @@ setInterval(function (){
         $("#meteo").text(weather.weather);
         else
         $("#prevision").text(weather.weather);
+
       }
     }
   })
@@ -358,6 +366,11 @@ setInterval(function (){
     contentType:"application/json",
     success: function(date){
       console.log(date);
+      if(date != $("#jour").text()){
+        $("#pub5").prop('checked', false);
+        $("#pub10").prop('checked', false);
+        $("#pub15").prop('checked', false);
+      }
       $("#jour").text("Jour: "+date);
     },
     error: function(error){
