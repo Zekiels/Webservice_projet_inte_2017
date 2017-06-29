@@ -465,7 +465,7 @@ def postWheather():
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		createTab()
 	if(timestamp<23):
-		day = 1
+		day = 0
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		print('bonjour')
 
