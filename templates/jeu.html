@@ -304,6 +304,7 @@ $(function(){
   })
 
   $("#deconnexion").on('click',function(){
+    var server="http://limonade-equipe7.herokuapp.com"
     $.ajax(server+'/players/'+joueur,{
       method:'POST',
       data: JSON.stringify({}),
