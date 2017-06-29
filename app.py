@@ -299,7 +299,7 @@ def getIndex():
 def getReset():
 	db=Db()
 	db.execute("""
-		DELETE *
+		DELETE
 		FROM player;
 		""")
 	DB.execute("""
@@ -542,10 +542,11 @@ def postAction(PlayerName):
 			""".format(radiusToAdd, PlayerName))
 
 			#mettre a jour le cash et le profit du joueur
+			#apparement on peut soustraire par None, on est pas censé tomber dans le cas
 			db.execute("""
 				UPDATE player
-				SET pla_cash = pla_cash - (SELECT pref_value FROM preference WHERE pref_name = {0}),
-				pla_profit = pla_profit - (SELECT pref_value FROM preference WHERE pref_name = {0})
+				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = {0}),
+				pla_profit = pla_profit - (SELECT pre_value FROM preference WHERE pre_name = {0})
 				WHERE pla_name = '{1}';
 			""".format(sizeType,PlayerName))
 			db.close()
