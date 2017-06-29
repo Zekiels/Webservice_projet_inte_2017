@@ -296,7 +296,7 @@ def getIndex():
 #ROUTE GET /reset
 ##############
 @app.route("/reset", methods=["GET"])
-def getIndex():
+def getReset():
 	db=Db()
 	db.execute("""
 		DELETE *
