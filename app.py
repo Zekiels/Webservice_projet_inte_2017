@@ -185,7 +185,8 @@ def getMapPlayer(playerName):
 	db.close()
 
 	if budgetBase < 0 :
-		return redirect(url_for('postquitter'))
+		#/players/<playerName>
+		return redirect('http://limonade-equipe7.herokuapp.com/players/' + playerName + '')
 
 	#Transformation en JSON
 	info = {"cash": budgetBase, "sales": nbSales, "profit": profit, "drinksOffered": drinksInfo}
