@@ -512,7 +512,7 @@ def postAction(PlayerName):
 		 	""".format(action["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
-			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
 			print(cash["pla_cash"])
 			print(float(action["prepare"].values()[0]))
 			print(price["sum"])
