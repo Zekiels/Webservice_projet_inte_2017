@@ -509,7 +509,7 @@ def createTab():
 	db = Db()
 	name = db.select("SELECT pla_name FROM player;")
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
-	print(name[0])
+	print(name["pla_name"])
 
 	for i in name :
 		print('bonjour')
