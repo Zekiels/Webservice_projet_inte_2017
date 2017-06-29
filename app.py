@@ -326,7 +326,7 @@ def postRejoindre():
 		db.execute(sqlVente)
 		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82,'{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
-		sqlRecette = (""" INSERT INTO access VALUES (''limonade', {0}')""".format(name))
+		sqlRecette = (""" INSERT INTO access VALUES ('limonade', '{0}')""".format(name))
 		db.execute(sqlRecette)
 
 	#recuperation des coord longitude et latitude

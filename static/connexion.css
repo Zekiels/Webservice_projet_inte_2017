@@ -22,7 +22,10 @@ body {
 #citron{
 	height: 35%;
 	width: 50%;
-	background-image: url('https://raw.githubusercontent.com/Zekiels/Webservice_projet_inte_2017/master/static/citron.png');
+}
+
+img{
+
 }
 
 .login {
