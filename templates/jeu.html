@@ -220,7 +220,6 @@
 var joueur;
 $(function(){
   var server="http://limonade-equipe7.herokuapp.com"
-
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -233,7 +232,6 @@ $(function(){
   joueur = getParameterByName('name');
   console.log(joueur);
   $("#bienvenue").html(joueur);
-
   $.ajax(server+'/ingredients',{
     method:'GET',
     contentType: "application/json",
@@ -247,7 +245,6 @@ $(function(){
       }
     })
   })
-
   $("#pub5").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub5").val();
@@ -267,8 +264,6 @@ $(function(){
     }
 
   })
-
-
   $("#pub10").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub10").val();
@@ -287,7 +282,6 @@ $(function(){
         })
       }
   })
-
   $("#pub15").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub15").val();
@@ -306,7 +300,6 @@ $(function(){
         })
       }
   })
-
   $("#deconnexion").on('click',function(){
     var server="http://limonade-equipe7.herokuapp.com"
     $.ajax(server+'/players/'+joueur,{
@@ -321,7 +314,6 @@ $(function(){
       }
     })
   })
-
   $("#boutonprod").on('click',function(){
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
@@ -349,8 +341,6 @@ $(function(){
     }
   })
 })
-
-
 setInterval(function (){
   var server="http://limonade-equipe7.herokuapp.com"
   $.ajax(server+'/metrology',{
@@ -371,7 +361,6 @@ setInterval(function (){
       }
     }
   })
-
   $.ajax(server+'/day',{
     method:'GET',
     contentType:"application/json",
@@ -388,9 +377,7 @@ setInterval(function (){
       console.log(error.error);
     }
   })
-
 },2000)
-
 setInterval(function (){
   var server="http://limonade-equipe7.herokuapp.com"
   $.ajax(server+'/map/'+joueur,{
@@ -410,5 +397,4 @@ setInterval(function (){
     }
   })
 },5000)
-
 </script>
