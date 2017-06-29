@@ -383,7 +383,8 @@ def postquitter(playerName):
 	)
 
 	#Rediriger le joueur vers la page de connexion
-	return redirect(url_for('connect'))
+	#return redirect(url_for('connect'))
+	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
 @app.route("/players", methods=["POST"])
 def postRejoindre():
