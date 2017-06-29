@@ -185,7 +185,6 @@ def getMapPlayer(playerName):
 	db.close()
 
 	if budgetBase < 0 :
-		#/players/<playerName>
 		return redirect('http://limonade-equipe7.herokuapp.com/players/' + playerName + '')
 
 	#Transformation en JSON
@@ -384,7 +383,8 @@ def postquitter(playerName):
 	)
 
 	#Rediriger le joueur vers la page de connexion
-	return redirect(url_for('connect'))
+	#return redirect(url_for('connect'))
+	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
 @app.route("/players", methods=["POST"])
 def postRejoindre():
@@ -555,9 +555,8 @@ def postAction(PlayerName):
 			    UPDATE production
 				SET pro_qty = {0}, pro_cost_at_that_time = {1}
 				WHERE  pro_rcp_name = '{2}'
-				AND pro_pla_name = '{3}'
-				AND pro_day_nb = {4};
-		 	""".format(action["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
+				AND pro_pla_name = '{3}' 
+				AND pro_day_nb = {4};""".format(action["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
