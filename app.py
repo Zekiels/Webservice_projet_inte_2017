@@ -132,6 +132,8 @@ def getMapPlayer(playerName):
 					FROM map_item
 					WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"""
 
+    print(sqlCoord)
+
 	#Profit du joueur
 	playerProfit_tmp = """
 						SELECT
@@ -586,7 +588,7 @@ def postAction(PlayerName):
 		if action["kind"] == "recipe":
 			print("NON")
 			return json.dumps("No implement"),400,{'Content-Type':'application/json'}
-			
+
 		if action["kind"] == "ad":
 			radiusToAdd = action["radius"]
 

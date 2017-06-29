@@ -249,6 +249,8 @@ $(function(){
   })
 
   $("#pub5").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
@@ -266,6 +268,8 @@ $(function(){
 
 
   $("#pub10").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
@@ -282,6 +286,8 @@ $(function(){
   })
 
   $("#pub15").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
