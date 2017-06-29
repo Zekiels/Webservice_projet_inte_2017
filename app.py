@@ -187,7 +187,7 @@ def getMapPlayer(playerName):
 	db.close()
 
 	if budgetBase < 0 :
-		reponse = "dead"
+		response = "dead"
 		return json_response(response)
 
 	#Transformation en JSON
