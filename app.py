@@ -534,7 +534,7 @@ def postAction(PlayerName):
 			
 			db=Db()
 			
-			#Mettre a jour l'influence du stand
+			#Mettre a jour l influence du stand
 			db.execute("""
 				UPDATE map_item
 				SET mit_influence = mit_influense + {0}
@@ -542,7 +542,7 @@ def postAction(PlayerName):
 			""".format(radiusToAdd, PlayerName))
 
 			#mettre a jour le cash et le profit du joueur
-			#apparement on peut soustraire par None, on est pas censé tomber dans le cas
+			#apparement on peut soustraire par None, on est pas cense tomber dans le cas
 			db.execute("""
 				UPDATE player
 				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = {0}),
