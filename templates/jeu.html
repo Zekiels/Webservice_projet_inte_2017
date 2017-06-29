@@ -373,7 +373,7 @@ setInterval(function (){
         console.log(place);
         $("#classement").text(place);
       }
-      for (prixprod of data.playerInfo.drinksOffered) {
+      for (prixprod in data.playerInfo.drinksOffered) {
         console.log(data.playerInfo.drinksOffered[prixprod].price);
         $("#prixprodlimonade").text(data.playerInfo.drinksOffered[prixprod].price);
       }
