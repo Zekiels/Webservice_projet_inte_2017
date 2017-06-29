@@ -512,7 +512,7 @@ def createTab():
 	print(name)
 
 	for i in name :
-		print("bonjour")
+		print(name[i]['pla_name'])
 
 if __name__ == "__main__":
  	app.run()
