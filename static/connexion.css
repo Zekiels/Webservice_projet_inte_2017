@@ -20,6 +20,8 @@ body {
 }
 
 #citron{
+	height: 35%;
+	width: 50%;
 	background-image: url('http://limonade-equipe7.herokuapp.com/static/citron.png');
 }
 
