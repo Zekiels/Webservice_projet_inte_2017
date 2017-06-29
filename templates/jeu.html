@@ -241,7 +241,7 @@ $(function(){
       liste.empty();
       for (ingredient of ingredients) {
         console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
-        liste.append(`${ingredient.ing_name}: ${ingredient.ing_current_cost}€`);
+        liste.append(`<li>${ingredient.ing_name}: ${ingredient.ing_current_cost}€</li>`);
       }
       },
       error: function(error){
