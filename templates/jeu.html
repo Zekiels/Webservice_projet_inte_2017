@@ -122,14 +122,14 @@
 <td><h4>Petite</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value=""></label>
+      <label><input type="checkbox" value="10" id="pub5"></label>
     </div>
   </td>
   <tr>
     <td><h4>Moyenne</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value=""></label>
+      <label><input type="checkbox" value="50" id="pub10"></label>
     </div>
   </td>
 </tr>
@@ -137,7 +137,7 @@
 <td><h4>Grande</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value=""></label>
+      <label><input type="checkbox" value="100" id="pub15"></label>
     </div>
   </td>
 </tr>
@@ -240,10 +240,61 @@ $(function(){
     success: function(ingredients){
       for (ingredient of ingredients) {
         console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
+      },
+      error: function(error){
+        console.log(error.error);
       }
-    }
+    })
   })
 
+  $("#pub5").on('change', function(){
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{"kind":"ad"}]
+      }),
+      contentType: "application/json",
+      success: function(pub){
+        console.log("#pub".val());
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
+
+
+  $("#pub10").on('change', function(){
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{"kind":"ad"}]
+      }),
+      contentType: "application/json",
+      success: function(pub){
+        console.log("#pub".val());
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
+
+  $("#pub15").on('change', function(){
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{"kind":"ad"}]
+      }),
+      contentType: "application/json",
+      success: function(pub){
+        console.log("#pub".val());
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
 
   $("#deconnexion").on('click',function(){
     $.ajax(server+'/players/'+joueur,{
