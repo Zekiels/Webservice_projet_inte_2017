@@ -298,7 +298,7 @@ def getIndex():
 def getReset():
 	db=Db()
 	db.execute("""
-		DELETE *
+		DELETE
 		FROM player;
 		""")
 	DB.execute("""
@@ -415,7 +415,7 @@ def postSales():
 			print(cash["pla_cash"])
 			print(float(sales['quantity']))
 			print(price["sal_price"])
-			budget = cash["pla_cash"] - (float(sales['quantity'])*price["sal_price"])
+			budget = cash["pla_cash"] + (float(sales['quantity'])*price["sal_price"])
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
@@ -500,7 +500,7 @@ def postAction(PlayerName):
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
-			print(cash["pla_cash"])
+			print(cash["pla_cash"][0])
 			print(float(actions["actions"][0]["prepare"].values()[0]))
 			print(price["sum"])
 			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
@@ -536,7 +536,7 @@ def postAction(PlayerName):
 			
 			db=Db()
 			
-			#Mettre a jour l'influence du stand
+			#Mettre a jour l influence du stand
 			db.execute("""
 				UPDATE map_item
 				SET mit_influence = mit_influense + {0}
@@ -544,10 +544,11 @@ def postAction(PlayerName):
 			""".format(radiusToAdd, PlayerName))
 
 			#mettre a jour le cash et le profit du joueur
+			#apparement on peut soustraire par None, on est pas cense tomber dans le cas
 			db.execute("""
 				UPDATE player
-				SET pla_cash = pla_cash - (SELECT pref_value FROM preference WHERE pref_name = {0}),
-				pla_profit = pla_profit - (SELECT pref_value FROM preference WHERE pref_name = {0})
+				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = {0}),
+				pla_profit = pla_profit - (SELECT pre_value FROM preference WHERE pre_name = {0})
 				WHERE pla_name = '{1}';
 			""".format(sizeType,PlayerName))
 			db.close()
