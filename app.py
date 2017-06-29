@@ -274,6 +274,8 @@ def getMap():
 
 @app.route("/", methods=["GET"])
 def getBD():
+	return json.dumps("Ok"),200,{'Content-Type':'application/json'}
+
 	return redirect(url_for('connect'))
 
 #################################                   POST   						 #######################################################
