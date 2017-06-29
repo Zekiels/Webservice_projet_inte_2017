@@ -281,7 +281,7 @@ def getBD():
 
 #################################                   POST   						 #######################################################
 
-@app.route("/players/<'playerName'>", methods=["POST"])
+@app.route("/players/<playerName>", methods=["POST"])
 def postquitter(playerName):
 	quitter = request.get_json()
 	if playerName == '':
