@@ -186,6 +186,7 @@
           <span><h4 id="heure">15:00</h4></span>
         </td>
         <td>
+          <span><h4>Classement</h4></span>
           <span><h4 id="classement"></h4></span>
         </td>
       </tr>
@@ -271,6 +272,7 @@ $(function(){
         console.log(data[name])
         $("#nombrelimonade").val();
         $("#prixventelimonade").val();
+        document.location='connexion.html';
       },
       error: function(error){
         /*console.log({
@@ -329,11 +331,7 @@ setInterval(function (){
       console.log(data.map.ranking.indexOf(joueur));
       var index= data.map.ranking.indexOf(joueur)+1;
       var totaljoueur= data.map.ranking.length;
-      $("#rang").text(index+"/"+totaljoueur);
-      for (place of data.map.ranking) {
-        console.log(place);
-        $("#classement").text(place);
-      }
+      $("#classement").text(index+"/"+totaljoueur);
       for (prixprod in data.playerInfo.drinksOffered) {
         console.log(data.playerInfo.drinksOffered[prixprod].price);
         $("#prixprodlimonade").text(data.playerInfo.drinksOffered[prixprod].price);
