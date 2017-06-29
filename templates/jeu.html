@@ -251,7 +251,7 @@
 <script src="static/js/bootstrap.min.js"></script>
 
 <script>
-
+var joueur;
 $(function(){
   var server="http://limonade-equipe7.herokuapp.com"
 
@@ -264,7 +264,7 @@ $(function(){
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
-  var joueur = getParameterByName('name');
+  joueur = getParameterByName('name');
   console.log(joueur);
   $("#bienvenue").html(joueur);
 
