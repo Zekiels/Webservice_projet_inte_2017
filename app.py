@@ -454,7 +454,7 @@ def postSales():
 		return json_response({ "error" : "Missing player" }, 400)
 	if "item" not in sales :
 		return json_response({ "error" : "Missing item" }, 400)
-
+	print(sales["player"])
 	db = Db()
 	#get day
 	day_tmp = db.select("SELECT map_day_nb from map;")
