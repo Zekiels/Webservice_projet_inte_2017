@@ -540,9 +540,9 @@ def postAction(PlayerName):
 			radiusToAdd = action["radius"]
 
 			#Verifier le type
-			if radius >= 15 :
+			if radiusToAdd >= 15 :
 				sizeType = "pub_grand"
-			elif radius >=10 :
+			elif radiusToAdd >=10 :
 				sizeType = "pub_moyen"
 			else : 
 				sizeType = "pub_petit"
@@ -552,7 +552,7 @@ def postAction(PlayerName):
 			#Mettre a jour l influence du stand
 			db.execute("""
 				UPDATE map_item
-				SET mit_influence = mit_influense + {0}
+				SET mit_influence = mit_influence + {0}
 				WHERE mit_pla_name = '{1}'
 			""".format(radiusToAdd, PlayerName))
 
@@ -560,8 +560,7 @@ def postAction(PlayerName):
 			#apparement on peut soustraire par None, on est pas cense tomber dans le cas
 			db.execute("""
 				UPDATE player
-				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = {0}),
-				pla_profit = pla_profit - (SELECT pre_value FROM preference WHERE pre_name = {0})
+				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = '{0}')
 				WHERE pla_name = '{1}';
 			""".format(sizeType,PlayerName))
 			db.close()
