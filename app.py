@@ -308,8 +308,8 @@ def getReset():
 		DELETE
 		FROM player;
 		""")
-	DB.execute("""
-		UPDATE map
+	db.execute("""
+ 		UPDATE map
 		SET map_day_nb = 0,
 		map_time = 0,
 		map_prevision_weather = '',
