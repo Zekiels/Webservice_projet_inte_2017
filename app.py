@@ -669,7 +669,7 @@ def impot():
 		cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(i["pla_name"]))[0]
 		print(i["pla_name"])
 		print(cash)
-		db.execute(""" UPDATE player SET pla_cash = '{0}' WHERE pla_name = '{1}' """.format((cash*0.95), i["pla_name"]))
+		db.execute(""" UPDATE player SET pla_cash = {0} WHERE pla_name = '{1}' """.format((cash*0.95), i["pla_name"]))
 	db.close()
 
 #######################################################################################################################################
