@@ -274,10 +274,7 @@ def getMap():
 
 @app.route("/", methods=["GET"])
 def getBD():
-	db = Db()
-	tmp = db.select("""SELECT * FROM player;""")
-	db.close()
-	return json.dumps(tmp),200,{'Content-Type':'application/json'}
+	return redirect(url_for('connect'))
 
 #################################                   POST   						 #######################################################
 
@@ -285,7 +282,7 @@ def getBD():
 def postquitter(playerName):
 	quitter = request.get_json()
 	if playerName == '':
-		return json_response({ "error" : "Missing name" }, 400)
+		return json_response({ "error" : "playerName is empty" }, 400)
 
 	db.execute("""
 		DELETE FROM player 
