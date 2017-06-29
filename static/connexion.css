@@ -20,16 +20,10 @@ body {
 }
 
 #citron{
-	height: 35%;
-	width: 30%;
-	background-image: image('static/citron.jpg');
-	background-repeat: no-repeat;
-	background-size: contain;
+	height: 50%;
+	width: 50%;
+	text-align: center;
 	margin-left: -10%;
-}
-
-img{
-
 }
 
 .login {

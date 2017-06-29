@@ -28,6 +28,7 @@ def connect():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
+	createTab()
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
@@ -291,6 +292,7 @@ def getMap():
 def getIndex():
 	return redirect(url_for('connect'))
 
+<<<<<<< HEAD
 ##############
 #ROUTE GET /reset
 ##############
@@ -315,6 +317,7 @@ def getIndex():
 #######################################################################################################################################
 #################################                   POST   						#######################################################
 #######################################################################################################################################
+=======
 
 @app.route("/players/<playerName>", methods=["POST"])
 def postquitter(playerName):
@@ -349,7 +352,7 @@ def postRejoindre():
 		db.execute(sqlMapItem)
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
 		db.execute(sqlVente)
-		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82,'{1}', 'limonade');""".format(day, name))
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
 		sqlRecette = (""" INSERT INTO access VALUES ('limonade', '{0}')""".format(name))
 		db.execute(sqlRecette)
@@ -419,7 +422,7 @@ def postSales():
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
-		 	""".format(budget, PlayerName))
+		 	""".format(budget, sales['player']))
 
 			#mise a jour sale
 		 	db.execute("""
@@ -549,7 +552,18 @@ def postAction(PlayerName):
 			""".format(sizeType,PlayerName))
 			db.close()
 
-	return json.dumps("error kind"),400,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+
+
+#fonction qui permet de creer une pable vide pour chaque joueur a chaque fois q un nouveau jour commence 
+def createTab():
+	db = Db()
+	name = db.select("SELECT * FROM player;")
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
+	print(name)
+
+	#for name in name["pla_name"]:
+		#print(name["pla_name"])
 
 #######################################################################################################################################
 
@@ -557,3 +571,4 @@ def postAction(PlayerName):
 
 if __name__ == "__main__":
  	app.run()
+ 	createTab()

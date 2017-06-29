@@ -249,6 +249,7 @@
           <script src="static/js/bootstrap.min.js"></script>
 
           <script>
+
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
 
@@ -289,6 +290,10 @@
         method:'GET',
         contentType: "application/json",
         success: function(meteo){
+          var load = setTimeout(function() {
+            document.getElementById("redirect").src="js/load.js";
+          }, 5000);
+
           console.log(meteo.timestamp);
           for (weather of meteo.weather) {
             console.log(weather.dfn);
