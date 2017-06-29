@@ -28,7 +28,6 @@ def connect():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
-	createTab()
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
@@ -299,7 +298,7 @@ def getIndex():
 def getReset():
 	db=Db()
 	db.execute("""
-		DELETE *
+		DELETE
 		FROM player;
 		""")
 	DB.execute("""
@@ -416,7 +415,7 @@ def postSales():
 			print(cash["pla_cash"])
 			print(float(sales['quantity']))
 			print(price["sal_price"])
-			budget = cash["pla_cash"] - (float(sales['quantity'])*price["sal_price"])
+			budget = cash["pla_cash"] + (float(sales['quantity'])*price["sal_price"])
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
@@ -456,15 +455,17 @@ def postWheather():
 	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"]
 	if (timestamp%24) == 0:
 		day = day + 1 
+		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
+		createTab()
 	if(timestamp<23):
 		day = 1
+		print(bonjour)
 
-	
 	db.execute("""
 		UPDATE map
-		SET  map_day_nb = {0}, map_time = {1}, map_prevision_weather = '{2}', map_current_weather =  '{3}'
+		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
 		WHERE map_id = 0;
-	""".format(day, timestamp ,previsionWeather, currentWeather))
+	""".format(timestamp ,previsionWeather, currentWeather))
 	db.close()
  	return json.dumps("ok"),200,{'Content-Type':'application/json'}
 
@@ -498,7 +499,7 @@ def postAction(PlayerName):
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
-			print(cash["pla_cash"])
+			print(cash["pla_cash"][0])
 			print(float(actions["actions"][0]["prepare"].values()[0]))
 			print(price["sum"])
 			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
@@ -534,7 +535,7 @@ def postAction(PlayerName):
 			
 			db=Db()
 			
-			#Mettre a jour l'influence du stand
+			#Mettre a jour l influence du stand
 			db.execute("""
 				UPDATE map_item
 				SET mit_influence = mit_influense + {0}
@@ -542,10 +543,11 @@ def postAction(PlayerName):
 			""".format(radiusToAdd, PlayerName))
 
 			#mettre a jour le cash et le profit du joueur
+			#apparement on peut soustraire par None, on est pas cense tomber dans le cas
 			db.execute("""
 				UPDATE player
-				SET pla_cash = pla_cash - (SELECT pref_value FROM preference WHERE pref_name = {0}),
-				pla_profit = pla_profit - (SELECT pref_value FROM preference WHERE pref_name = {0})
+				SET pla_cash = pla_cash - (SELECT pre_value FROM preference WHERE pre_name = {0}),
+				pla_profit = pla_profit - (SELECT pre_value FROM preference WHERE pre_name = {0})
 				WHERE pla_name = '{1}';
 			""".format(sizeType,PlayerName))
 			db.close()
@@ -561,10 +563,10 @@ def createTab():
 
 	for i in name:
 		print(i["pla_name"])
-		#sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, i))
-		#db.execute(sqlVente)
-		#sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, i))
-		#db.execute(sqlProd)
+		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 1, 0,'{1}','limonade');""".format(day, i["pla_name"]))
+		db.execute(sqlVente)
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 1, 0,'{1}', 'limonade');""".format(day, i["pla_name"]))
+		db.execute(sqlProd)
 	db.close()
 
 #######################################################################################################################################
