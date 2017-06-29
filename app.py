@@ -289,6 +289,8 @@ def getMap():
 def getBD():
 	return redirect(url_for('connect'))
 
+
+
 #################################                   POST   						 #######################################################
 
 @app.route("/players/<playerName>", methods=["POST"])
@@ -324,7 +326,7 @@ def postRejoindre():
 		db.execute(sqlMapItem)
 		sqlVente = (""" INSERT INTO Sale VALUES('{0}', 0, 0,'{1}','limonade');""".format(day, name))
 		db.execute(sqlVente)
-		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0.82,'{1}', 'limonade');""".format(day, name))
+		sqlProd = (""" INSERT INTO production VALUES('{0}', 0, 0,'{1}', 'limonade');""".format(day, name))
 		db.execute(sqlProd)
 		sqlRecette = (""" INSERT INTO access VALUES ('limonade', '{0}')""".format(name))
 		db.execute(sqlRecette)
@@ -498,7 +500,17 @@ def postAction(PlayerName):
 		if action["kind"] == "ad":
 			print("NON")
 
-	return json.dumps("error kind"),400,{'Content-Type':'application/json'}
+	return json.dumps("ok"),200,{'Content-Type':'application/json'}
+
+
+#fonction qui permet de creer une pable vide pour chaque joueur a chaque fois q un nouveau jour commence 
+def createTab():
+	db = Db()
+	name = db.select("SELECT pla_name FROM player;")[0]
+
+	for i in name :
+		print("bonjour")
 
 if __name__ == "__main__":
  	app.run()
+ 	createTab()
