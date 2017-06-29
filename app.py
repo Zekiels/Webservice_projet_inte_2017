@@ -539,9 +539,9 @@ def postAction(PlayerName):
 			radiusToAdd = action["radius"]
 
 			#Verifier le type
-			if radius >= 15 :
+			if radiusToAdd >= 15 :
 				sizeType = "pub_grand"
-			elif radius >=10 :
+			elif radiusToAdd >=10 :
 				sizeType = "pub_moyen"
 			else : 
 				sizeType = "pub_petit"
