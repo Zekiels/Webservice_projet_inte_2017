@@ -318,7 +318,7 @@ $.ajax(server+'/map/'+joueur,{
     /*console.log(data.ranking.indexOf(joueur));*/
     for (place of data.map.ranking) {
       console.log(place);
-
+      $("#classement").text(place)
       /*console.log(data.map.region.center.latitude);
       console.log(data.map.region.center.longitude);
       $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);*/
@@ -335,7 +335,6 @@ $("#deconnexion").on('click',function(){
       document.location='connexion.html';
     },
     error: function(error){
-      console.log("gggggggg");
       console.log(error.error);
     }
   })
