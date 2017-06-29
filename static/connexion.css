@@ -22,7 +22,7 @@ body {
 #citron{
 	height: 35%;
 	width: 30%;
-	background-image: url('static/citron.jpg');
+	background-image: image('static/citron.jpg');
 	background-repeat: no-repeat;
 	background-size: contain;
 	margin-left: -10%;
