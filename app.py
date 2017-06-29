@@ -308,14 +308,16 @@ def getReset():
 		DELETE
 		FROM player;
 		""")
-	db.execute("""
- 		UPDATE map
-		SET map_day_nb = 0,
-		map_time = 0,
-		map_prevision_weather = '',
-		map_current_weather = ''
-		WHERE map_id = 0
-		""")
+
+	#Non synchroniser avec l'arduino donc on fait pas
+	#db.execute("""
+ 	#	UPDATE map
+	#	SET map_day_nb = 0,
+	#	map_time = 0,
+	#	map_prevision_weather = '',
+	#	map_current_weather = ''
+	#	WHERE map_id = 0
+	#	""")
 	db.close()
 	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
