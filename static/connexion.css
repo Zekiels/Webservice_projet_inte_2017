@@ -22,8 +22,7 @@ body {
 #citron{
 	height: 35%;
 	width: 50%;
-	background-color: blue;
-	/*background-image: url('http://limonade-equipe7.herokuapp.com/static/citron.png');*/
+	background-image: url('https://raw.githubusercontent.com/Zekiels/Webservice_projet_inte_2017/master/static/citron.png');
 }
 
 .login {
