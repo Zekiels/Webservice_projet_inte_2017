@@ -318,7 +318,7 @@ $.ajax(server+'/map/'+joueur,{
     /*console.log(data.ranking.indexOf(joueur));*/
     for (place of data.map.ranking) {
       console.log(place);
-      $("#classement").text(place)
+      $("#classement").text($("#classement").text()+"\n"+place)
       /*console.log(data.map.region.center.latitude);
       console.log(data.map.region.center.longitude);
       $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);*/
