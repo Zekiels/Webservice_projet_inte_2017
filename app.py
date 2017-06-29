@@ -26,6 +26,13 @@ def connect():
 #################################                   GET   						#######################################################
 #######################################################################################################################################
 
+@app.route("/day", methods=["GET"])
+def getDay():
+	db = Db()
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
+	db.close()
+	return json.dumps(day),200,{'Content-Type':'application/json'}
+
 @app.route("/metrology", methods=["GET"])
 def getWeather():
 	db = Db()
@@ -459,7 +466,7 @@ def postWheather():
 		createTab()
 	if(timestamp<23):
 		day = 1
-		print(bonjour)
+		print('bonjour')
 
 	db.execute("""
 		UPDATE map
@@ -482,12 +489,14 @@ def postAction(PlayerName):
 			#get day
 			day = db.select("""SELECT map_day_nb from map;""")
 			day_tmp = day.pop()
-
+			print(action["prepare"].items()[0][0])
+			print(action["prepare"].values()[0])
+			print(action["price"].values()[0])
 			#get price
 			price = db.select("""	SELECT  SUM (ing_current_cost * compose.com_quantity) 
 												FROM ingredient 
 												INNER JOIN compose ON compose.com_ing_name = ingredient.ing_name 
-												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))
+												WHERE compose.com_rcp_name = '{0}';""".format(action["prepare"].items()[0][0]))[0]
 			print(price)
 			#create production
 			db.execute("""
@@ -496,14 +505,14 @@ def postAction(PlayerName):
 				WHERE  pro_rcp_name = '{2}'
 				AND pro_pla_name = '{3}'
 				AND pro_day_nb = {4};
-		 	""".format(actions["actions"][0]["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
+		 	""".format(action["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
 			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
 			print(cash["pla_cash"][0])
-			print(float(actions["actions"][0]["prepare"].values()[0]))
+			print(float(action["prepare"].values()[0]))
 			print(price["sum"])
-			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
+			budget = cash["pla_cash"] - (float(action["prepare"].values()[0])*price["sum"])
 			print(budget)
 			db.execute("""
 		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
