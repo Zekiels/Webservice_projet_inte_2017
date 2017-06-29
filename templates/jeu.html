@@ -122,14 +122,14 @@
 <td><h4>Petite</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value="10" id="pub5"></label>
+      <label><input type="checkbox" value="5" id="pub5"></label>
     </div>
   </td>
   <tr>
     <td><h4>Moyenne</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value="50" id="pub10"></label>
+      <label><input type="checkbox" value="10" id="pub10"></label>
     </div>
   </td>
 </tr>
@@ -137,7 +137,7 @@
 <td><h4>Grande</h4></td>
 <td>
   <div class="checkbox">
-      <label><input type="checkbox" value="100" id="pub15"></label>
+      <label><input type="checkbox" value="15" id="pub15"></label>
     </div>
   </td>
 </tr>
@@ -220,7 +220,6 @@
 var joueur;
 $(function(){
   var server="http://limonade-equipe7.herokuapp.com"
-
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -233,7 +232,6 @@ $(function(){
   joueur = getParameterByName('name');
   console.log(joueur);
   $("#bienvenue").html(joueur);
-
   $.ajax(server+'/ingredients',{
     method:'GET',
     contentType: "application/json",
@@ -247,63 +245,56 @@ $(function(){
       }
     })
   })
-
   $("#pub5").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
-
+    var radius = $("#pub5").val();
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
-        "actions":[{"kind":"ad"}]
+        "actions":[{"kind":"ad","radius":parseInt(radius)}]
       }),
       contentType: "application/json",
       success: function(pub){
-        console.log("#pub".val());
       },
       error: function(error){
         console.log(error.error);
       }
     })
   })
-
-
   $("#pub10").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
-
+    var radius = $("#pub10").val();
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
-        "actions":[{"kind":"ad"}]
+        "actions":[{"kind":"ad","radius":parseInt(radius)}]
       }),
       contentType: "application/json",
       success: function(pub){
-        console.log("#pub".val());
       },
       error: function(error){
         console.log(error.error);
       }
     })
   })
-
   $("#pub15").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
-
+    var radius = $("#pub15").val();
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
-        "actions":[{"kind":"ad"}]
+        "actions":[{"kind":"ad","radius":parseInt(radius)}]
       }),
       contentType: "application/json",
       success: function(pub){
-        console.log("#pub".val());
       },
       error: function(error){
         console.log(error.error);
       }
     })
   })
-
   $("#deconnexion").on('click',function(){
+    var server="http://limonade-equipe7.herokuapp.com"
     $.ajax(server+'/players/'+joueur,{
       method:'POST',
       data: JSON.stringify({}),
@@ -316,7 +307,6 @@ $(function(){
       }
     })
   })
-
   $("#boutonprod").on('click',function(){
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
@@ -344,8 +334,6 @@ $(function(){
     }
   })
 })
-
-
 setInterval(function (){
   var server="http://limonade-equipe7.herokuapp.com"
   $.ajax(server+'/metrology',{
@@ -365,7 +353,6 @@ setInterval(function (){
       }
     }
   })
-
   $.ajax(server+'/day',{
     method:'GET',
     contentType:"application/json",
@@ -377,97 +364,13 @@ setInterval(function (){
       console.log(error.error);
     }
   })
-
 },2000)
-
 setInterval(function (){
   var server="http://limonade-equipe7.herokuapp.com"
-
-  function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-  }
-  var joueur = getParameterByName('name');
-  console.log(joueur);
-  $("#bienvenue").html(joueur);
-
-$.ajax(server+'/ingredients',{
-  method:'GET',
-  contentType: "application/json",
-  success: function(ingredients){
-    for (ingredient of ingredients) {
-      console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
-    }
-  }
-})
-
-$.ajax(server+'/map/'+joueur,{
-  method:'GET',
-  contentType: "application/json",
-  success: function(data){
-    console.log(data.playerInfo.cash);
-    $("#budget").text(data.playerInfo.cash+"€");
-    console.log(data.map.ranking.indexOf(joueur));
-    var index= data.map.ranking.indexOf(joueur)+1;
-    var totaljoueur= data.map.ranking.length;
-    $("#rang").text(index+"/"+totaljoueur);
-    for (place of data.map.ranking) {
-      console.log(place);
-      $("#classement").text($("Vous êtes rang "+place)
-    }
-  }
-})
-
-$("#deconnexion").on('click',function(){
-  $.ajax(server+'/players/'+joueur,{
-    methods:'POST',
-    data: JSON.stringify(),
-    contentType:"application/json",
-    success: function(){
-      document.location='connexion.html';
-    },
-    error: function(error){
-      console.log(error.error);
-    }
-  })
-})
-
-$("#boutonprod").on('click',function(){
-  $.ajax(server+'/actions/'+joueur,{
-    method:'POST',
-    data: JSON.stringify({
-      "actions":[{
-        "kind":"drinks",
-        "prepare":{"limonade": $("#nombrelimonade").val()},
-        "price":{"limonade":$("#prixventelimonade").val(),}
-      }]
-    }),
-
   $.ajax(server+'/map/'+joueur,{
     method:'GET',
     contentType: "application/json",
     success: function(data){
-       var name = Object.keys(data)[0];
-       console.log(name)
-       console.log(data[name])
-       $("#nombrelimonade").val();
-       $("#prixventelimonade").val();
-     },
-     error: function(error){
-       /*console.log({
-       "Limonade": $("#nombrelimonade").val()
-       "Limonade":$("#prixventelimonade").val(),
-     })*/
-     console.log(error.error)
-   }
- })
-
-- });
       console.log(data.playerInfo.cash);
       $("#budget").text(data.playerInfo.cash+"€");
       console.log(data.map.ranking.indexOf(joueur));
@@ -481,5 +384,4 @@ $("#boutonprod").on('click',function(){
     }
   })
 },5000)
-
 </script>
