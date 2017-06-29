@@ -44,7 +44,7 @@
         </li>
         <li><a href="#2b" data-toggle="tab"><h4>Publicités</h4></a>
       </li>
-        <li><a href="#3b" data-toggle="tab"><h4>Ventes totale et cour des ingrèdients </h4></a>
+        <li><a href="#3b" data-toggle="tab"><h4>Ventes totale et cour des ingrédients </h4></a>
         </li>
     </ul>
 
@@ -159,11 +159,12 @@
           <tbody>
             <tr>
               <td><h4>Limonade</h4></td>
-              <td><p id="limonade"></p></td>
+              <td><span id="limonade"></span></td>
               <p></p>
             </tr>
   </tbody>
 </table>
+<ul id="ingredients"></ul>
 </div>
 </div>
 </div>
@@ -236,8 +237,11 @@ $(function(){
     method:'GET',
     contentType: "application/json",
     success: function(ingredients){
+      var liste= $("#ingredients");
+      liste.empty();
       for (ingredient of ingredients) {
         console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
+        liste.append(`${ingredient.ing_name}: ${ingredient.ing_current_cost}€`);
       }
       },
       error: function(error){
