@@ -383,6 +383,19 @@ def postSales():
 
 	if sales["item"] == prod["pro_rcp_name"]:
 		if sales["quantity"] <= prod["pro_qty"]:
+
+			#mise a jour budget joueur
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
+			print(cash["pla_cash"])
+			print(float(actions["actions"][0]["prepare"].values()[0]))
+			print(price["sum"])
+			budget = cash["pla_cash"] - (float(actions["actions"][0]["prepare"].values()[0])*price["sum"])
+			print(budget)
+			db.execute("""
+		 		UPDATE player SET pla_cash = {0} WHERE  pla_name = '{1}';
+		 	""".format(budget, PlayerName))
+
+			#mise a jour sale
 		 	db.execute("""
 		 		UPDATE sale SET sal_qty = {0} WHERE  sal_rcp_name = '{1}' AND sal_pla_name = '{2}' AND sal_day_nb = {3};
 		 	""".format(sales['quantity'], sales['item'],sales['player'], day))
