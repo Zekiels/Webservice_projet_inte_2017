@@ -250,11 +250,11 @@ $(function(){
 
   $("#pub5").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
-
+    var radius = $("#pub5").val();
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
-        "actions":[{"kind":"ad"}]
+        "actions":[{"kind":"ad","radius":radius}]
       }),
       contentType: "application/json",
       success: function(pub){
@@ -269,11 +269,11 @@ $(function(){
 
   $("#pub10").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
-
+    var radius = $("#pub10").val();
     $.ajax(server+'/actions/'+joueur,{
       method:'POST',
       data: JSON.stringify({
-        "actions":[{"kind":"ad"}]
+        "actions":[{"kind":"ad","radius":radius}]
       }),
       contentType: "application/json",
       success: function(pub){
