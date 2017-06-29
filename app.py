@@ -132,7 +132,7 @@ def getMapPlayer(playerName):
 					FROM map_item
 					WHERE mit_pla_name = (SELECT pla_name FROM player WHERE pla_name = '{0}');"""
 
-    print(sqlCoord)
+        print(sqlCoord)
 
 	#Profit du joueur
 	playerProfit_tmp = """
