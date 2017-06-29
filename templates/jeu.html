@@ -249,7 +249,7 @@ $(function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub5").val();
     if($("#pub5").is(':checked')){
-      $("#pub5").disabled = true;
+      $("#pub5").prop("disabled", true);
       $.ajax(server+'/actions/'+joueur,{
         method:'POST',
         data: JSON.stringify({
@@ -269,7 +269,7 @@ $(function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub10").val();
       if($("#pub10").is(':checked')){
-        $("#pub10").disabled = true;
+        $("#pub10").prop("disabled", true);
         $.ajax(server+'/actions/'+joueur,{
           method:'POST',
           data: JSON.stringify({
@@ -288,7 +288,7 @@ $(function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub15").val();
       if($("#pub15").is(':checked')){
-        $("#pub15").disabled = true;
+        $("#pub15").prop("disabled", true);
         $.ajax(server+'/actions/'+joueur,{
           method:'POST',
           data: JSON.stringify({
@@ -372,9 +372,9 @@ setInterval(function (){
       console.log($("#jour").text());
 
       if("Jour: "+date.toString() != $("#jour").text()){
-        $("#pub5").disabled = false;
-        $("#pub10").disabled = false;
-        $("#pub15").disabled = false;
+        $("#pub5").prop("disabled", false);
+        $("#pub10").prop("disabled", false);
+        $("#pub15").prop("disabled", false);
         $("#pub5").prop('checked', false);
         $("#pub10").prop('checked', false);
         $("#pub15").prop('checked', false);
