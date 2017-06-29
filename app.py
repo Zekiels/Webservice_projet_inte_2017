@@ -375,7 +375,7 @@ def postquitter(playerName):
 	if playerName == '':
 		return json_response({ "error" : "playerName is empty" }, 400)
 
-    db = Db()
+        db = Db()
 	#Supprimer le joueur qui quitte la partie
 	db.execute("""
 		DELETE FROM player
