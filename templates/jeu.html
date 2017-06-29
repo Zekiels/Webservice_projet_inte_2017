@@ -250,6 +250,8 @@
 
           <script>
 
+          setInterval(meteo(),5000)
+
           $(function(){
             var server="http://limonade-equipe7.herokuapp.com"
 
@@ -286,6 +288,8 @@
         }
       })
 
+      function meteo(){
+        var server="http://limonade-equipe7.herokuapp.com"
       $.ajax(server+'/metrology',{
         method:'GET',
         contentType: "application/json",
@@ -301,6 +305,7 @@
           }
         }
       })
+    }
 
       $.ajax(server+'/map/'+joueur,{
         method:'GET',
