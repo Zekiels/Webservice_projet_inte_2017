@@ -534,13 +534,14 @@ def postWheather():
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		reinitPub()
 		createTab()
+		impot()
 		
 	if(timestamp<23):
 		day = 0
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		print('bonjour')
 
-	impot()
+	
 	db.execute("""
 		UPDATE map
 		SET map_time = {0}, map_prevision_weather = '{1}', map_current_weather =  '{2}'
@@ -667,9 +668,8 @@ def impot():
 	name = db.select("SELECT pla_name FROM player;")
 	for i in name:
 		cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(i["pla_name"]))[0]
-		print(i["pla_name"])
-		print(cash["pla_cash"])
-		db.execute(""" UPDATE player SET pla_cash = {0} WHERE pla_name = '{1}' """.format((cash["pla_cash"]*0.95), i["pla_name"]))
+		if(cash["pla_cash"]>0):
+			db.execute(""" UPDATE player SET pla_cash = {0} WHERE pla_name = '{1}' """.format((round(cash["pla_cash"]*0.95),2), i["pla_name"]))
 	db.close()
 
 #######################################################################################################################################
