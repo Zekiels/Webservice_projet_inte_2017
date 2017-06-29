@@ -308,14 +308,16 @@ def getReset():
 		DELETE
 		FROM player;
 		""")
-	db.execute("""
- 		UPDATE map
-		SET map_day_nb = 0,
-		map_time = 0,
-		map_prevision_weather = '',
-		map_current_weather = ''
-		WHERE map_id = 0
-		""")
+
+	#Non synchroniser avec l'arduino donc on fait pas
+	#db.execute("""
+ 	#	UPDATE map
+	#	SET map_day_nb = 0,
+	#	map_time = 0,
+	#	map_prevision_weather = '',
+	#	map_current_weather = ''
+	#	WHERE map_id = 0
+	#	""")
 	db.close()
 	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
@@ -509,10 +511,11 @@ def postAction(PlayerName):
 		 	""".format(action["prepare"].values()[0], price["sum"], action["prepare"].items()[0][0], PlayerName, day_tmp.get("map_day_nb")))
 
 			#mise a jour budget joueur
-			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
+			cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))
 			print(cash["pla_cash"])
 			print(float(action["prepare"].values()[0]))
 			print(price["sum"])
+			
 			budget = cash["pla_cash"] - (float(action["prepare"].values()[0])*price["sum"])
 			print(budget)
 			db.execute("""
@@ -537,9 +540,9 @@ def postAction(PlayerName):
 			radiusToAdd = action["radius"]
 
 			#Verifier le type
-			if radius >= 15 :
+			if radiusToAdd >= 15 :
 				sizeType = "pub_grand"
-			elif radius >=10 :
+			elif radiusToAdd >=10 :
 				sizeType = "pub_moyen"
 			else : 
 				sizeType = "pub_petit"
@@ -549,7 +552,7 @@ def postAction(PlayerName):
 			#Mettre a jour l influence du stand
 			db.execute("""
 				UPDATE map_item
-				SET mit_influence = mit_influense + {0}
+				SET mit_influence = mit_influence + {0}
 				WHERE mit_pla_name = '{1}'
 			""".format(radiusToAdd, PlayerName))
 
