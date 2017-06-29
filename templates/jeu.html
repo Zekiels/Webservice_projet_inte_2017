@@ -27,8 +27,7 @@
         </tbody>
       </table>
     </div>
-    <button id="deconnexion" class="btn btn-warning col-md-1">Deconnexion</button>
-    <button id="reset" class="btn btn-danger col-md-1">Reset</button>
+    <button id="deconnexion" class="btn btn-warning col-md-2">Deconnexion</button>
   </div>
 
   <div class="row">
@@ -284,10 +283,6 @@ setInterval(function (){
 
 },2000)
 
-
-
-
-
 $(function(){
   var server="http://limonade-equipe7.herokuapp.com"
 
@@ -331,9 +326,8 @@ $.ajax(server+'/map/'+joueur,{
     console.log(data.playerInfo.cash);
     $("#budget").text(data.playerInfo.cash+"€");
     for (place of data.ranking) {
+      console.log(data.ranking);
 
-      console.log(data.ranking.cash);
-      $("#budget").text(data.playerInfo.cash+"€");
       /*console.log(data.map.region.center.latitude);
       console.log(data.map.region.center.longitude);
       $("#ville").text("Region: "+data.map.region.center.latitude+","+data.map.region.center.longitude);*/
@@ -387,7 +381,6 @@ $("#boutonprod").on('click',function(){
   }
 })
 })
-
 
 });
 
