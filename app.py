@@ -98,7 +98,6 @@ def getMapPlayer(playerName):
 		del j['hasalcohol']
 		j['isCold'] = j['iscold']
 		del j['iscold']
-	print(ingredients)
 
 	#Coordonnees de la carte de la partie
 	sql = "SELECT map_latitude as latitude, map_longitude as longitude FROM map;"
@@ -186,7 +185,7 @@ def getMapPlayer(playerName):
 	db.close()
 
 	if budgetBase < 0 :
-		return redirect(url_for('postquitter'),playerName)
+		return redirect(url_for('postquitter'))
 
 	#Transformation en JSON
 	info = {"cash": budgetBase, "sales": nbSales, "profit": profit, "drinksOffered": drinksInfo}
