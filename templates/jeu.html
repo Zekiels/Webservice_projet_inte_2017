@@ -321,7 +321,7 @@ $.ajax(server+'/map/'+joueur,{
     console.log(data.map.ranking.indexOf(joueur));
     var index= data.map.ranking.indexOf(joueur)+1;
     var totaljoueur= data.map.ranking.length;
-    $("#rang").value(index+"/"+totaljoueur);
+    $("#rang").text(index+"/"+totaljoueur);
     for (place of data.map.ranking) {
       console.log(place);
       $("#classement").text(place);
