@@ -25,6 +25,7 @@ def connect():
 
 @app.route("/metrology", methods=["GET"])
 def getWeather():
+	createTab()
 	db = Db()
 	tmp = db.select("""SELECT map_time, map_current_weather, map_prevision_weather FROM map;""")
 	db.close()
@@ -507,6 +508,8 @@ def postAction(PlayerName):
 def createTab():
 	db = Db()
 	name = db.select("SELECT pla_name FROM player;")[0]
+	day = db.select("SELECT map_day_nb FROM map;")[0]["map_day_nb"] 
+	print(name)
 
 	for i in name :
 		print("bonjour")
