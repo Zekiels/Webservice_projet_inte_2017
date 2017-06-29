@@ -31,6 +31,7 @@
     <button id="reset" class="btn btn-danger col-md-1">Reset</button>
   </div>
 
+<div class="row">
   <div id="Tab" class="container col-md-6">
     <ul  class="nav nav-pills">
       <li class="active">
@@ -38,8 +39,8 @@
       </li>
       <li><a href="#2b" data-toggle="tab"><h4>Vente de la veille</h4></a>
       </li>
-      <li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
-      </li>
+      <!--<li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
+      </li>-->
     </ul>
 
     <div class="tab-content clearfix">
@@ -132,8 +133,8 @@
                       <tr>
                         <td><h4>Thé</h4></td>
                         <td><p id="thé"></p></td>
-                      </tr>
-                      <tr>-->
+                      </tr>-->
+                      <tr>
                         <td><h4>Total</h4></td>
                         <td><p id="total"></p></td>
                       </tr>
@@ -235,6 +236,9 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
+            </div>
 
           </body>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
@@ -314,7 +318,7 @@
       }
       })
 
-      /*$("#deconnexion").on('click',function(){
+      $("#deconnexion").on('click',function(){
         $.ajax(server+'/players/'+joueur,{
           methods:'POST',
           data: JSON.stringify({
@@ -324,10 +328,10 @@
             document.location='connexion.html';
           },
           error: function(error){
-            console.log(console.error.error);
+            console.log(error.error);
           }
         })
-      })*/
+      })
 
       $("#boutonprod").on('click',function(){
         $.ajax(server+'/actions/'+joueur,{
