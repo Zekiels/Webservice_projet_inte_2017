@@ -66,9 +66,10 @@ li{
 }
 
 #tableinfo tr td, #tableinfo tr th{
-  width: 25%;
+  width: 50%;
   vertical-align: middle;
   text-align: center !important;
+  color:black;
 }
 
 table tr td{
