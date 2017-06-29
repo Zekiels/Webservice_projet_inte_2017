@@ -256,7 +256,7 @@ setInterval(function (){
     method:'GET',
     contentType: "application/json",
     success: function(meteo){
-      console.log(meteo.timestamp);
+      console.log(meteo.timestamp%24);
       heure = meteo.timestamp%24
       $("#heure").(heure+"h");
       for (weather of meteo.weather) {
