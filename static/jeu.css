@@ -14,6 +14,10 @@ body {
   margin-right: 10px;
 }
 
+#informations{
+  margin-left: 100%;
+}
+
 #reset{
   width:5%;
   margin-right: 10px;
@@ -62,9 +66,10 @@ li{
 }
 
 #tableinfo tr td, #tableinfo tr th{
-  width: 25%;
+  width: 50%;
   vertical-align: middle;
   text-align: center !important;
+  color:black;
 }
 
 table tr td{
