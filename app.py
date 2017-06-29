@@ -518,6 +518,7 @@ def postWheather():
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
 		reinitPub()
 		createTab()
+		impot()
 	if(timestamp<23):
 		day = 0
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
@@ -642,6 +643,14 @@ def reinitPub():
 		UPDATE map_item
 		SET mit_influence = 10;
 		""")
+	db.close()
+
+def impot():
+	db = Db()
+	name = db.select("SELECT pla_name FROM player;")
+	cash = db.select("""SELECT pla_cash from player WHERE pla_name = '{0}';""".format(PlayerName))[0]
+	for i in name:
+		db.execute(""" UPDATE player SET pla_cash = '{0}' WHERE pla_name = '{1}' """.format((cash*0.95), i["pla_name"]))
 	db.close()
 
 #######################################################################################################################################
