@@ -370,7 +370,7 @@ def getPlayer(playerName):
     player = db.select(query)
     print(query)
     print(player)
-    sales = player['pla_sales']
+    sales = player[0]['pla_sales']
 
     return json_response({"sales":sales},200)
 
