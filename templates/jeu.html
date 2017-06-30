@@ -238,7 +238,7 @@ $(function(){
     method:'GET',
     contentType: "application/json",
     success: function(ingredients){
-      var liste= $("#ingredients");
+      var liste= $("#limonade");
       liste.empty();
       for (ingredient of ingredients) {
         console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
