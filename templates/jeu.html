@@ -12,34 +12,40 @@
 <body>
 
   <div class="row">
-    <div class="container col-md-6"><br><br><h2>Bienvenue <span id="bienvenue">"mon_identifiant"</span></h2></div>
-    <div id="argent" class="container col-md-4">
-      <table id="tableargent" class="table table-bordered">
-        <thead>
-          <tr>
-            <th><h3><b>Budget</b></h3></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><h3>+20.27€</h3></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <button id="deconnexion" class="btn btn-warning col-md-1">Deconnexion</button>
-    <button id="reset" class="btn btn-danger col-md-1">Reset</button>
+    <div class="container col-md-10"><br><br><h2>Bienvenue <span id="bienvenue">"mon_identifiant"</span></h2></div>
+    <button id="deconnexion" class="btn btn-warning col-md-2">Deconnexion</button>
   </div>
 
-  <div id="Tab" class="container col-md-6">
-    <ul  class="nav nav-pills">
-      <li class="active">
-        <a  href="#1b" data-toggle="tab"><h4>Production</h4></a>
+  <div class="row">
+    <div class="container col-md-4">
+      <div><img src="static/citron.jpg" alt="logo" id="logojeu"></div>
+      <div id="argent" class="container col-md-4">
+        <table id="tableargent" class="table table-bordered">
+          <thead>
+            <tr>
+              <th><h3><b>Budget</b></h3></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><h3 id="budget">20.27€</h3></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="Tab" class="container col-md-6">
+      <ul  class="nav nav-pills">
+        <li class="active">
+          <a  href="#1b" data-toggle="tab"><h4>Production pour le lendemain</h4></a>
+        </li>
+        <li><a href="#2b" data-toggle="tab"><h4>Publicités</h4></a>
       </li>
-      <li><a href="#2b" data-toggle="tab"><h4>Vente détaillée</h4></a>
-      </li>
-      <li><a href="#3b" data-toggle="tab"><h4>Recettes à débloquer</h4></a>
-      </li>
+        <li><a href="#3b" data-toggle="tab"><h4>Ventes totale et cour des ingrédients </h4></a>
+        </li>
     </ul>
 
     <div class="tab-content clearfix">
@@ -58,281 +64,360 @@
                 <tbody>
                   <tr>
                     <td><h4>Limonade</h4></td>
-                    <td><span><input type="text" id="nombrelimonade" size="5" value=""/></span></td>
-                    <td><span><input type="text" id="prixventelimonade" size="5" value=""/></span> €</td>
-                    <td><span><p type="text" id="prixprodlimonade" value=""/></span> €</td>
+                    <td><span><input type="text" id="nombrelimonade" size="5" value="" placeholder="0"/></span></td>
+                    <td><span><input type="text" id="prixventelimonade" size="5" value="" placeholder="0"/></span> €</td>
+                    <td><span type="text" id="prixprodlimonade" value=""></span> €</td>
                   </tr>
-                  <tr>
-                    <td><h4>Mojito</h4></td>
-                    <td><span><input type="text" id="nombremojito" size="5" value=""/></span></td>
-                    <td><span><input type="text" id="prixventemojito" size="5" value=""/></span> €</td>
-                    <td><span><p type="text" id="priprodemojito" value=""/></span> €</td>
-                  </tr>
-                  <tr>
-                    <td><h4>Vin chaud</h4></td>
-                    <td><span><input type="text" id="nombrevinchaud" size="5" value=""/></span></td>
-                    <td><span><input type="text" id="prixventevinchaud" size="5" value=""/></span> €</td>
-                    <td><span><p type="text" id="prixprodvinchaud" value=""/></span> €</td>
-                  </tr>
-                  <tr>
-                    <td><h4>Café</h4></td>
-                    <td><span><input type="text" id="nombrecafe" size="5" value=""/></span></td>
-                    <td><span><input type="text" id="prixventecafe" size="5" value=""/></span> €</td>
-                    <td><span><p type="text" id="prixprodcafe" value=""/></span> €</td>
-                  </tr>
-                  <tr>
-                    <td><h4>Thé</h4></td>
-                    <td><span><input type="text" id="nombrethe" size="5" value=""/></span></td>
-                    <td><span><input type="text" id="prixventethe" size="5" value=""/></span> €</td>
-                    <td><span><p type="text" id="prixprodthe" value=""/></span> €</td>
-                  </tr>
-                  <tr>
-                    <td><h4>Coût total</h4></td>
-                    <td><span><p type="text" id="nombrecouttotal" value=""/></span></td>
-                    <td><span><p type="text" id="prixventecouttotal" value=""/></span> €</td>
-                    <td><span><p type="text" id="prixprodcouttotal" value=""/></span> €</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <br></br>
-            <div>
-              <button type="submit" class="btn btn-primary btn-lg center-block">Produire!</button><br>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-pane" id="2b">
-          <div class="container">
-            <table id="tablevente" class="table">
-              <thead>
+                  <!--<tr>
+                  <td><h4>Mojito</h4></td>
+                  <td><span><input type="text" id="nombremojito" size="5" value=""/></span></td>
+                  <td><span><input type="text" id="prixventemojito" size="5" value=""/></span> €</td>
+                  <td><span><p type="text" id="priprodemojito" value=""/></span> €</td>
+                </tr>
                 <tr>
-                  <th id="largeur"><h4><b>Produits</b></th>
-                    <th id="boissonvendue"><h4><b>Nombre boissons vendues</b></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><h4>Limonade</h4></td>
-                      <td><p id="limonade"></p></td>
-                      <p></p>
-                    </tr>
-                    <tr>
-                      <td><h4>Mojito</h4></td>
-                      <td><p id="mojito"</p></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Vin chaud</h4></td>
-                        <td><p id="vinchaud"></p></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Café</h4></td>
-                        <td><p id="café"></p></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Thé</h4></td>
-                        <td><p id="thé"></p></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Total</h4></td>
-                        <td><p id="total"></p></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+                <td><h4>Vin chaud</h4></td>
+                <td><span><input type="text" id="nombrevinchaud" size="5" value=""/></span></td>
+                <td><span><input type="text" id="prixventevinchaud" size="5" value=""/></span> €</td>
+                <td><span><p type="text" id="prixprodvinchaud" value=""/></span> €</td>
+              </tr>
+              <tr>
+              <td><h4>Café</h4></td>
+              <td><span><input type="text" id="nombrecafe" size="5" value=""/></span></td>
+              <td><span><input type="text" id="prixventecafe" size="5" value=""/></span> €</td>
+              <td><span><p type="text" id="prixprodcafe" value=""/></span> €</td>
+            </tr>
+            <tr>
+            <td><h4>Thé</h4></td>
+            <td><span><input type="text" id="nombrethe" size="5" value=""/></span></td>
+            <td><span><input type="text" id="prixventethe" size="5" value=""/></span> €</td>
+            <td><span><p type="text" id="prixprodthe" value=""/></span> €</td>
+          </tr>
+          <tr>
+          <td><h4>Coût total</h4></td>
+          <td><span><p type="text" id="nombrecouttotal" value=""/></span></td>
+          <td><span><p type="text" id="prixventecouttotal" value=""/></span> €</td>
+          <td><span><p type="text" id="prixprodcouttotal" value=""/></span> €</td>
+        </tr>-->
+      </tbody>
+    </table>
+  </div>
+  <br></br>
+  <div>
+    <button type="submit" class="btn btn-primary btn-lg center-block" id="boutonprod">Produire!</button><br>
+  </div>
+</div>
+</div>
 
-              <div class="tab-pane" id="3b">
-                <div class="container">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th><h4><b>Produits</b></h4></th>
-                        <th><h4><b>Ingrédients</b></h4></th>
-                        <th><h4><b>Prix</b></h4></th>
-                        <th><h4><b>Débloquer</b></h4></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><h4>Mojito</h4></td>
-                        <td>
-                          <li>1 Citron</li>
-                          <li>2 Sucre</li>
-                          <li>2 Glace</li>
-                          <li>1 Eau</li>
-                          <li>1 Rhum</li>
-                          <li>2 Menthe</li>
-                        </td>
-                        <td>500€</td>
-                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Vin chaud</h4></td>
-                        <td>
-                          <li>1 Epice</li>
-                          <li>1 Vin</li>
-                        </td>
-                        <td>400€</td>
-                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Café</h4></td>
-                        <td>
-                          <li>1 Café</li>
-                          <li>1 Sucre</li>
-                        </td>
-                        <td>300€</td>
-                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
-                      </tr>
-                      <tr>
-                        <td><h4>Thé</h4></td>
-                        <td>
-                          <li>1 Thé</li>
-                          <li>1 Sucre</li>
-                          <li>1 Menthe</li>
-                        </td>
-                        <td>200€</td>
-                        <td><button id= "debloquer" type="submit" class="btn btn-primary btn-lg">Débloquer!</button></td>
-                      </tbody>
-                    </table>
-                  </div>
-                  <br></br>
-                </div>
-              </div>
-            </div><br>
+<div class="tab-pane" id="2b">
+<div class="container">
+<table class="table">
+<thead>
+<tr>
+<th><h4><b>Publicité</b></h4></th>
+<th><h4><b>Taille</b></h4></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><h4>Petite</h4></td>
+<td>
+  <div class="checkbox">
+      <label><input type="checkbox" value="5" id="pub5"></label>
+    </div>
+  </td>
+  <tr>
+    <td><h4>Moyenne</h4></td>
+<td>
+  <div class="checkbox">
+      <label><input type="checkbox" value="10" id="pub10"></label>
+    </div>
+  </td>
+</tr>
+<tr>
+<td><h4>Grande</h4></td>
+<td>
+  <div class="checkbox">
+      <label><input type="checkbox" value="15" id="pub15"></label>
+    </div>
+  </td>
+</tr>
+</tbody>
+</table>
+</div>
+<br></br>
+</div>
 
-            <div id="informations"class="container col-md-6">
-              <h2>Informations</h2>
-              <table id="tableinfo"class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th><h3><b>Météo actuelle</b></h3></th>
-                    <th><h3><b>Prévision météo</b></h3></th>
-                    <th><h3><b>Localisation</b></h3></th>
-                    <th><h3><b>Heure</b></h3></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr >
-                    <td><h4 id="meteo">Canicule</h4></td>
-                    <td><h4 id="prevision">Pluie</h4></td>
-                    <td>
-                      <p><h4 id="ville">Ville: Perpignan</h4></p>
-                      <p><h4 id="latitude">Latitude: 42°41′51″</h4></p>
-                      <p><h4 id="longitude">Longitude: 2°53′43″</h4></p>
-                    </td>
-                    <td>
-                      <span><h4 id="jour">Jour 1</h4></span>
-                      <span><h4 id="heure">15:00</h4></span>
-                    </td>
-                  </tr>
-                  <tr id="visuel">
-                    <td><img id="sunny" src="static/sunny.png" alt="sunny"></td>
-                    <td><img id="rainy" src="static/rainy.png" alt="rainy"></td>
-                    <td>
-                    </td>
-                    <td><div class="clock"></div></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+<div class="tab-pane" id="3b">
+  <div class="container">
+    <table id="tablevente" class="table">
+      <thead>
+        <tr>
+          <th id="largeur"><h4><b>Produits</b></th>
+            <th id="boissonvendue"><h4><b>Nombre de boissons vendues depuis le début de la partie</b></th>
+              <th><h4><b>Cour des ingrédients<h4></b></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><h4>Limonade</h4></td>
+              <td><span id="nbrvendu"></span></td>
+              <td><ul id="limonade"></ul></td>
+              <p></p>
+            </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div><br>
 
-          </body>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-          <script type="text/javascript" src="static/js/requete.js"></script>
-          </html>
+<div id="informations"class="container col-md-6">
+  <h2>Informations</h2>
+  <table id="tableinfo"class="table table-bordered">
+    <thead>
+      <tr>
+        <th><h3><b>Météo actuelle</b></h3></th>
+        <th><h3><b>Prévision météo</b></h3></th>
+        <th><h3><b>Jour et heure</b></h3></th>
+        <th>
+          <h3><b>Classement</b></h3>
+          <h3><b>Rang: <span id="rang"></span></b></h3>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr >
+        <td><span><h4 id="meteo">Canicule</h4></span></td>
+        <td><span><h4 id="prevision">Pluie</h4></span></td>
+        <td>
+          <span><h4 id="jour">Jour 1</h4></span>
+          <span><h4 id="heure">15:00</h4></span>
+        </td>
+        <td>
+          <span><h4>Classement</h4></span>
+          <span><h4 id="classement"></h4></span>
+        </td>
+      </tr>
+      <!--<tr id="visuel">
+      <td><img id="sunny" src="static/sunny.png" alt="sunny"></td>
+      <td><img id="rainy" src="static/rainy.png" alt="rainy"></td>
+      <td>
+    </td>
+    <td><div class="clock"></div></td>
+  </tr>-->
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="static/js/requete.js"></script>
+</html>
 
-          <script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
 
-          <script>
-          $(function(){
-            var server="http://limonade-equipe7.herokuapp.com"
+<script>
+var joueur;
+$(function(){
+  var server="http://limonade-equipe7.herokuapp.com"
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+  joueur = getParameterByName('name');
+  console.log(joueur);
+  $("#bienvenue").html(joueur);
+  $.ajax(server+'/ingredients',{
+    method:'GET',
+    contentType: "application/json",
+    success: function(ingredients){
+      var liste= $("#limonade");
+      liste.empty();
+      for (ingredient of ingredients) {
+        console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
+        liste.append(`<li>${ingredient.ing_name}: ${ingredient.ing_current_cost}€</li>`);
+      }
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
 
-            function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-            }
-            var joueur = getParameterByName('name');
-            console.log(joueur);
-            $("#bienvenue").html(joueur);
+  $.ajax('http://limonade-equipe7.herokuapp.com/player/'+getParameterByName('name'),{
+    method:'GET',
+    contentType: "application/json",
+    success: function(sales){
+      console.log(sales.sales)
+      $("#nbrvendu").html(sales.sales)
+    }
+  })
 
-          /*  $.ajax(server+'/map',{
-              method:'GET',
-              contentType: "application/json",
-              success: function(idplayer){
-                for ( of idplayer){
-              console.log();
-            }
-            }
-          })*/
+  $("#pub5").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+    var radius = $("#pub5").val();
+    if($("#pub5").is(':checked')){
+      $("#pub5").prop("disabled", true);
+      $.ajax(server+'/actions/'+joueur,{
+        method:'POST',
+        data: JSON.stringify({
+          "actions":[{"kind":"ad","radius":parseInt(radius)}]
+        }),
+        contentType: "application/json",
+        success: function(pub){
+        },
+        error: function(error){
+          console.log(error.error);
+        }
+      })
+    }
 
-            $.ajax(server+'/ingredients',{
-              method:'GET',
-              contentType: "application/json",
-              success: function(ingredients){
-                for (ingredient of ingredients) {
-                  console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
-                }
-              }
-            })
+  })
+  $("#pub10").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+    var radius = $("#pub10").val();
+      if($("#pub10").is(':checked')){
+        $("#pub10").prop("disabled", true);
+        $.ajax(server+'/actions/'+joueur,{
+          method:'POST',
+          data: JSON.stringify({
+            "actions":[{"kind":"ad","radius":parseInt(radius)}]
+          }),
+          contentType: "application/json",
+          success: function(pub){
+          },
+          error: function(error){
+            console.log(error.error);
+          }
+        })
+      }
+  })
+  $("#pub15").on('change', function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+    var radius = $("#pub15").val();
+      if($("#pub15").is(':checked')){
+        $("#pub15").prop("disabled", true);
+        $.ajax(server+'/actions/'+joueur,{
+          method:'POST',
+          data: JSON.stringify({
+            "actions":[{"kind":"ad","radius":parseInt(radius)}]
+          }),
+          contentType: "application/json",
+          success: function(pub){
+          },
+          error: function(error){
+            console.log(error.error);
+          }
+        })
+      }
+  })
+  $("#deconnexion").on('click',function(){
+    var server="http://limonade-equipe7.herokuapp.com"
+    $.ajax(server+'/players/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({}),
+      contentType:"application/json",
+      success: function(){
+        document.location='connexion.html';
+      },
+      error: function(error){
+        console.log(error.error);
+      }
+    })
+  })
+  $("#boutonprod").on('click',function(){
+    $.ajax(server+'/actions/'+joueur,{
+      method:'POST',
+      data: JSON.stringify({
+        "actions":[{
+          "kind":"drinks",
+          "prepare":{"limonade": $("#nombrelimonade").val()},
+          "price":{"limonade":$("#prixventelimonade").val(),}
+        }]
+      }),
+      contentType: "application/json",
+      success: function(data){
+        var name = Object.keys(data)[0];
+        console.log(name)
+        console.log(data[name])
+        $("#nombrelimonade").val();
+        $("#prixventelimonade").val();
+      },
+      error: function(error){
+        /*console.log({
+        "Limonade": $("#nombrelimonade").val()
+        "Limonade":$("#prixventelimonade").val(),
+      })*/
+      console.log(error.error)
+    }
+  })
+})
+setInterval(function (){
+  var server="http://limonade-equipe7.herokuapp.com"
+  $.ajax(server+'/metrology',{
+    method:'GET',
+    contentType: "application/json",
+    success: function(meteo){
+      console.log(meteo.timestamp);
+      var heure = meteo.timestamp%24;
+      $("#heure").text(heure+"h");
+      for (weather of meteo.weather) {
+        console.log(weather.dfn);
+        console.log(weather.weather);
+        if (weather.dfn==0)
+        $("#meteo").text(weather.weather);
+        else
+        $("#prevision").text(weather.weather);
 
-            $.ajax(server+'/metrology',{
-              method:'GET',
-              contentType: "application/json",
-              success: function(meteo){
-                    console.log(meteo.timestamp);
-                    for (weather of meteo.weather) {
-                      console.log(weather.dfn);
-                      console.log(weather.weather);
-                      if (weather.dfn==0)
-                      $("#meteo").text(weather.weather);
-                      else
-                      $("#prevision").text(weather.weather);
-                    }
-                }
-            })
+      }
+    }
+  })
+  $.ajax(server+'/day',{
+    method:'GET',
+    contentType:"application/json",
+    success: function(date){
+      console.log(date.toString());
+      console.log($("#jour").text());
 
-            $.ajax(server+'/sales',{
-              method:'POST',
-              data: JSON.stringify({
-                "quantity": /*$("#id")*/10,
-                "price":10.0,
-                "player": /*$("#id")*/"Paul",
-                "item": /*$("#id")*/"limonade",
-              }),
-              contentType: "application/json",
-              success: function(data){
-                    console.log(data);
-                },
-              error: function(error){
-                console.log(error.error)
-              }
-            })
-
-          /*  $.ajax(server+'/actions/<PlayerName>',{
-              method:'POST',
-              data: JSON.stringify({
-                "location": //$("#id")"random",
-                "radius": 10,
-                "prepare":
-              }),
-              contentType: "application/json",
-              success: function(data){
-                    console.log(data);
-                },
-              error: function(error){
-                console.log(error.error)
-              }
-            })*/
-
-
-          });
-
-          </script>
+      if("Jour: "+date.toString() != $("#jour").text()){
+        $("#pub5").prop("disabled", false);
+        $("#pub10").prop("disabled", false);
+        $("#pub15").prop("disabled", false);
+        $("#pub5").prop('checked', false);
+        $("#pub10").prop('checked', false);
+        $("#pub15").prop('checked', false);
+      }
+      $("#jour").text("Jour: "+date);
+    },
+    error: function(error){
+      console.log(error.error);
+    }
+  })
+},2000)
+setInterval(function (){
+  var server="http://limonade-equipe7.herokuapp.com"
+  $.ajax(server+'/map/'+joueur,{
+    method:'GET',
+    contentType: "application/json",
+    success: function(data){
+      console.log(data.playerInfo.cash);
+      $("#budget").text(data.playerInfo.cash+"€");
+      console.log(data.map.ranking.indexOf(joueur));
+      var index= data.map.ranking.indexOf(joueur)+1;
+      var totaljoueur= data.map.ranking.length;
+      $("#classement").text(index+"/"+totaljoueur);
+      for (prixprod in data.playerInfo.drinksOffered) {
+        console.log(data.playerInfo.drinksOffered[prixprod].price);
+        $("#prixprodlimonade").text(data.playerInfo.drinksOffered[prixprod].price);
+      }
+    }
+  })
+},5000)
+</script>

@@ -9,8 +9,17 @@ body {
   vertical-align: middle !important;
 }
 
+#logojeu{
+  width: 60%;
+  height: 60%;
+  vertical-align: middle;
+  text-align: center !important;
+  margin-left: 50px;
+
+}
+
 #deconnexion{
-  width:10%;
+  width:15%;
   margin-right: 10px;
 }
 
@@ -29,14 +38,14 @@ body {
   padding : 5px;
   vertical-align: middle;
   text-align: center;
-  min-height: 40em;
+  min-height: 20em;
 }
 
 #Tab input[type="text"]{
   color: black;
 }
 
-#Tab table tr th:first-child, #Tab table tr td:first-child{
+#Tab table tr th:first-child, #Tab table tr td:first-child, #tableargent tr th td{
   text-align: left !important;
 }
 

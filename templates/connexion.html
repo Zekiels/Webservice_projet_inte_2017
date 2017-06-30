@@ -8,10 +8,13 @@
   <title>Connexion Lemonade-Face-Off</title>
 </head>
 <body>
-<p id="titre">Bienvenue sur Lemonade-Face-Off</p>
+<h1 id="titre">Bienvenue sur Lemonade-Face-Off</h1>
+<div id="citron">
+  <img src="static/citron.jpg" alt="logo">
+</div>
   <div class="login">
     <h1>Identifiant</h1>
-    <input type="text" placeholder="Mon identifiant" required="required" id="name"/>
+    <input type="text" placeholder="Mon identifiant" required="required" id="name" maxlength="50" pattern="[A-Za-z]{50}" title="Maximum 50 caractères A-Z ou a-z (pas de caractères spéciaux)"/>
     <button type="submit" class="btn btn-primary btn-block btn-large" id="connect">Connexion</button>
   </div>
 </body>
@@ -25,7 +28,7 @@ $(function(){
   var server='http://limonade-equipe7.herokuapp.com';
 
   $("#connect").on('click',function(){
-    $.ajax(server+'/player',{
+    $.ajax(server+'/players',{
       method:'POST',
       data:JSON.stringify({
         "name": $("#name").val(),
@@ -33,7 +36,7 @@ $(function(){
       contentType: "application/json",
       success: function(name){
         $('#name').val();
-        document.location='http://limonade-equipe7.herokuapp.com/jeu.html?name='+$('#name').val();
+        document.location='jeu.html?name='+$('#name').val();
       },
       error: function(error){
         console.log(JSON.stringify({
