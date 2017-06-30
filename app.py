@@ -366,7 +366,7 @@ def getReset():
 @app.route("/player/<playerName>", methods=["GET"])
 def getPlayer(playerName):
     db=Db()
-    query = ("""SELECT * from player where pla_name = '{0}'""".format(playerName))
+    query = ("""SELECT * from player where pla_name = '{0}';""".format(playerName))
     player = db.execute(query)
     print(query)
     print(player)
