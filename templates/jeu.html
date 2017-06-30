@@ -251,7 +251,7 @@ $(function(){
     })
   })
 
-  $.ajax('http://limonade-equipe7.herokuapp.com/player/'+joueur,{
+  $.ajax('http://limonade-equipe7.herokuapp.com/player/'+getParameterByName('name'),{
     method:'GET',
     contentType: "application/json",
     success: function(sales){
