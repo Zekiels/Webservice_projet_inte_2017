@@ -44,7 +44,7 @@
         </li>
         <li><a href="#2b" data-toggle="tab"><h4>Publicités</h4></a>
       </li>
-        <li><a href="#3b" data-toggle="tab"><h4>Ventes totale et cour des ingrèdients </h4></a>
+        <li><a href="#3b" data-toggle="tab"><h4>Ventes totale et cour des ingrédients </h4></a>
         </li>
     </ul>
 
@@ -153,13 +153,15 @@
       <thead>
         <tr>
           <th id="largeur"><h4><b>Produits</b></th>
-            <th id="boissonvendue"><h4><b>Nombre de boissons vendues depuis la début de la partie</b></th>
+            <th id="boissonvendue"><h4><b>Nombre de boissons vendues depuis le début de la partie</b></th>
+              <th><h4><b>Cour des ingrédients<h4></b></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><h4>Limonade</h4></td>
-              <td><p id="limonade"></p></td>
+              <td><span id="nbrvendu"></span></td>
+              <td><ul id="limonade"></ul></td>
               <p></p>
             </tr>
   </tbody>
@@ -236,14 +238,27 @@ $(function(){
     method:'GET',
     contentType: "application/json",
     success: function(ingredients){
+      var liste= $("#limonade");
+      liste.empty();
       for (ingredient of ingredients) {
         console.log(ingredient.ing_name+" "+ingredient.ing_current_cost);
+        liste.append(`<li>${ingredient.ing_name}: ${ingredient.ing_current_cost}€</li>`);
       }
       },
       error: function(error){
         console.log(error.error);
       }
     })
+
+
+  $.ajax(server+'/player/'+joueur,{
+    method:'GET',
+    contentType: "application/json",
+    success: function(sales){
+      console.log(sales.sales)
+      $("#nbrvendu").html(sales.sales)
+    }
+  })
   })
   $("#pub5").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"

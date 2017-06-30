@@ -363,6 +363,18 @@ def getReset():
 
 	return json.dumps("Done"),200,{'Content-Type':'application/json'}
 
+@app.route("/player/<playerName>", methods=["GET"])
+def getPlayer(playerName):
+    db=Db()
+    player = db.execute("""
+		SELECT *
+		FROM player WHERE pla_name = '{0}';
+		""".format(playerName))
+
+    sales = player['pla_sales']
+
+    return json_response({"sales":sales},200)
+
 #######################################################################################################################################
 #################################                   POST   						#######################################################
 #######################################################################################################################################
@@ -538,7 +550,7 @@ def postSales():
 
 		return json.dumps("item error"),400,{'Content-Type':'application/json'}
 
-	
+
 ##############
 #ROUTE POST /metrology
 ##############
@@ -571,7 +583,7 @@ def postWheather():
 		reinitPub()
 		createTab()
 		impot()
-		
+
 	if(timestamp<23):
 		day = 0
 		db.execute("""UPDATE map SET  map_day_nb = {0} WHERE map_id = 0;""".format(day))
