@@ -249,9 +249,9 @@ $(function(){
         console.log(error.error);
       }
     })
-  })
 
-  $.ajax('http://limonade-equipe7.herokuapp.com/player/'+getParameterByName('name'),{
+
+  $.ajax(server+'/player/'+joueur,{
     method:'GET',
     contentType: "application/json",
     success: function(sales){
@@ -259,7 +259,7 @@ $(function(){
       $("#nbrvendu").html(sales.sales)
     }
   })
-
+  })
   $("#pub5").on('change', function(){
     var server="http://limonade-equipe7.herokuapp.com"
     var radius = $("#pub5").val();
