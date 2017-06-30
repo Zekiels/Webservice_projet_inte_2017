@@ -371,6 +371,7 @@ def getPlayer(playerName):
 		FROM player WHERE pla_name = '{0}';
 		""".format(playerName))
     player = db.execute(query)
+    print(query)
     print(player)
     sales = player['pla_sales']
 
