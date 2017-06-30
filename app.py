@@ -419,7 +419,7 @@ def postRejoindre():
 	joueur = db.select("SELECT pla_name FROM player WHERE pla_name = '"+ name +"';")
 	if joueur == []:
 		longitude = random.randrange(50,950)
-		latitude = random.randrange(50,950)
+		latitude = random.randrange(300,950)
 		budget = db.select("""SELECT pre_value FROM preference WHERE pre_name = 'budget';""")
 		sqlPLayer = ("""INSERT INTO Player VALUES ('{0}', 'abcd', {1}, 0);""".format(name,budget[0]["pre_value"]))
 		db.execute(sqlPLayer)
