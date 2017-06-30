@@ -369,7 +369,7 @@ def getPlayer(playerName):
     query = """
 		SELECT *
 		FROM player WHERE pla_name = '{0}';
-		""".format(playerName))
+		""".format(playerName)
     player = db.execute(query)
     print(player)
     sales = player['pla_sales']
