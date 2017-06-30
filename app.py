@@ -370,7 +370,7 @@ def getPlayer(playerName):
 		SELECT *
 		FROM player WHERE pla_name = '{0}';
 		""".format(playerName))
-
+    print(player)
     sales = player['pla_sales']
 
     return json_response({"sales":sales},200)
